@@ -1,0 +1,75 @@
+
+.mini-playground {
+  background-color: #fff;
+}
+.mini-playground-head {
+  background-color: #f7f8fa;
+  padding: 5px 10px;
+  color: #ccc;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+.mini-playground-body {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid #f2f3f5;
+  height: 500px;
+}
+.mini-playground-code {
+  width: 50%;
+  height: 100%;
+}
+.mini-playground-gutter {
+  width: 10px;
+  border-left: 1px solid #f2f3f5;
+  border-right: 1px solid #f2f3f5;
+  background-color: #f7f8fa;
+  cursor: col-resize;
+  box-sizing: border-box;
+}
+.mini-playground-gutter:active,
+.mini-playground-gutter:hover {
+  background-color: #d0d4da;
+}
+.mini-playground-content {
+  flex: 1;
+  position: relative;
+}
+.mini-playground-content iframe {
+  border: 0 none;
+}
+.mini-playground-mask {
+  cursor: col-resize;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+.mini-playground-loading {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+.mini-playground-loading::before {
+  content: 'loading...';
+  display: block;
+  margin:  auto;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  height: 20px;
+  color: #555;
+}
+.cm-editor {
+  height: 100% !important;
+  font-size: 14px;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Playground</title>
+</head>
+<body>
+  <div id="my-playground"></div>
+
+  <script src="./dist/index.umd.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-playground@0.1.0"></script> -->
+  <script>
+    new MiniPlayground({
+      el: '#my-playground',
+      jsLibs: ['https://cdn.jsdelivr.net/npm/lucky-canvas@1.7.20'],
+      defaultValue: `<style>
+  h2 {
+    color: red;
+  }
+<\/style>
+
+<div>
+  <h2>这是一个 Demo</h2>
+  <button onclick="handleClick()">按钮</button>
+</div>
+
+<script>
+  let num = 0
+  function handleClick() {
+    alert(num++)
+  }
+<\/script>`, // 编辑器的默认内容
+      // cssLibs: [], // css静态资源
+      // jsLibs: [], // js静态资源
+      // autoSave: true, // 是否自动保存
+      // autoSaveInterval: 250, // 自动保存的时间间隔
+      codeOnUrl: true, // 代码是否保存到地址栏上
+      // editorWidth: '60%', // 编辑区域的默认宽度占比
+    })
+
+  </script>
+</body>
+</html>
