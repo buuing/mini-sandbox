@@ -213,3 +213,5 @@ export default class MiniPlayground {
     iframeDocument.close()
   }
 }
+
+export { encode, decode }
