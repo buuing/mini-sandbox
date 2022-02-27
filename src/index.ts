@@ -175,7 +175,7 @@ export default class MiniPlayground {
   }
 
   triggleLoading(status: boolean) {
-    this.loadEl.style.opacity = status ? '1' : '0'
+    this.loadEl.style.display = status ? 'block' : 'none'
   }
 
   async renderIframe(context: string) {

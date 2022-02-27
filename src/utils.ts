@@ -1,3 +1,4 @@
+import { gzip, inflate } from 'pako'
 
 export const has = (data: object, key: string | number): boolean => {
   return Object.prototype.hasOwnProperty.call(data, key)
@@ -42,5 +43,14 @@ export const FileLoader = (src: string) => fetch(src).then(res => res.text())
 export const CSSLoader = (src: string) => fetch(src).then(res => res.text()).then(str => `<style>${str}<\/style>`)
 export const JSLoader = (src: string) => fetch(src).then(res => res.text()).then(str => `<script type="text/javascript">${str}<\/script>`)
 
-export const encode = (str: string) => btoa(encodeURIComponent(str))
-export const decode = (str: string) => decodeURIComponent(atob(str))
+export const decode = (base64: string) => {
+  const strData = atob(base64)
+  const arrData = new Uint8Array(strData.split(',') as any)
+  const res = String.fromCharCode.apply(null, inflate(arrData) as any)
+  return decodeURIComponent(res)
+}
+
+export const encode = (value: string) => {
+  const res = btoa(gzip(encodeURIComponent(value), { to: 'string' }))
+  return res
+}
