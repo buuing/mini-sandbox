@@ -56,7 +56,7 @@ export default class MiniPlayground {
     const query = getQuery()
     const htmlStr = query['code']
     if (htmlStr && this.config.codeOnUrl) {
-      this.setValue(decode(htmlStr.replace(/\%3D/g, () => '=')))
+      this.setValue(decode(htmlStr))
     } else if (this.config.defaultValue) {
       this.setValue(this.config.defaultValue)
     } else {

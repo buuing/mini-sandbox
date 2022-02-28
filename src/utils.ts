@@ -23,8 +23,8 @@ export const getQuery = (search = window.location.search) => {
   const str = search.split('?')[1]
   if (!str) return query
   str.split('&').forEach(item => {
-    const [key, val] = item.split('=')
-    query[key] = val
+    const index = item.indexOf('=')
+    query[item.slice(0, index)] = item.slice(index + 1)
   })
   return query
 }
@@ -47,9 +47,9 @@ export const CSSLoader = (src: string) => fetch(src).then(res => res.text()).the
 export const JSLoader = (src: string) => fetch(src).then(res => res.text()).then(str => `<script type="text/javascript">${str}<\/script>`)
 
 export const encode = (value: string) => {
-  return compressToEncodedURIComponent(value)
+  return encodeURIComponent(compressToEncodedURIComponent(value))
 }
 
 export const decode = (value: string) => {
-  return decompressFromEncodedURIComponent(value) || ''
+  return decompressFromEncodedURIComponent(decodeURIComponent(value)) || ''
 }
