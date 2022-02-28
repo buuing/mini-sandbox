@@ -4,8 +4,8 @@ export type ConfigType = {
   defaultValue?: string
   cssLibs?: string[]
   jsLibs?: string[]
-  autoSave?: boolean
-  autoSaveInterval?: number
+  autoRun?: boolean
+  autoRunInterval?: number
   codeOnUrl?: boolean
   editorWidth?: string
 }

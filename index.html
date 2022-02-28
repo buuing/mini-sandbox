@@ -12,6 +12,7 @@
   <script src="./dist/index.umd.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/mini-playground@0.1.0"></script> -->
   <script>
+    console.log(MiniPlayground)
     new MiniPlayground({
       el: '#my-playground',
       jsLibs: ['https://cdn.jsdelivr.net/npm/lucky-canvas@1.7.20'],
@@ -34,8 +35,8 @@
 <\/script>`, // 编辑器的默认内容
       // cssLibs: [], // css静态资源
       // jsLibs: [], // js静态资源
-      // autoSave: true, // 是否自动保存
-      // autoSaveInterval: 250, // 自动保存的时间间隔
+      // autoRun: true, // 是否自动保存
+      // autoRunInterval: 250, // 自动保存的时间间隔
       codeOnUrl: true, // 代码是否保存到地址栏上
       // editorWidth: '60%', // 编辑区域的默认宽度占比
     })

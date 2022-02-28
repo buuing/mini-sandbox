@@ -9,6 +9,8 @@ import './style.css'
 
 export default class MiniPlayground {
   static version = version
+  static encode = encode
+  static decode = decode
   readonly version = version
   config: ConfigType
   editor!: EditorView
@@ -28,8 +30,8 @@ export default class MiniPlayground {
       defaultValue: '',
       cssLibs: [],
       jsLibs: [],
-      autoSave: true,
-      autoSaveInterval: 250,
+      autoRun: true,
+      autoRunInterval: 250,
       codeOnUrl: true,
       editorWidth: '50%',
       ...config,
@@ -106,7 +108,7 @@ export default class MiniPlayground {
   }
 
   initCodeMirror() {
-    const render = debounce(this.render, this.config.autoSaveInterval).bind(this)
+    const render = debounce(this.render, this.config.autoRunInterval).bind(this)
     const handleChange = EditorView.updateListener.of((update) => {
       if (update.docChanged) render()
     })
@@ -213,5 +215,3 @@ export default class MiniPlayground {
     iframeDocument.close()
   }
 }
-
-export { encode, decode }
