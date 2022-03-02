@@ -27,20 +27,27 @@ export default class MiniPlayground {
 
   constructor(config = {} as ConfigType) {
     this.config = {
+      theme: 'light',
       defaultValue: '',
       cssLibs: [],
       jsLibs: [],
-      autoRun: true,
-      autoRunInterval: 250,
-      codeOnUrl: true,
+      css: '',
+      js: '',
+      autoRun: false,
+      autoRunInterval: 300,
+      codeOnUrl: false,
       editorWidth: '50%',
+      height: 'auto',
+      direction: 'row',
       ...config,
     }
     if (!config.el) throw new Error('缺少配置项 => el 属性')
     this.config.el = (typeof config.el === 'string' ? document.querySelector(config.el) : config.el) as HTMLDivElement
     if (!this.config.el) throw new Error(`获取元素失败 => ${config.el}`)
     // 初始化
-    this.init()
+    this.init().then(() => {
+      this.config.onLoad?.()
+    })
   }
 
   async init() {
@@ -110,7 +117,10 @@ export default class MiniPlayground {
   initCodeMirror() {
     const render = debounce(this.render, this.config.autoRunInterval).bind(this)
     const handleChange = EditorView.updateListener.of((update) => {
-      if (update.docChanged) render()
+      if (update.docChanged) {
+        this.config.onChange?.()
+        render()
+      }
     })
     this.editor = new EditorView({
       state: EditorState.create({
@@ -181,6 +191,7 @@ export default class MiniPlayground {
   }
 
   async renderIframe(context: string) {
+    const { config } = this
     // reload iframe
     await new Promise<void>(resolve => {
       this.iframe.onload = async() => {
@@ -206,6 +217,8 @@ export default class MiniPlayground {
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Mini Playground</title>
           ${staticResources.join('\n')}
+          ${config.css && '<style>' + config.css + '</style>'}
+          ${config.js && '<script>' + config.js + '</script>'}
         <\/head>
         <body>
           ${context}

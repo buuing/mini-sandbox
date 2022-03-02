@@ -7,7 +7,7 @@ export const has = (data: object, key: string | number): boolean => {
   return Object.prototype.hasOwnProperty.call(data, key)
 }
 
-export const debounce = (fn: Function, wait = 250) => {
+export const debounce = (fn: Function, wait = 300) => {
   let timer: number = 0
   return function(this: unknown) {
     if (timer) window.clearTimeout(timer)

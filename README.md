@@ -73,12 +73,11 @@ new MiniPlayground({
 })
 ```
 
-
 <br />
 
 ## Demo & 演示
 
-- [演示链接]()
+- [演示链接](#)
 
 ```html
 <div id="my-playground"></div>
@@ -87,32 +86,85 @@ new MiniPlayground({
 <script>
   new MiniPlayground({
     el: '#my-playground',
-    defaultValue: `<style>
-  h2 {
-    color: red;
-  }
-<\/style>
-
-<div>
-  <h2>这是一个 Demo</h2>
-  <button onclick="handleClick()">按钮</button>
-</div>
-
-<script>
-  let num = 0
-  function handleClick() {
-    alert(num++)
-  }
-<\/script>`, // 编辑器的默认内容
-    cssLibs: [], // css静态资源
-    jsLibs: [], // js静态资源
-    autoSave: true, // 是否自动保存
-    autoSaveInterval: 250, // 自动保存的时间间隔
-    codeOnUrl: true, // 代码是否保存到地址栏上
-    editorWidth: '60%', // 编辑区域的默认宽度占比
+    defaultValue: `<button onclick="alert('Hellow')">按钮</button>`,
   })
 </script>
 ```
+
+<br />
+
+## Config & 配置项
+
+<table>
+  <tr>
+    <th>参数名称</th>
+    <th>介绍</th>
+  </tr>
+  <tr>
+    <td>el: string | HTMLDivElement</td>
+    <td>必传项, 因为在线编辑器必须得有一个容器</td>
+  </tr>
+  <!-- <tr>
+    <td>theme?: 'light' | 'dark'</td>
+    <td>当前主题色, 默认等于 'light'</td>
+  </tr> -->
+  <tr>
+    <td>defaultValue?: string</td>
+    <td>编辑器默认值, 只有在 codeOnUrl = false 或地址栏的 code 参数不存在时才生效</td>
+  </tr>
+  <tr>
+    <td>cssLibs?: string[]</td>
+    <td>默认引入的 css 库</td>
+  </tr>
+  <tr>
+    <td>jsLibs?: string[]</td>
+    <td>默认引入的 js 库</td>
+  </tr>
+  <tr>
+    <td>css?: string</td>
+    <td>默认加载的 css 样式, 引入顺序在 cssLibs 的后面</td>
+  </tr>
+  <tr>
+    <td>js?: string</td>
+    <td>默认加载的 js 代码, 引入顺序在 jsLibs 的后面</td>
+  </tr>
+  <tr>
+    <td>autoRun?: boolean</td>
+    <td>每次修改后是否自动运行, 默认等于 false</td>
+  </tr>
+  <tr>
+    <td>autoRunInterval?: number</td>
+    <td>每次自动运行的时间间隔, 单位为毫秒, 默认等于 300</td>
+  </tr>
+  <tr>
+    <td>codeOnUrl?: boolean</td>
+    <td>是否将代码编译到地址栏中: www.abc.com?code=XXX, 默认为 false</td>
+  </tr>
+  <tr>
+    <td>editorWidth?: string</td>
+    <td>编辑器默认的宽度占比, 默认编辑器和渲染区域各占 50%</td>
+  </tr>
+  <!-- <tr>
+    <td></td>
+    <td>是否可以左右(上下)拖动, 默认为 true</td>
+  </tr>
+  <tr>
+    <td>height?: string</td>
+    <td>在线编辑器的高度, 默认为 auto</td>
+  </tr>
+  <tr>
+    <td>direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'</td>
+    <td>编辑器和渲染区域的排列方向, 分别为: 从左向右 | 从右向左 | 从上到下 | 从下到上</td>
+  </tr> -->
+  <tr>
+    <td>onChange: () => void</td>
+    <td>编辑器的内容发生变化时触发</td>
+  </tr>
+  <tr>
+    <td>onLoad: () => void</td>
+    <td>在线编辑器初始化完成后触发 (因为 css 库和 js 库的加载是异步的)</td>
+  </tr>
+</table>
 
 <br />
 
@@ -122,7 +174,14 @@ new MiniPlayground({
 
 <br />
 
-## 历史版本更新
+## 历史版本说明
+
+- **`v0.1.7`**
+  - [x] 增加 css 和 js 属性, 用来设置默认样式或代码
+  - [x] 增加 onChange 和 onLoad 回调函数
+
+- **`v0.1.6`**
+  - [x] 使用 ts playground 同款压缩算法优化 url 长度
 
 - **`v0.1.1`**
   - [x] 增加 iframe 渲染时的 loading 动画
