@@ -12,15 +12,16 @@ export default class MiniPlayground {
   static encode = encode
   static decode = decode
   readonly version = version
+  el!: HTMLDivElement
   config: ConfigType
   editor!: EditorView
   loading = false
   isClick = false
   iframe!: HTMLIFrameElement
-  boxEl!: HTMLDivElement
   maskEl!: HTMLDivElement
   loadEl!: HTMLDivElement
   codeEl!: HTMLDivElement
+  editorEl!: HTMLDivElement
   lineEl!: HTMLDivElement
   contentEl!: HTMLDivElement
   ldqStaticResources: string[] = []
@@ -36,8 +37,9 @@ export default class MiniPlayground {
       autoRun: false,
       autoRunInterval: 300,
       codeOnUrl: false,
-      editorWidth: '50%',
       height: 'auto',
+      editorWidth: '50%',
+      draggable: true,
       direction: 'row',
       ...config,
     }
@@ -50,7 +52,7 @@ export default class MiniPlayground {
     })
   }
 
-  async init() {
+  public async init() {
     // 初始化dom结构
     this.initDom()
     // 初始化事件
@@ -71,50 +73,75 @@ export default class MiniPlayground {
     }
   }
 
-  initDom() {
-    (this.config.el as HTMLDivElement).innerHTML = `
-      <div class="mini-playground" package="${name}@${version}">
-        <div class="mini-playground-body">
-          <div class="mini-playground-code" style="width: ${this.config.editorWidth}"></div>
-          <div class="mini-playground-gutter"></div>
-          <div class="mini-playground-content">
-            <iframe id="mini-playground-iframe" width="100%" height="100%"></iframe>
-            <div class="mini-playground-loading"></div>
-          </div>
-          <div class="mini-playground-mask"></div>
+  private initDom() {
+    const { config } = this
+    const el = this.el = this.config.el as HTMLDivElement
+    this.addClass(el, 'mini-playground')
+    el.setAttribute('package', `${name}@${version}`)
+    this.setStyle(el, {
+      height: config.height!,
+    })
+    el.innerHTML = `
+      <div class="playground-code" style="width: ${config.editorWidth}">
+        <div class="playground-tab">
+          <div class="playground-tab-item">HTML</div>
+          <div class="playground-tab-item playground-tab-active">Vue</div>
+          <div class="playground-tab-item">React</div>
+          <div class="playground-tab-item">UniApp</div>
+          <div class="playground-tab-item">Taro</div>
         </div>
       </div>
+      <div class="playground-gutter"></div>
+      <div class="playground-content">
+        <iframe class="playground-iframe" width="100%" height="100%"></iframe>
+        <div class="playground-loading"></div>
+      </div>
+      <div class="playground-mask"></div>
     `
-    this.iframe = document.querySelector('#mini-playground-iframe')!
-    this.boxEl = document.querySelector('.mini-playground-body')!
-    this.maskEl = document.querySelector('.mini-playground-mask')!
-    this.loadEl = document.querySelector('.mini-playground-loading')!
-    this.codeEl = document.querySelector('.mini-playground-code')!
-    this.lineEl = document.querySelector('.mini-playground-gutter')!
-    this.contentEl = document.querySelector('.mini-playground-content')!
+    this.iframe = el.querySelector('.playground-iframe')!
+    this.maskEl = el.querySelector('.playground-mask')!
+    this.loadEl = el.querySelector('.playground-loading')!
+    this.codeEl = el.querySelector('.playground-code')!
+    this.lineEl = el.querySelector('.playground-gutter')!
+    this.contentEl = el.querySelector('.playground-content')!
+    const tabBar = el.querySelector('.playground-tab')!
+    tabBar.addEventListener('click', e => {
+      const targetEl = e.target as HTMLDivElement
+      if (targetEl !== tabBar) {
+        const items = tabBar.children
+        for (const item of items) {
+          item.className = 'playground-tab-item'
+        }
+        this.addClass(targetEl, 'playground-tab-active')
+      }
+    })
   }
 
-  initEvent() {
+  private initEvent() {
+    if (!this.config.draggable) {
+      this.addClass(this.lineEl, 'no-dragging')
+      return
+    }
     let boxW: number, boxX: number, lineX: number
     this.lineEl.addEventListener('mousedown', e => {
       lineX = e.offsetX
       this.isClick = true
-      const { x, width } = this.boxEl.getBoundingClientRect()
+      const { x, width } = this.el.getBoundingClientRect()
       boxW = width
       boxX = x
       this.maskEl.style.display = 'block'
     })
-    this.boxEl.addEventListener('mouseup', e => {
+    this.el.addEventListener('mouseup', e => {
       this.isClick = false
       this.maskEl.style.display = 'none'
     })
-    this.boxEl.addEventListener('mousemove', e => {
+    this.el.addEventListener('mousemove', e => {
       if (!this.isClick) return
       this.codeEl.style.width = (e.clientX - boxX - lineX) / boxW * 100 + '%'
     })
   }
 
-  initCodeMirror() {
+  private initCodeMirror() {
     const render = debounce(this.render, this.config.autoRunInterval).bind(this)
     const handleChange = EditorView.updateListener.of((update) => {
       if (update.docChanged) {
@@ -133,9 +160,10 @@ export default class MiniPlayground {
       }),
       parent: this.codeEl,
     })
+    this.editorEl = this.el.querySelector('.cm-editor') as HTMLDivElement
   }
 
-  setValue(value: string) {
+  public setValue(value: string) {
     this.editor.dispatch({
       changes: {
         from: 0,
@@ -145,22 +173,33 @@ export default class MiniPlayground {
     })
   }
 
-  getValue() {
+  public getValue() {
     return this.editor.state.doc.toString()
   }
 
-  setStyle(key: string, value: string | number) {
-    const cm = document.querySelector('.CodeMirror') as HTMLDivElement
-    if (!cm) return
-    cm.style[key] = value
+  public getString() {
+    return JSON.stringify(this.getValue())
   }
 
-  getBase64() {
-    const htmlStr = this.getValue()
-    return encode(htmlStr)
+  public setCode(code: string) {
+    return this.setValue(decode(code))
   }
 
-  render() {
+  public getCode() {
+    return encode(this.getValue())
+  }
+
+  public setStyle(el: HTMLDivElement, styles: { [key: string]: string | number }) {
+    for (const key in styles) {
+      el.style[key] = styles[key]
+    }
+  }
+
+  private addClass(el: HTMLDivElement, className: string) {
+    el.classList.add(className)
+  }
+
+  public render() {
     this.triggleLoading(true)
     const htmlStr = this.getValue()
     if (this.config.codeOnUrl) {
@@ -169,7 +208,7 @@ export default class MiniPlayground {
     this.renderIframe(htmlStr)
   }
 
-  async initStatisResources() {
+  private async initStatisResources() {
     const ldqStaticResources = window['ldqStaticResources'] || {}
     await Promise.all([
       ...(this.config.cssLibs || [])
@@ -186,11 +225,11 @@ export default class MiniPlayground {
     ]
   }
 
-  triggleLoading(status: boolean) {
+  private triggleLoading(status: boolean) {
     this.loadEl.style.display = status ? 'block' : 'none'
   }
 
-  async renderIframe(context: string) {
+  private async renderIframe(context: string) {
     const { config } = this
     // reload iframe
     await new Promise<void>(resolve => {

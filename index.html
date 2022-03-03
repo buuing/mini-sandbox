@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mini Playground</title>
 </head>
-<body>
+<body style="background-color: #ccc;">
   <div id="my-playground"></div>
 
   <script src="./dist/index.umd.js"></script>
@@ -14,33 +14,18 @@
   <script>
     const mp = new MiniPlayground({
       el: '#my-playground',
-      jsLibs: ['https://cdn.jsdelivr.net/npm/lucky-canvas@1.7.20'],
-      // defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button onclick=\"handleClick()\">按钮</button>\n</div>\n\n<script>\n  let num = 0\n  function handleClick() {\n    alert(num++)\n  }\n<\/script>\n", // 编辑器的默认内容
-      defaultValue: `<div id="my-lucky"></div>
-
-<script>
-const myLucky = new LuckyCanvas.LuckyWheel('#my-lucky', {
-  width: '200px',
-  height: '200px',
-  blocks: [{ padding: '10px', background: '#617df2' }],
-  prizes: [
-    { fonts: [{ text: '0', top: '10%' }], background: '#e9e8fe' },
-    { fonts: [{ text: '1', top: '10%' }], background: '#b8c5f2' },
-    { fonts: [{ text: '2', top: '10%' }], background: '#e9e8fe' },
-    { fonts: [{ text: '3', top: '10%' }], background: '#b8c5f2' },
-    { fonts: [{ text: '4', top: '10%' }], background: '#e9e8fe' },
-    { fonts: [{ text: '5', top: '10%' }], background: '#b8c5f2' },
-  ],
-})
-<\/script>`,
+      // jsLibs: ['https://cdn.jsdelivr.net/npm/lucky-canvas@1.7.20'],
+      defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button onclick=\"handleClick()\">按钮</button>\n</div>\n\n<script>\n  let num = 0\n  function handleClick() {\n    alert(num++)\n  }\n<\/script>\n", // 编辑器的默认内容
       // cssLibs: [], // css静态资源
       // jsLibs: [], // js静态资源
-      css: 'div { margin: 0 auto }',
-      js: 'console.log(14235)',
-      // autoRun: true, // 是否自动保存
-      // autoRunInterval: 300, // 自动保存的时间间隔
-      // codeOnUrl: true, // 代码是否保存到地址栏上
+      // css: 'div { margin: 0 auto }',
+      // js: 'console.log(14235)',
+      autoRun: true, // 是否自动保存
+      autoRunInterval: 300, // 自动保存的时间间隔
+      codeOnUrl: true, // 代码是否保存到地址栏上
       editorWidth: '60%', // 编辑区域的默认宽度占比
+      height: '300px',
+      draggable: false,
       onChange: () => {
 
       },

@@ -10,9 +10,11 @@ export type ConfigType = {
   autoRun?: boolean
   autoRunInterval?: number
   codeOnUrl?: boolean
-  editorWidth?: string
   height?: string
+  editorWidth?: string
+  draggable?: boolean
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
+  onFocus: () => void
   onChange: () => void
   onLoad: () => void
 }

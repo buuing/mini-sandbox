@@ -1,25 +1,17 @@
 
 .mini-playground {
   background-color: #fff;
-}
-.mini-playground-head {
-  background-color: #f5f5f5;
-  padding: 5px 10px;
-  color: #ccc;
-  text-align: center;
-  letter-spacing: 0.5px;
-}
-.mini-playground-body {
   display: flex;
   overflow: hidden;
-  border: 1px solid #f2f3f5;
+  /* border: 1px solid #f2f3f5; */
   height: 500px;
 }
-.mini-playground-code {
+.playground-code {
   width: 50%;
   height: 100%;
+  overflow: hidden;
 }
-.mini-playground-gutter {
+.playground-gutter {
   width: 10px;
   border-left: 1px solid #f2f3f5;
   border-right: 1px solid #f2f3f5;
@@ -27,20 +19,27 @@
   cursor: col-resize;
   box-sizing: border-box;
 }
-.mini-playground-gutter:active,
-.mini-playground-gutter:hover {
+.playground-gutter:active,
+.playground-gutter:hover {
   background-color: #f2f3f5;
 }
-.mini-playground-content {
+.no-dragging {
+  cursor: auto;
+}
+.no-dragging:active,
+.no-dragging:hover {
+  background-color: #f7f8fa;
+}
+.playground-content {
   flex: 1;
   position: relative;
   box-sizing: border-box;
   border-right: 8px solid #f5f5f5;
 }
-.mini-playground-content iframe {
+.playground-content iframe {
   border: 0 none;
 }
-.mini-playground-mask {
+.playground-mask {
   cursor: col-resize;
   position: absolute;
   left: 0;
@@ -50,7 +49,7 @@
   display: none;
   background-color: rgba(0, 0, 0, 0);
 }
-.mini-playground-loading {
+.playground-loading {
   position: absolute;
   left: 0;
   top: 0;
@@ -59,7 +58,7 @@
   background-color: rgba(255, 255, 255, 0.9);
   display: none;
 }
-.mini-playground-loading::before {
+.playground-loading::before {
   content: 'loading...';
   display: block;
   margin:  auto;
@@ -72,8 +71,32 @@
   height: 20px;
   color: #555;
 }
-.mini-playground-code>.cm-editor {
-  height: 100% !important;
+.playground-code>.cm-editor {
+  height: calc(100% - 36px) !important;
   font-size: 14px;
   outline: none !important;
+}
+.playground-tab {
+  height: 36px;
+  padding: 0 20px 0 40px;
+  background: #f2f3f5;
+  display: flex;
+  align-items: flex-end;
+}
+.playground-tab-item {
+  font-size: 14px;
+  margin: 0 -5px;
+  padding: 5px 20px 5px;
+  cursor: pointer;
+}
+.playground-tab-active {
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M100 100C44.772 100 0 55.228 0 0v100h100z' fill='%23FFFFFF'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 100c55.228 0 100-44.772 100-100v100H0z' fill='%23FFFFFF'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><rect rx='6' width='100%' height='100%' fill='%23FFFFFF'/></svg>");
+  background-size: 6px 6px, 8px 6px, calc(100% - 12px) calc(100% + 6px);
+  background-position: right bottom, left bottom, center top;
+  background-repeat: no-repeat;
+}
+.ͼ2 .cm-gutters {
+  background-color: #f2f3f5;
 }
