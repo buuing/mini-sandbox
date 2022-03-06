@@ -6,15 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mini Playground</title>
 </head>
-<body style="background-color: #ccc;">
+<body>
+  <style>
+    #my-playground {
+      width: 100%;
+      max-width: 1200px;
+      margin: 100px auto;
+      box-shadow: 0 10px 30px #555;
+      border: 2px solid rgb(74, 74, 245);
+      border-radius: 5px;
+    }
+  </style>
   <div id="my-playground"></div>
 
   <script src="./dist/index.umd.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-playground@0.1.0"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-playground@latest"></script> -->
   <script>
     const mp = new MiniPlayground({
       el: '#my-playground',
-      // jsLibs: ['https://cdn.jsdelivr.net/npm/lucky-canvas@1.7.20'],
       defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button onclick=\"handleClick()\">按钮</button>\n</div>\n\n<script>\n  let num = 0\n  function handleClick() {\n    alert(num++)\n  }\n<\/script>\n", // 编辑器的默认内容
       // cssLibs: [], // css静态资源
       // jsLibs: [], // js静态资源
@@ -23,18 +32,18 @@
       autoRun: true, // 是否自动保存
       autoRunInterval: 300, // 自动保存的时间间隔
       codeOnUrl: true, // 代码是否保存到地址栏上
-      editorWidth: '60%', // 编辑区域的默认宽度占比
-      height: '300px',
-      draggable: false,
+      urlField: 'code',
+      defaultEditorWidth: '55%', // 编辑区域的默认宽度占比
+      height: '500px',
+      draggable: true,
+      direction: 'row',
       onChange: () => {
 
       },
       onLoad: () => {
-        console.log(JSON.stringify(mp.getValue()))
+        // console.log(JSON.stringify(mp.getValue()))
       },
     })
-    // setTimeout(_ => {
-    // }, 1000)
   </script>
 </body>
 </html>

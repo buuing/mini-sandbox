@@ -90,28 +90,33 @@ new MiniPlayground({
 | `autoRun`?: boolean | 每次修改后是否自动运行, 默认等于 false |
 | `autoRunInterval`?: number | 每次自动运行的时间间隔, 单位为毫秒, 默认等于 300 |
 | `codeOnUrl`?: boolean | 是否将代码编译到地址栏中: www.abc.com?code=XXX, 默认为 false |
+| `urlField`?: string | 代码编译到 url 上所使用的字段, 默认为 'code' |
+| `defaultEditorWidth`?: string | 编辑器默认的宽度占比, 默认编辑器和渲染区域各占 50% |
 | `height`?: string | 在线编辑器的高度, 默认为 auto |
-| `editorWidth`?: string | 编辑器默认的宽度占比, 默认编辑器和渲染区域各占 50% |
-| `draggable`?: boolean | 是否可以左右(上下)拖动, 默认为 true |
+| `draggable`?: boolean | 是否可以左右拖动布局, 默认为 true |
+| `direction`?: 'row' \| 'row-reverse' | 编辑器和渲染区域的排列方向, 分别为: 从左向右 \| 从右向左, 默认为 'row' |
 | `onChange`?: () => void | 编辑器的内容发生变化时触发 |
 | `onLoad`?: () => void | 在线编辑器初始化完成后触发 (因为 css 库和 js 库的加载是异步的) |
 <!-- | `theme`?: 'light' | 'dark' | 当前主题色, 默认等于 'light' | -->
-<!-- | `direction`?: 'row' | 'row-reverse' | 'column' | 'column-reverse' | 编辑器和渲染区域的排列方向, 分别为: 从左向右 | 从右向左 | 从上到下 | 从下到上 | -->
 <!-- | `onFocus`?: () => void | 编辑器获得焦点后触发 | -->
 
 <br />
 
 ## 友情链接
 
-- [🎁 lucky-canvas 一个跨平台、兼容多端的【大转盘 / 九宫格】抽奖插件](https://github.com/LuckDraw/lucky-canvas)
+- [🎁 lucky-canvas 一个跨平台、兼容多端的【大转盘 / 九宫格 / 老虎机】抽奖插件](https://github.com/LuckDraw/lucky-canvas)
 
 <br />
 
 ## 历史版本说明
 
+<!-- - [x] 增加 onFocus 回调, 编辑器获得焦点时触发 -->
+
 - **`v0.1.8`**
   - [x] 增加 height 属性, 用来设置在线编辑器的默认高度
-  - [x] 增加 draggable 属性, 用来控制是否可以左右(上下)拖动
+  - [x] 增加 draggable 属性, 用来控制是否可以左右拖动
+  - [x] 增加 urlField 属性, 用来控制代码编译到 url 上所使用的字段
+  - [x] 增加顶部工具栏: 重置 / 刷新 / 输入框 / 复制
 
 - **`v0.1.7`**
   - [x] 增加 css 和 js 属性, 用来设置默认样式或代码
