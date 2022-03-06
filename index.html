@@ -4,47 +4,50 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini Playground</title>
+  <title>Mini Sandbox</title>
 </head>
 <body>
   <style>
-    .demo-box {
+    h1 {
+      margin: 50px 0 0;
+      text-align: center;
+    }
+    p {
+      text-align: center;
+    }
+    #my-sandbox {
       width: 100%;
-      max-width: 1200px;
-      margin: 100px auto;
-      /* box-shadow: 0 10px 30px #555; */
-      /* border-radius: 5px; */
-      border: 1px solid rgb(74, 74, 245);
-      overflow: hidden;
-      box-sizing: border-box;
-      background-color: red;
+      max-width: 1000px;
+      margin: 50px auto;
+      box-shadow: 0 10px 30px #555;
+      border: 2px solid rgb(74, 74, 245);
+      border-radius: 5px;
     }
   </style>
-  <div class="demo-box">
-    <div id="my-playground"></div>
-  </div>
+  <h1>Mini Sandbox</h1>
+  <p>为 web 前端提供一个代码 / 组件演示工具, 其他人可以很方便的调试组件</p>
+  <p>
+    <a href="https://github.com/buuing/mini-sandbox">文档</a>
+    &emsp;
+    <a href="https://github.com/buuing/mini-sandbox">Github</a>
+  </p>
+  <div id="my-sandbox"></div>
 
   <script src="./dist/index.umd.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-playground@latest"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@latest"></script> -->
   <script>
-    const mp = new MiniPlayground({
-      el: '#my-playground',
-      defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button onclick=\"handleClick()\">按钮</button>\n</div>\n\n<script>\n  let num = 0\n  function handleClick() {\n    alert(num++)\n  }\n<\/script>\n", // 编辑器的默认内容
+    var mp = new MiniSandbox({
+      el: '#my-sandbox',
+      defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n", // 编辑器的默认内容
       // cssLibs: [], // css静态资源
       // jsLibs: [], // js静态资源
-      // css: 'div { margin: 0 auto }',
-      // js: 'console.log(14235)',
+      css: '* { text-align: center }',
       autoRun: true, // 是否自动保存
-      autoRunInterval: 300, // 自动保存的时间间隔
-      codeOnUrl: true, // 代码是否保存到地址栏上
-      urlField: 'code',
+      codeOnUrl: false, // 代码是否保存到地址栏上
+      urlField: 'code', // 地址栏上使用的字段
       defaultEditorWidth: '55%', // 编辑区域的默认宽度占比
-      height: '500px',
+      height: '60vh',
       draggable: true,
-      direction: 'row',
-      onChange: () => {
-
-      },
       onLoad: () => {
         // console.log(JSON.stringify(mp.getValue()))
       },

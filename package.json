@@ -1,6 +1,6 @@
 {
-  "name": "mini-playground",
-  "version": "0.1.8",
+  "name": "mini-sandbox",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.esm.js",
   "module": "dist/index.esm.js",

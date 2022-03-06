@@ -16,14 +16,14 @@ export default [
       {
         file: `${pkg.unpkg}`,
         format: 'umd',
-        name: 'MiniPlayground',
+        name: 'MiniSandbox',
         sourcemap: false,
         plugins: [terser()],
       },
       {
         file: `${pkg.module}`,
         format: 'umd',
-        name: 'MiniPlayground',
+        name: 'MiniSandbox',
         sourcemap: false,
         plugins: [terser()],
       },

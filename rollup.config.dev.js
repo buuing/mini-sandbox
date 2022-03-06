@@ -21,7 +21,7 @@ export default {
     {
       file: `${pkg.jsdelivr}`,
       format: 'umd',
-      name: 'MiniPlayground',
+      name: 'MiniSandbox',
       sourcemap: true,
     },
   ],
@@ -41,8 +41,8 @@ export default {
     livereload(),
     serve({
       open: true,
-      openPage: '/index.html',
-      contentBase: './',
+      openPage: '/mini-sandbox/index.html',
+      contentBase: '../',
     }),
   ],
 }

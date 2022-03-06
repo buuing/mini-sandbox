@@ -1,22 +1,22 @@
 
 <div align="center" style="display: flex; flex-direction: column; align-items: center;">
-  <h1 style="margin: 10px 0 0">mini-playground</h1>
+  <h1 style="margin: 10px 0 0">mini-sandbox</h1>
   <p>一个基于 CodeMirror 6 封装的 HTML 在线编辑插件</p>
   <p>
-    <a href="https://github.com/buuing/mini-playground/stargazers" target="_black">
-      <img src="https://img.shields.io/github/stars/buuing/mini-playground?color=%236a90e1&logo=github&style=flat-square" alt="stars" />
+    <a href="https://github.com/buuing/mini-sandbox/stargazers" target="_black">
+      <img src="https://img.shields.io/github/stars/buuing/mini-sandbox?color=%236a90e1&logo=github&style=flat-square" alt="stars" />
     </a>
-    <a href="https://www.npmjs.com/package/mini-playground" target="_black">
-      <img src="https://img.shields.io/npm/dm/mini-playground?color=%23ffba15&logo=npm&style=flat-square" alt="npm" />
+    <a href="https://www.npmjs.com/package/mini-sandbox" target="_black">
+      <img src="https://img.shields.io/npm/dm/mini-sandbox?color=%23ffba15&logo=npm&style=flat-square" alt="npm" />
     </a>
-    <a href="https://www.jsdelivr.com/package/npm/mini-playground" target="_black">
-      <img src="https://data.jsdelivr.com/v1/package/npm/mini-playground/badge" alt="jsdelivr" />
+    <a href="https://www.jsdelivr.com/package/npm/mini-sandbox" target="_black">
+      <img src="https://data.jsdelivr.com/v1/package/npm/mini-sandbox/badge" alt="jsdelivr" />
     </a>
     <a href="https://github.com/buuing" target="_black">
       <img src="https://img.shields.io/badge/Author-%20buuing%20-6a90e1.svg?&logo=github&style=flat-square" alt="author" />
     </a>
-    <a href="https://github.com/buuing/mini-playground/blob/master/LICENSE" target="_black">
-      <img src="https://img.shields.io/github/license/buuing/mini-playground?color=%236a90e1&logo=github&style=flat-square" alt="license" />
+    <a href="https://github.com/buuing/mini-sandbox/blob/master/LICENSE" target="_black">
+      <img src="https://img.shields.io/github/license/buuing/mini-sandbox?color=%236a90e1&logo=github&style=flat-square" alt="license" />
     </a>
   </p>
 </div>
@@ -41,12 +41,12 @@
 ### 通过 CDN 链接使用
 
 ```html
-<div id="my-playground"></div>
+<div id="my-sandbox"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-playground@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@latest"></script>
 <script>
-  new MiniPlayground({
-    el: '#my-playground',
+  new MiniSandbox({
+    el: '#my-sandbox',
     defaultValue: `<button onclick="alert('Hellow')">按钮</button>`,
   })
 </script>
@@ -57,20 +57,20 @@
 1. 安装
 
 ```shell
-npm i mini-playground@latest
+npm i mini-sandbox@latest
 ```
 
 2. 使用
 
 ```html
-<div id="my-playground"></div>
+<div id="my-sandbox"></div>
 ```
 
 ```js
-import MiniPlayground from 'mini-playground'
+import MiniSandbox from 'mini-sandbox'
 
-new MiniPlayground({
-  el: '#my-playground',
+new MiniSandbox({
+  el: '#my-sandbox',
   defaultValue: `<button onclick="alert('Hellow')">按钮</button>`,
 })
 ```
@@ -105,37 +105,5 @@ new MiniPlayground({
 ## 友情链接
 
 - [🎁 lucky-canvas 一个跨平台、兼容多端的【大转盘 / 九宫格 / 老虎机】抽奖插件](https://github.com/LuckDraw/lucky-canvas)
-
-<br />
-
-## 历史版本说明
-
-<!-- - [x] 增加 onFocus 回调, 编辑器获得焦点时触发 -->
-
-- **`v0.1.8`**
-  - [x] 增加 height 属性, 用来设置在线编辑器的默认高度
-  - [x] 增加 draggable 属性, 用来控制是否可以左右拖动
-  - [x] 增加 urlField 属性, 用来控制代码编译到 url 上所使用的字段
-  - [x] 增加顶部工具栏: 重置 / 刷新 / 输入框 / 复制
-
-- **`v0.1.7`**
-  - [x] 增加 css 和 js 属性, 用来设置默认样式或代码
-  - [x] 增加 onChange 和 onLoad 回调函数
-
-- **`v0.1.6`**
-  - [x] 使用 ts playground 同款压缩算法优化 url 长度
-
-- **`v0.1.1`**
-  - [x] 增加 iframe 渲染时的 loading 动画
-  - [x] 修复 jsLibs 返回了错误 Promise 的问题
-
-- **`v0.1.0`**
-  - [x] 完成 css / js 资源的全局缓存, 减少网络请求
-  - [x] 增加配置项: 是否自动保存, 触发保存的时间间隔
-  - [x] 增加配置项: 编辑区域的默认宽度占比
-  - [x] 增加配置项: 代码是否保存到 url 地址栏中
-
-- **`v0.0.3`**
-  - [x] 增加配置项: cssLibs 和 jsLibs 静态资源的配置
 
 <br />
