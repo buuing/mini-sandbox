@@ -25,14 +25,14 @@
 
 ## Feature & 功能亮点
 
-- 可以在线编辑 html | css | js 代码, 并实时预览代码效果
+- 可以在线编辑 `html` | `css` | `js` 代码, 并实时预览代码效果
 - 代码可以自动保存到页面的 URL 上, 分享网址即可分享代码
 
 <br />
 
 ## Document & 官方文档
 
-- [官方文档 & 演示地址](#)
+- [官方文档 & 演示地址](https://buuing.github.io/mini-sandbox)
 
 <br />
 

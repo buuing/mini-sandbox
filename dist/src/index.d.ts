@@ -1,0 +1,44 @@
+import { EditorView } from '@codemirror/view';
+import { ConfigType } from './type';
+import './style.less';
+export default class MiniSandbox {
+    static version: string;
+    static encode: (value: string) => string;
+    static decode: (value: string) => string;
+    readonly version: string;
+    el: HTMLDivElement;
+    config: Required<ConfigType>;
+    editor: EditorView;
+    loading: boolean;
+    isClick: boolean;
+    iframe: HTMLIFrameElement;
+    maskEl: HTMLDivElement;
+    loadEl: HTMLDivElement;
+    codeEl: HTMLDivElement;
+    editorEl: HTMLDivElement;
+    lineEl: HTMLDivElement;
+    contentEl: HTMLDivElement;
+    searchEl: HTMLInputElement;
+    ldqStaticResources: string[];
+    run: Function;
+    constructor(config?: ConfigType);
+    init(): Promise<void>;
+    reset(): void;
+    private initDom;
+    private initEvent;
+    private handleChange;
+    private initCodeMirror;
+    setValue(value: string): void;
+    getValue(): string;
+    getString(): string;
+    setCode(code: string): void;
+    getCode(value?: string): string;
+    setStyle(el: HTMLDivElement, styles: {
+        [key: string]: string | number;
+    }): void;
+    private addClass;
+    render(): void;
+    private initStatisResources;
+    private triggleLoading;
+    private renderIframe;
+}

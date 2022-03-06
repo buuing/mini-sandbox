@@ -41,8 +41,8 @@ export default {
     livereload(),
     serve({
       open: true,
-      openPage: '/mini-sandbox/index.html',
-      contentBase: '../',
+      openPage: '/index.html',
+      contentBase: './',
     }),
   ],
 }

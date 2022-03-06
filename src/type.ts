@@ -8,10 +8,9 @@ export type ConfigType = {
   jsLibs?: string[]
   css?: string
   js?: string
-  // 编辑器属性
+  // 沙盒属性
   autoRun?: boolean
   autoRunInterval?: number
-  // 代码保存到网址
   codeOnUrl?: boolean
   urlField?: string
   // dom属性
