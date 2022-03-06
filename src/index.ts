@@ -5,7 +5,7 @@ import { html } from '@codemirror/lang-html'
 import { debounce, getQuery, setQuery, CSSLoader, JSLoader, encode, decode } from './utils'
 import { ConfigType } from './type'
 import { name, version } from '../package.json'
-import './style.css'
+import './style.less'
 
 export default class MiniPlayground {
   static version = version

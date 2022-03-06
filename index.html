@@ -8,19 +8,24 @@
 </head>
 <body>
   <style>
-    #my-playground {
+    .demo-box {
       width: 100%;
       max-width: 1200px;
       margin: 100px auto;
-      box-shadow: 0 10px 30px #555;
-      border: 2px solid rgb(74, 74, 245);
-      border-radius: 5px;
+      /* box-shadow: 0 10px 30px #555; */
+      /* border-radius: 5px; */
+      border: 1px solid rgb(74, 74, 245);
+      overflow: hidden;
+      box-sizing: border-box;
+      background-color: red;
     }
   </style>
-  <div id="my-playground"></div>
+  <div class="demo-box">
+    <div id="my-playground"></div>
+  </div>
 
-<!--   <script src="./dist/index.umd.js"></script> -->
-  <script src="https://cdn.jsdelivr.net/npm/mini-playground@latest"></script>
+  <script src="./dist/index.umd.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-playground@latest"></script> -->
   <script>
     const mp = new MiniPlayground({
       el: '#my-playground',
