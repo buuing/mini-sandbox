@@ -10,7 +10,7 @@
     align-items: center;
     height: 32px;
     font-size: 14px;
-    background: #f2f3f5;
+    background: var(--bgColor);
     user-select: none;
     .sandbox-icon {
       display: flex;
@@ -97,13 +97,13 @@
   }
   .sandbox-gutter {
     width: 5px;
-    border-left: 1px solid #f2f3f5;
-    border-right: 1px solid #f2f3f5;
+    border-left: 1px solid var(--bgColor);
+    border-right: 1px solid var(--bgColor);
     background-color: #f7f8fa;
     cursor: col-resize;
     box-sizing: border-box;
     &:active, &:hover {
-      background-color: #f2f3f5;
+      background-color: var(--bgColor);
     }
     &.no-dragging {
       cursor: auto;
@@ -157,7 +157,7 @@
     background-color: rgba(0, 0, 0, 0);
   }
   .ͼ2 .cm-gutters {
-    background-color: #f2f3f5;
+    background-color: var(--bgColor);
     border: 0 none;
   }
 }

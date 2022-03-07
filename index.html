@@ -6,10 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mini Sandbox</title>
 </head>
-<body>
+<body style="
+overflow: hidden;
+background: #ffefba;
+background: linear-gradient(to right, #ffefba, #ffffff);
+">
   <style>
     h1 {
-      margin: 50px 0 0;
+      margin: 100px 0 0;
       text-align: center;
     }
     p {
@@ -19,38 +23,57 @@
       width: 100%;
       max-width: 1000px;
       margin: 50px auto;
-      box-shadow: 0 10px 30px #555;
-      border: 2px solid rgb(74, 74, 245);
-      border-radius: 5px;
+      box-shadow: 0 10px 30px #666;
+      border-radius: 10px;
     }
   </style>
-  <h1>Mini Sandbox</h1>
-  <p>为 web 前端提供一个代码 / 组件演示工具, 其他人可以很方便的调试组件</p>
-  <p>
-    <a href="https://github.com/buuing/mini-sandbox">文档</a>
-    &emsp;
-    <a href="https://github.com/buuing/mini-sandbox">Github</a>
-  </p>
-  <div id="my-sandbox"></div>
+  <div id="box">
+    <h1>Mini Sandbox</h1>
+    <!-- <p>为 web 前端提供一个代码 / 组件演示工具, 其他人可以很方便的调试组件</p> -->
+    <!-- <p>
+      <a href="https://github.com/buuing/mini-sandbox">文档</a>
+      &emsp;
+      <a href="https://github.com/buuing/mini-sandbox">Github</a>
+    </p> -->
+    <div id="my-sandbox"></div>
+  </div>
 
   <script src="./dist/index.umd.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@latest"></script> -->
   <script>
     var mp = new MiniSandbox({
       el: '#my-sandbox',
-      defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n", // 编辑器的默认内容
-      // cssLibs: [], // css静态资源
-      // jsLibs: [], // js静态资源
-      css: '* { text-align: center }',
-      autoRun: true, // 是否自动保存
-      codeOnUrl: false, // 代码是否保存到地址栏上
-      urlField: 'code', // 地址栏上使用的字段
-      defaultEditorWidth: '55%', // 编辑区域的默认宽度占比
-      height: '60vh',
-      draggable: true,
-      onLoad: () => {
-        // console.log(JSON.stringify(mp.getValue()))
+      files: {
+        'index.html': {
+          type: 'html',
+          defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n",
+          css: '* { color: red }',
+          urlField: 'html',
+        },
+        'app.vue': {
+          type: 'vue',
+          defaultValue: "<template>\n    <button @click=\"cli\">count: {{num}}</button>\n</template>\n\n<script>\nexport default {\n    data () {\n        return {\n            num: 1\n        }\n    },\n    methods: {\n        cli () {\n            this.num++\n        }\n    }\n}\n<\/script>\n\n<style>\n\n</style>",
+          jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
+          urlField: 'vue',
+        },
       },
+      publicRes: {
+        css: '* { text-align: center }',
+        js: '',
+        jsLibs: [],
+        cssLibs: [],
+      },
+      defaultConfig: {
+        theme: 'light',
+        autoRun: true, // 是否自动保存
+        editorWidth: '55%', // 编辑区域的默认宽度占比
+        height: '60vh',
+        draggable: true,
+      },
+      events: {
+        onChange: () => {},
+        onLoad: () => {},
+      }
     })
   </script>
 </body>

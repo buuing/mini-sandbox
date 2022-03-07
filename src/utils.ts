@@ -1,3 +1,6 @@
+// @ts-ignore
+import { parseComponent } from 'vue-template-compiler/browser'
+import { transform } from '@babel/standalone'
 import {
   compressToEncodedURIComponent,
   decompressFromEncodedURIComponent,
@@ -42,9 +45,11 @@ export const setQuery = (query: { [key: string]: string | number }) => {
   history.pushState(null, '', search)
 }
 
-export const FileLoader = (src: string) => fetch(src).then(res => res.text())
 export const CSSLoader = (src: string) => fetch(src).then(res => res.text()).then(str => `<style>${str}<\/style>`)
 export const JSLoader = (src: string) => fetch(src).then(res => res.text()).then(str => `<script type="text/javascript">${str}<\/script>`)
+
+const resLoader = { style: CSSLoader, script: JSLoader }
+export const FileLoader = (type: 'style' | 'script', src: string) => resLoader[type](src)
 
 export const encode = (value: string) => {
   return encodeURIComponent(compressToEncodedURIComponent(value))
@@ -52,4 +57,26 @@ export const encode = (value: string) => {
 
 export const decode = (value: string) => {
   return decompressFromEncodedURIComponent(decodeURIComponent(value)) || ''
+}
+
+const getScript = (script: string, template: any): string => {
+  return ` try {
+      var exports = {};
+      ${script}
+      var component = exports.default;
+      // 如果定义了 template函数, 则无需 template
+      component.template = component.template || ${template}
+    } catch (error){
+      errorHandler(error)
+    }
+    new Vue(component).$mount('#app')
+  `
+}
+
+export const VueLoader = (value: string) => {
+  // styles
+  const { template, script } = parseComponent(value)
+  const templateStr = template ? JSON.stringify(template.content) : '""'
+  const scriptStr = transform(script?.content || '', { presets: ['es2015'] }).code
+  return getScript(scriptStr, templateStr)
 }
