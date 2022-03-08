@@ -27,6 +27,7 @@
 
 - 可以在线编辑 `html` | `css` | `js` 代码, 并实时预览代码效果
 - 代码可以自动保存到页面的 URL 上, 分享网址即可分享代码
+- 
 
 <br />
 
@@ -47,7 +48,9 @@
 <script>
   new MiniSandbox({
     el: '#my-sandbox',
-    defaultValue: `<button onclick="alert('Hellow')">按钮</button>`,
+    files: {
+      defaultValue: `<button onclick="alert('Hellow')">按钮</button>`,
+    }
   })
 </script>
 ```
@@ -71,30 +74,61 @@ import MiniSandbox from 'mini-sandbox'
 
 new MiniSandbox({
   el: '#my-sandbox',
-  defaultValue: `<button onclick="alert('Hellow')">按钮</button>`,
+  files: {
+    defaultValue: `<button onclick="alert('Hellow')">按钮</button>`,
+  }
 })
 ```
 
 <br />
 
-## Config & 配置项
+## Options & 参数选项
 
 | 参数 | 说明 |
 | - | - |
-| `el`: string \| HTMLDivElement | 必传项, 因为在线编辑器必须得有一个容器 |
-| `defaultValue`?: string | 编辑器默认值, 只有在 codeOnUrl = false 或地址栏的 code 参数不存在时才生效 |
+| `el`: string \| HTMLDivElement | 必传项, 因为编辑器必须得有一个容器 |
+| `files`: object | 用来渲染多个 tab 标签页 |
+| `resource`?: object | 公共静态资源 (所有标签页均会加载) |
+| `defaultConfig`?: object | 默认的配置项 |
+| `events`?: object | 事件回调 |
+
+---
+
+### files
+
+| 参数 | 说明 |
+| - | - |
+| `defaultValue`?: string | 编辑器的默认值 |
 | `cssLibs`?: string[] | 默认引入的 css 库 |
 | `jsLibs`?: string[] | 默认引入的 js 库 |
 | `css`?: string | 默认加载的 css 样式, 引入顺序在 cssLibs 的后面 |
 | `js`?: string | 默认加载的 js 代码, 引入顺序在 jsLibs 的后面 |
+| `urlField`?: string | 代码编译到 url 上所使用的字段, 默认为空 |
+
+### resource
+
+| 参数 | 说明 |
+| - | - |
+| `cssLibs`?: string[] | 默认引入的 css 库 |
+| `jsLibs`?: string[] | 默认引入的 js 库 |
+| `css`?: string | 默认加载的 css 样式, 引入顺序在 cssLibs 的后面 |
+| `js`?: string | 默认加载的 js 代码, 引入顺序在 jsLibs 的后面 |
+
+### defaultConfig
+
+| 参数 | 说明 |
+| - | - |
 | `autoRun`?: boolean | 每次修改后是否自动运行, 默认等于 false |
 | `autoRunInterval`?: number | 每次自动运行的时间间隔, 单位为毫秒, 默认等于 300 |
-| `codeOnUrl`?: boolean | 是否将代码编译到地址栏中: www.abc.com?code=XXX, 默认为 false |
-| `urlField`?: string | 代码编译到 url 上所使用的字段, 默认为 'code' |
 | `defaultEditorWidth`?: string | 编辑器默认的宽度占比, 默认编辑器和渲染区域各占 50% |
 | `height`?: string | 在线编辑器的高度, 默认为 auto |
 | `draggable`?: boolean | 是否可以左右拖动布局, 默认为 true |
 | `direction`?: 'row' \| 'row-reverse' | 编辑器和渲染区域的排列方向, 分别为: 从左向右 \| 从右向左, 默认为 'row' |
+
+### events
+
+| 参数 | 说明 |
+| - | - |
 | `onChange`?: () => void | 编辑器的内容发生变化时触发 |
 | `onLoad`?: () => void | 在线编辑器初始化完成后触发 (因为 css 库和 js 库的加载是异步的) |
 <!-- | `theme`?: 'light' | 'dark' | 当前主题色, 默认等于 'light' | -->

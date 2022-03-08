@@ -2,23 +2,33 @@ import { EditorState, basicSetup } from '@codemirror/basic-setup'
 import { EditorView, keymap } from '@codemirror/view'
 import { indentWithTab } from '@codemirror/commands'
 import { html } from '@codemirror/lang-html'
-import { debounce, getQuery, setQuery, FileLoader, encode, decode, VueLoader } from './utils'
-import { ConfigType, FileType } from './type'
+import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
+import { OptionsType, ResourceType, FileType, DefaultConfigType, EventsType } from './type'
 import { lightTheme, darkTheme } from './config'
 import { name, version } from '../package.json'
 import './style.less'
 
 const cssVariable = { light: lightTheme, dark: darkTheme }
+
+type CurrFileType = Required<FileType> & {
+  name: string,
+  value: string,
+  renderTemplate: (s: string) => string
+}
+
 export default class MiniSandbox {
   static version = version
   static encode = encode
   static decode = decode
   readonly version = version
   el!: HTMLDivElement
-  config: Required<ConfigType>
+  files!: Required<FileType>[]
+  resource!: Required<ResourceType>
+  defaultConfig!: Required<DefaultConfigType>
+  events!: Required<EventsType>
   editor!: EditorView
-  files: Required<FileType>[]
-  fileIndex: number
+  fileIndex: number = 0
+  currFile!: CurrFileType
   loading = false
   isClick = false
   iframe!: HTMLIFrameElement
@@ -32,52 +42,71 @@ export default class MiniSandbox {
   ldqStaticResources: string[] = []
   public run: Function
 
-  constructor(config = {} as ConfigType) {
-    this.config = {
-      theme: 'light',
-      files: {},
-      cssLibs: [],
-      jsLibs: [],
-      css: '',
-      js: '',
-      autoRun: false,
-      autoRunInterval: 300,
-      codeOnUrl: '',
-      urlField: 'code',
-      height: 'auto',
-      defaultEditorWidth: '50%',
-      draggable: true,
-      direction: 'row',
-      ...config,
-    }
-    // 获取dom
-    if (!config.el) throw new Error('缺少配置项 => el 属性')
-    this.config.el = (typeof config.el === 'string' ? document.querySelector(config.el) : config.el) as HTMLDivElement
-    if (!this.config.el) throw new Error(`获取元素失败 => ${config.el}`)
-    // 设置files
+  constructor(options = {} as OptionsType) {
+    // 初始化配置项
+    this.initOptions(options)
+    // 初始化一些 getter
+    define(this, 'currFile', () => this.files[this.fileIndex])
+    // 设置防抖
+    this.run = debounce(this.render, this.defaultConfig.autoRunInterval).bind(this)
+    // 初始化
+    this.init().then(() => {
+      this.events.onLoad?.()
+    })
+  }
+
+  initOptions(options: OptionsType) {
+    const query = getQuery()
+    // 初始化 files
     this.fileIndex = 0
-    this.files = Object.keys(this.config.files).map(name => {
-      const file = this.config.files[name]
+    this.files = Object.keys(options.files || {}).map(name => {
+      const file = (options.files!)[name]
+      const htmlStr = decode(query[file.urlField || ''])
       return {
-        name,
         defaultValue: '',
         cssLibs: [],
         jsLibs: [],
         css: '',
         js: '',
+        urlField: '',
         ...file,
+        name,
+        value: htmlStr || file.defaultValue || '',
       }
     })
-    // 设置防抖
-    this.run = debounce(this.render, config.autoRunInterval).bind(this)
-    // 初始化
-    this.init().then(() => {
-      this.config.onLoad?.()
-    })
+    // 初始化公共静态资源
+    this.resource = {
+      cssLibs: [],
+      jsLibs: [],
+      css: '',
+      js: '',
+      ...options.resource,
+    }
+    // 初始化默认配置
+    this.defaultConfig = {
+      theme: 'light',
+      autoRun: false,
+      autoRunInterval: 300,
+      height: 'auto',
+      editorWidth: '50%',
+      draggable: true,
+      direction: 'row',
+      ...options.defaultConfig,
+    }
+    this.events = {
+      onFocus: () => {},
+      onBlur: () => {},
+      onChange: () => {},
+      onLoad: () => {},
+      ...options.events,
+    }
+    // 初始化 dom
+    if (!options.el) throw new Error('缺少配置项 => el 属性')
+    this.el = (typeof options.el === 'string' ? document.querySelector(options.el) : options.el) as HTMLDivElement
+    if (!this.el) throw new Error(`获取元素失败 => ${options.el}`)
   }
 
   public async init() {
-    const { config } = this
     // 初始化dom结构
     this.initDom()
     // 初始化事件
@@ -87,12 +116,13 @@ export default class MiniSandbox {
     // 初始主题
     this.triggleTheme()
     // 初始化编辑器内容
+    const currFile = this.currFile
     const query = getQuery()
-    const htmlStr = query[config.urlField]
-    if (htmlStr && config.codeOnUrl) {
+    const htmlStr = query[currFile.urlField]
+    if (htmlStr) {
       // 如果顶部 url 有值, 优先渲染
-      // this.setValue(decode(htmlStr))
-    } else if (this.getDefaultValue()) {
+      this.setValue(decode(htmlStr))
+    } else if (currFile.defaultValue) {
       // 如果当前tab页有默认值, 则重置
       this.reset()
     } else {
@@ -103,21 +133,20 @@ export default class MiniSandbox {
 
   // 重置
   public reset() {
-    this.setValue(this.getDefaultValue())
+    this.setValue(this.currFile.defaultValue)
   }
 
   // 初始化dom结构
   private initDom() {
-    const { config } = this
-    const el = this.el = this.config.el as HTMLDivElement
+    const { el, defaultConfig } = this
     this.addClass(el, 'mini-sandbox')
     el.setAttribute('package', `${name}@${version}`)
     this.setStyle(el, {
-      height: config.height,
-      'flex-direction': config.direction,
+      height: defaultConfig.height,
+      'flex-direction': defaultConfig.direction,
     })
     el.innerHTML = `
-      <div class="sandbox-code" style="width: ${config.defaultEditorWidth}">
+      <div class="sandbox-code" style="width: ${defaultConfig.editorWidth}">
         <div class="sandbox-head">
           <div class="sandbox-setting">≡</div>
           &ensp;
@@ -177,9 +206,12 @@ export default class MiniSandbox {
     const tabBar = el.querySelector('.sandbox-tab')!
     tabBar.addEventListener('click', e => {
       const targetEl = e.target as HTMLDivElement
-      this.fileIndex = Number(targetEl.getAttribute('data-index'))
-      this.changeTab()
-      if (targetEl !== tabBar) {
+      const fileIndex = Number(targetEl.getAttribute('data-index'))
+      if (targetEl !== tabBar && this.fileIndex !== fileIndex) {
+        this.fileIndex = fileIndex
+        // 切换 tab 页面
+        this.changeTab()
+        // 设置样式
         const items = tabBar.children
         for (const item of items) {
           item.className = 'sandbox-tab-item'
@@ -190,7 +222,8 @@ export default class MiniSandbox {
   }
 
   private initEvent() {
-    if (!this.config.draggable) {
+    const { defaultConfig } = this
+    if (!defaultConfig.draggable) {
       this.addClass(this.lineEl, 'no-dragging')
       return
     }
@@ -210,7 +243,7 @@ export default class MiniSandbox {
     this.el.addEventListener('mousemove', e => {
       if (!this.isClick) return
       let val: number = 0.5
-      switch (this.config.direction) {
+      switch (defaultConfig.direction) {
         case 'row':
           val = (e.clientX - boxX - lineX) / boxW
           break
@@ -223,15 +256,20 @@ export default class MiniSandbox {
   }
 
   private handleChange() {
-    const { config } = this
+    const { defaultConfig, events } = this
+    const currFile = this.currFile
     const htmlStr = this.getValue()
     const codeStr = encode(htmlStr)
+    // 替换输入框
     this.searchEl.value = codeStr
-    if (config.codeOnUrl) {
-      setQuery({ [config.urlField]: codeStr })
-    }
-    config.autoRun && this.run()
-    config.onChange?.()
+    // 替换字符串缓存
+    currFile.value = htmlStr
+    // 替换顶部 url
+    if (currFile.urlField) setQuery({ [currFile.urlField]: codeStr })
+    // 是否自动运行
+    defaultConfig.autoRun && this.run()
+    // 触发 change 回调
+    events.onChange?.()
   }
 
   private initCodeMirror() {
@@ -253,11 +291,8 @@ export default class MiniSandbox {
   }
 
   private changeTab() {
-    this.setValue(this.getDefaultValue())
-  }
-
-  private getDefaultValue() {
-    return this.files[this.fileIndex].defaultValue
+    const currFile = this.currFile
+    this.setValue(currFile.value || currFile.defaultValue)
   }
 
   public setValue(value: string) {
@@ -296,14 +331,13 @@ export default class MiniSandbox {
   public render() {
     this.triggleLoading(true)
     const htmlStr = this.getValue()
-    this.renderIframe(htmlStr, this.files[this.fileIndex].type)
+    this.renderIframe(htmlStr, this.currFile.type)
   }
 
   private async getResources(type: 'style' | 'script', src: string) {
     const ldqStaticResources = window['ldqStaticResources'] || {}
     if (!ldqStaticResources[src]) {
-      const res = await FileLoader(type, src)
-      ldqStaticResources[src] = res
+      ldqStaticResources[src] = await FileLoader(type, src)
     }
     return ldqStaticResources[src]
   }
@@ -313,13 +347,12 @@ export default class MiniSandbox {
   }
 
   private async renderIframe(context: string, type: string = 'html') {
-    const { config } = this
-    const currFile = this.files[this.fileIndex]
+    const { resource } = this
+    const currFile = this.currFile
     // 等待 iframe 刷新
     await new Promise<void>(resolve => {
       this.iframe.onload = async() => {
         resolve()
-        this.triggleLoading(false)
       }
       this.iframe.contentWindow?.location.reload()
     })
@@ -329,11 +362,11 @@ export default class MiniSandbox {
     if (!iframeDocument) return
     // 加载静态资源
     const allResources = await Promise.all([
-      ...config.cssLibs.concat(currFile.cssLibs).map(src => this.getResources('style', src)),
-      ...config.jsLibs.concat(currFile.jsLibs).map(src => this.getResources('script', src)),
+      ...resource.cssLibs.concat(currFile.cssLibs).map(src => this.getResources('style', src)),
+      ...resource.jsLibs.concat(currFile.jsLibs).map(src => this.getResources('script', src)),
     ])
     // 渲染模板
-    const getTemplate = (context: string) => `
+    const renderTemplate = (context: string) => `
       <!DOCTYPE html>
       <html lang="en">
         <head>
@@ -342,9 +375,9 @@ export default class MiniSandbox {
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Mini Sandbox</title>
           ${allResources.join('\n')}
-          ${config.css && '<style>' + config.css + '</style>'}
+          ${resource.css && '<style>' + resource.css + '</style>'}
           ${currFile.css && '<style>' + currFile.css + '</style>'}
-          ${config.js && '<script>' + config.js + '</script>'}
+          ${resource.js && '<script>' + resource.js + '</script>'}
           ${currFile.js && '<script>' + currFile.js + '</script>'}
         <\/head>
         <body>
@@ -352,18 +385,18 @@ export default class MiniSandbox {
         <\/body>
       <\/html>
     `
-    iframeDocument.open()
-    // 临时
-    if (type === 'html') {
-      iframeDocument.write(getTemplate(context))
-    } else if (type === 'vue') {
-      iframeDocument.write(getTemplate(`<div id="app"></div>\n<script>${VueLoader(context)}<\/script>`))
+    let template = renderTemplate(context)
+    if (typeof currFile.renderTemplate === 'function') {
+      template = renderTemplate(currFile.renderTemplate(context))
     }
+    iframeDocument.open()
+    iframeDocument.write(template)
     iframeDocument.close()
+    this.triggleLoading(false)
   }
 
   // 切换主题
-  triggleTheme(theme = this.config.theme) {
+  triggleTheme(theme = this.defaultConfig.theme) {
     this.el.setAttribute('style', cssVariable[theme])
   }
 }

@@ -1,14 +1,24 @@
 import { EditorView } from '@codemirror/view';
-import { ConfigType } from './type';
+import { OptionsType, ResourceType, FileType, DefaultConfigType, EventsType } from './type';
 import './style.less';
+declare type CurrFileType = Required<FileType> & {
+    name: string;
+    value: string;
+    renderTemplate: (s: string) => string;
+};
 export default class MiniSandbox {
     static version: string;
     static encode: (value: string) => string;
     static decode: (value: string) => string;
     readonly version: string;
     el: HTMLDivElement;
-    config: Required<ConfigType>;
+    files: Required<FileType>[];
+    resource: Required<ResourceType>;
+    defaultConfig: Required<DefaultConfigType>;
+    events: Required<EventsType>;
     editor: EditorView;
+    fileIndex: number;
+    currFile: CurrFileType;
     loading: boolean;
     isClick: boolean;
     iframe: HTMLIFrameElement;
@@ -21,16 +31,17 @@ export default class MiniSandbox {
     searchEl: HTMLInputElement;
     ldqStaticResources: string[];
     run: Function;
-    constructor(config?: ConfigType);
+    constructor(options?: OptionsType);
+    initOptions(options: OptionsType): void;
     init(): Promise<void>;
     reset(): void;
     private initDom;
     private initEvent;
     private handleChange;
     private initCodeMirror;
+    private changeTab;
     setValue(value: string): void;
     getValue(): string;
-    getString(): string;
     setCode(code: string): void;
     getCode(value?: string): string;
     setStyle(el: HTMLDivElement, styles: {
@@ -38,7 +49,9 @@ export default class MiniSandbox {
     }): void;
     private addClass;
     render(): void;
-    private initStatisResources;
+    private getResources;
     private triggleLoading;
     private renderIframe;
+    triggleTheme(theme?: "light" | "dark"): void;
 }
+export {};

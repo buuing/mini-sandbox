@@ -7,9 +7,9 @@
   <title>Mini Sandbox</title>
 </head>
 <body style="
-overflow: hidden;
+/* overflow: hidden;
 background: #ffefba;
-background: linear-gradient(to right, #ffefba, #ffffff);
+background: linear-gradient(to right, #ffefba, #ffffff); */
 ">
   <style>
     h1 {
@@ -23,7 +23,7 @@ background: linear-gradient(to right, #ffefba, #ffffff);
       width: 100%;
       max-width: 1000px;
       margin: 50px auto;
-      box-shadow: 0 10px 30px #666;
+      box-shadow: 0 1px 5px #666;
       border-radius: 10px;
     }
   </style>
@@ -50,14 +50,17 @@ background: linear-gradient(to right, #ffefba, #ffffff);
           css: '* { color: red }',
           urlField: 'html',
         },
-        'app.vue': {
-          type: 'vue',
-          defaultValue: "<template>\n    <button @click=\"cli\">count: {{num}}</button>\n</template>\n\n<script>\nexport default {\n    data () {\n        return {\n            num: 1\n        }\n    },\n    methods: {\n        cli () {\n            this.num++\n        }\n    }\n}\n<\/script>\n\n<style>\n\n</style>",
-          jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
-          urlField: 'vue',
-        },
+        'test.html': {
+          defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n",
+        }
+        // 'app.vue': {
+        //   type: 'vue',
+        //   defaultValue: "<template>\n    <button @click=\"cli\">count: {{num}}</button>\n</template>\n\n<script>\nexport default {\n    data () {\n        return {\n            num: 1\n        }\n    },\n    methods: {\n        cli () {\n            this.num++\n        }\n    }\n}\n<\/script>\n\n<style>\n\n</style>",
+        //   jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
+        //   urlField: 'vue',
+        // },
       },
-      publicRes: {
+      resource: {
         css: '* { text-align: center }',
         js: '',
         jsLibs: [],

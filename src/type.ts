@@ -1,37 +1,48 @@
 
-export type FileType = {
-  type: string
-  defaultValue?: string
+// 公共静态资源
+export type ResourceType = {
   cssLibs?: string[]
   jsLibs?: string[]
   css?: string
   js?: string
 }
 
-export type ConfigType = {
-  el: string | HTMLDivElement
+// tab页类型
+export type FileType = {
+  type: string
+  defaultValue?: string
+  cssLibs?: ResourceType['cssLibs']
+  jsLibs?: ResourceType['jsLibs']
+  css?: ResourceType['css']
+  js?: ResourceType['js']
+  urlField?: string
+}
+
+// 默认配置
+export type DefaultConfigType = {
   theme?: 'light' | 'dark'
-  files?: {
-    [fileName: string]: FileType
-  },
-  // 公共静态资源
-  cssLibs?: FileType['cssLibs']
-  jsLibs?: FileType['jsLibs']
-  css?: FileType['css']
-  js?: FileType['js']
-  // 沙盒属性
   autoRun?: boolean
   autoRunInterval?: number
-  codeOnUrl?: keyof ConfigType['files'] | ''
-  urlField?: string
-  // dom属性
   height?: string
-  defaultEditorWidth?: string
+  editorWidth?: string
   draggable?: boolean
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
-  // 回调
+}
+
+// 事件
+export type EventsType = {
   onFocus: () => void
   onBlur: () => void
   onChange: () => void
   onLoad: () => void
+}
+
+export type OptionsType = {
+  el: string | HTMLDivElement
+  files?: {
+    [fileName: string]: FileType
+  },
+  resource?: ResourceType
+  defaultConfig?: DefaultConfigType
+  events?: EventsType
 }
