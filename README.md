@@ -1,6 +1,6 @@
 
 <div align="center" style="display: flex; flex-direction: column; align-items: center;">
-  <h1 style="margin: 10px 0 0">mini-sandbox</h1>
+  <h1 style="margin: 10px 0 0">Mini-Sandbox</h1>
   <p>一个基于 CodeMirror 6 封装的 HTML 在线编辑插件</p>
   <p>
     <a href="https://github.com/buuing/mini-sandbox/stargazers" target="_black">
@@ -39,7 +39,7 @@
 
 ## Usage & 使用
 
-### 通过 CDN 链接使用
+### 1. 通过 CDN 链接使用
 
 ```html
 <div id="my-sandbox"></div>
@@ -55,7 +55,7 @@
 </script>
 ```
 
-### 通过 npm 包下载使用
+### 2. 通过 npm 包下载使用
 
 1. 安装
 

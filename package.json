@@ -8,7 +8,7 @@
   "jsdelivr": "dist/index.umd.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "docs": "docsify serve ./docs",
+    "docs": "docsify serve -o",
     "dev": "rollup --config rollup.config.dev.js -w",
     "build": "rollup --config rollup.config.build.js"
   },

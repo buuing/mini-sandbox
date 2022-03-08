@@ -41,7 +41,7 @@ export default {
     livereload(),
     serve({
       open: true,
-      openPage: '/index.html',
+      openPage: '/index1.html',
       contentBase: './',
     }),
   ],

@@ -1,5 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { OptionsType, ResourceType, FileType, DefaultConfigType, EventsType } from './type';
+import './theme.less';
 import './style.less';
 declare type CurrFileType = Required<FileType> & {
     name: string;

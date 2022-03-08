@@ -4,11 +4,9 @@ import { indentWithTab } from '@codemirror/commands'
 import { html } from '@codemirror/lang-html'
 import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
 import { OptionsType, ResourceType, FileType, DefaultConfigType, EventsType } from './type'
-import { lightTheme, darkTheme } from './config'
 import { name, version } from '../package.json'
+import './theme.less'
 import './style.less'
-
-const cssVariable = { light: lightTheme, dark: darkTheme }
 
 type CurrFileType = Required<FileType> & {
   name: string,
@@ -397,6 +395,6 @@ export default class MiniSandbox {
 
   // 切换主题
   triggleTheme(theme = this.defaultConfig.theme) {
-    this.el.setAttribute('style', cssVariable[theme])
+    this.addClass(this.el, 'sandbox-theme-' + theme)
   }
 }

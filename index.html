@@ -2,82 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini Sandbox</title>
+  <title>Document</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="./docs/vue.css">
 </head>
-<body style="
-/* overflow: hidden;
-background: #ffefba;
-background: linear-gradient(to right, #ffefba, #ffffff); */
-">
-  <style>
-    h1 {
-      margin: 100px 0 0;
-      text-align: center;
-    }
-    p {
-      text-align: center;
-    }
-    #my-sandbox {
-      width: 100%;
-      max-width: 1000px;
-      margin: 50px auto;
-      box-shadow: 0 1px 5px #666;
-      border-radius: 10px;
-    }
-  </style>
-  <div id="box">
-    <h1>Mini Sandbox</h1>
-    <!-- <p>为 web 前端提供一个代码 / 组件演示工具, 其他人可以很方便的调试组件</p> -->
-    <!-- <p>
-      <a href="https://github.com/buuing/mini-sandbox">文档</a>
-      &emsp;
-      <a href="https://github.com/buuing/mini-sandbox">Github</a>
-    </p> -->
-    <div id="my-sandbox"></div>
-  </div>
-
-  <script src="./dist/index.umd.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@latest"></script> -->
+<body>
+  <div id="app"></div>
   <script>
-    var mp = new MiniSandbox({
-      el: '#my-sandbox',
-      files: {
-        'index.html': {
-          type: 'html',
-          defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n",
-          css: '* { color: red }',
-          urlField: 'html',
-        },
-        'test.html': {
-          defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n",
+    window.$docsify = {
+      name: '',
+      repo: '',
+      loadSidebar: true, // 自定义侧边栏
+    }
+  </script>
+  <!-- Docsify v4 -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.1"></script> -->
+  <script src="./dist/index.umd.js"></script>
+  <script src="./docs/docsify.js"></script>
+  <script>
+    function initMiniSandbox(hook) {
+      hook.beforeEach(function(content) {
+        return content.replace(/```\s?html\s\[(.*)\]\n*(.*?)\n*```/gm, (...arg) => {
+          console.log(arg)
+          return `<div class="mini-sandbox-docsify" style="border: 1px solid red">&&</div>`
+        })
+        return content
+      })
+      hook.ready(function() {
+        const arr = document.querySelectorAll('.mini-sandbox-docsify')
+        for (const el of arr) {
+          new MiniSandbox({
+            el: el,
+            files: {
+              'index.html': {
+                defaultValue: '123'
+              }
+            },
+            defaultConfig: {
+              autoRun: true,
+              height: '300px',
+            }
+          })
         }
-        // 'app.vue': {
-        //   type: 'vue',
-        //   defaultValue: "<template>\n    <button @click=\"cli\">count: {{num}}</button>\n</template>\n\n<script>\nexport default {\n    data () {\n        return {\n            num: 1\n        }\n    },\n    methods: {\n        cli () {\n            this.num++\n        }\n    }\n}\n<\/script>\n\n<style>\n\n</style>",
-        //   jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
-        //   urlField: 'vue',
-        // },
-      },
-      resource: {
-        css: '* { text-align: center }',
-        js: '',
-        jsLibs: [],
-        cssLibs: [],
-      },
-      defaultConfig: {
-        theme: 'light',
-        autoRun: true, // 是否自动保存
-        editorWidth: '55%', // 编辑区域的默认宽度占比
-        height: '60vh',
-        draggable: true,
-      },
-      events: {
-        onChange: () => {},
-        onLoad: () => {},
-      }
-    })
+      })
+    }
+    $docsify.plugins = [].concat(
+      $docsify.plugins,
+      initMiniSandbox,
+    )
   </script>
 </body>
 </html>
