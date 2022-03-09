@@ -5,7 +5,7 @@
 
 ```html
 ^^^html
-<div>这是一个盒子</div>
+<div style="border: 1px solid red">这是一个盒子</div>
 ^^^
 ```
 
@@ -40,7 +40,13 @@
 
 ### 在 index.html 中引入
 
-> 待完善
+#### 通过 CDN 引入
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.2"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.2/dist/docsify-plugin.js"></script>
+```
+
 
 <br />
 
@@ -78,10 +84,41 @@
 
 ### 使用完整方式
 
-> 开发中...
+```
+待完善...
+```
 
-<!-- ```sandbox.my-sandbox
-<mini-sandbox>
-  
-</mini-sandbox>
-``` -->
+<div id="test-demo"></div>
+
+<script>
+new MiniSandbox({
+  el: document.querySelector('#test-demo'),
+  files: {
+    'index.html': {
+      type: 'html',
+      defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n",
+      css: '* { color: red }',
+    },
+    'test.html': {
+      defaultValue: `<button onclick="alert('Hello')">按钮</button>`,
+    }
+  },
+  publicResource: {
+    css: '* { text-align: center }',
+    js: '',
+    jsLibs: [],
+    cssLibs: [],
+  },
+  defaultConfig: {
+    theme: 'light',
+    autoRun: true, // 是否自动保存
+    editorWidth: '55%', // 编辑区域的默认宽度占比
+    height: '400px',
+    draggable: true,
+  },
+  events: {
+    onChange: () => {},
+    onLoad: () => {},
+  }
+})
+</script>

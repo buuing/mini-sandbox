@@ -41,20 +41,22 @@ export default [
       commonjs(),
     ],
   },
-  // {
-  //   input: 'dist/index.d.ts',
-  //   output: [
-  //     {
-  //       file: 'types/index.d.ts',
-  //       format: 'es',
-  //     },
-  //   ],
-  //   plugins: [
-  //     dts(),
-  //     del({
-  //       targets: ['dist/src'],
-  //       hook: 'buildEnd',
-  //     }),
-  //   ],
-  // },
+  {
+    input: 'src/docsify-plugin.js',
+    output: [
+      {
+        file: `dist/docsify-plugin.js`,
+        format: 'umd',
+        name: 'MiniSandboxDocsify',
+        sourcemap: false,
+        plugins: [terser()],
+      },
+    ],
+    plugins: [
+      json(),
+      babel({ exclude: 'node_modules/**' }),
+      resolve(),
+      commonjs(),
+    ],
+  }
 ]

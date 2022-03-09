@@ -6,12 +6,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="./docs/vue.css">
-  <link rel="stylesheet" href="./docs/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/buuing/docsify-theme-blue/index.css" />
+  <style>
+    /* 引入字体 */
+    @font-face {
+      font-family: "myFont";
+      src: url(./docs/MONACO.TTF);
+    }
+    * {
+      font-family: myFont,Source Sans Pro,Helvetica Neue,Arial,sans-serif !important;
+    }
+  </style>
 </head>
 <body>
   <style>
-    .mini-sandbox-docsify {
+    .mini-sandbox {
       margin: 20px 0;
       border: 2px solid #6190e8;
       border-radius: 5px;
@@ -23,7 +32,7 @@
     window.$docsify = {
       name: '',
       repo: '',
-      themeColor: '#6190e8',
+      themeColor: 'red',
       // 自定义侧边栏
       loadSidebar: true,
       // 抓取目录渲染
@@ -37,6 +46,7 @@
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md',
       },
+      executeScript: true,
       plugins: [
         function(hook) {
           hook.afterEach(function(html, next) {
@@ -50,14 +60,25 @@
             next(html)
           })
         }
-      ]
+      ],
+      miniSandbox: {
+        data: {
+
+        },
+        defaultConfig: {
+          height: '300px',
+          autoRun: true,
+        },
+        publicResources: {
+
+        }
+      }
     }
     // 公共配置项
     window.$sandboxOptions = {
       defaultConfig: {
         height: '300px',
         autoRun: true,
-        editorWidth: '55%',
       },
       publicResources: {},
     }
@@ -83,53 +104,6 @@
   <script src="./dist/index.umd.js"></script>
   <script src="./docs/docsify.js"></script>
   <script src="./docs/prism-bash.js"></script>
-  <script>
-    function initMiniSandbox(hook) {
-      let options = [], index = 0
-      hook.beforeEach(function(content) {
-        content = content.replace(/```\s?([a-z]+)\s+\[(.*)\]\s?(\$\{.*\}|\{.*\})?\n([^`]*)\n```/gm, (res, ...arg) => {
-          options[index] = arg.slice(0, -2).map(_ => String(_))
-          return `<div class="mini-sandbox-docsify" data-index="${index++}"></div>`
-        })
-        return content
-      })
-      hook.doneEach(function() {
-        const arr = document.querySelectorAll('.mini-sandbox-docsify')
-        for (const el of arr) {
-          const currIndex = el.getAttribute('data-index')
-          let [type, fileName, config, value] = options[currIndex]
-          const regConfig = /^\$\{(.*)\}$/.exec(config)
-          if (regConfig) {
-            const key = regConfig[1]
-            config = window.$sandboxData && window.$sandboxData[key]
-          } else if (typeof config === 'string' && config !== 'undefined') {
-            try {
-              config = new Function('return ' + config)()
-            } catch (err) {
-              console.error(config, err)
-              config = {}
-            }
-          }
-          new MiniSandbox({
-            el: el,
-            files: {
-              [fileName]: {
-                type,
-                ...config,
-                defaultValue: value,
-              }
-            },
-            defaultConfig: {
-              ...$sandboxOptions && $sandboxOptions.defaultConfig
-            }
-          })
-        }
-      })
-    }
-    $docsify.plugins = [].concat(
-      $docsify.plugins,
-      initMiniSandbox,
-    )
-  </script>
+  <script src="./dist/docsify-plugin.js"></script>
 </body>
 </html>

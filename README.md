@@ -2,8 +2,8 @@
 <div align="center" style="display: flex; flex-direction: column; align-items: center;">
   <img src="./docs/undraw_static_website_re_x70h.svg" width="256" />
   <br />
-  <h1 style="margin: 10px 0 0">Mini-Sandbox</h1>
-  <p>一个基于 CodeMirror 6 封装的 HTML【在线编辑 & 实时预览】插件</p>
+  <h1 style="margin: 10px 0 0">Mini Sandbox</h1>
+  <p>一个基于 CodeMirror6 封装的 HTML【在线编辑 & 实时预览】插件</p>
   <p>
     <a href="https://github.com/buuing/mini-sandbox/stargazers" target="_black">
       <img src="https://img.shields.io/github/stars/buuing/mini-sandbox?color=%236a90e1&logo=github&style=flat-square" alt="stars" />
@@ -41,8 +41,8 @@
 
 ## Usage & 使用
 
-- [在 javascript 中使用](#)
-- [在 docsify 中使用](#)
+- [在 javascript 中使用](https://buuing.github.io/mini-sandbox/#/docs/usage)
+- [在 docsify 中使用](https://buuing.github.io/mini-sandbox/#/docs/usage-docsify)
 
 <br />
 

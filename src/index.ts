@@ -85,7 +85,7 @@ export default class MiniSandbox {
       theme: 'light',
       autoRun: false,
       autoRunInterval: 300,
-      height: 'auto',
+      height: '300px',
       editorWidth: '50%',
       draggable: true,
       direction: 'row',
@@ -375,11 +375,11 @@ export default class MiniSandbox {
           ${allPublicResources.join('\n')}
           ${publicResources.css && '<style>' + publicResources.css + '</style>'}
           ${currFile.css && '<style>' + currFile.css + '</style>'}
-          ${publicResources.js && '<script>' + publicResources.js + '</script>'}
-          ${currFile.js && '<script>' + currFile.js + '</script>'}
         <\/head>
         <body>
           ${context}
+          ${publicResources.js && '<script>' + publicResources.js + '</script>'}
+          ${currFile.js && '<script>' + currFile.js + '</script>'}
         <\/body>
       <\/html>
     `
