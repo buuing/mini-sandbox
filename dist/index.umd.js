@@ -1,5 +1,5 @@
 
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -25220,7 +25220,7 @@
             this.fileIndex = 0;
             this.loading = false;
             this.isClick = false;
-            this.ldqStaticResources = [];
+            this.ldqPublicResources = [];
             // 初始化配置项
             this.initOptions(options);
             // 初始化一些 getter
@@ -25243,7 +25243,7 @@
                 return Object.assign(Object.assign({ defaultValue: '', cssLibs: [], jsLibs: [], css: '', js: '', urlField: '' }, file), { name, value: htmlStr || file.defaultValue || '' });
             });
             // 初始化公共静态资源
-            this.resource = Object.assign({ cssLibs: [], jsLibs: [], css: '', js: '' }, options.resource);
+            this.publicResources = Object.assign({ cssLibs: [], jsLibs: [], css: '', js: '' }, options.publicResources);
             // 初始化默认配置
             this.defaultConfig = Object.assign({ theme: 'light', autoRun: false, autoRunInterval: 300, height: 'auto', editorWidth: '50%', draggable: true, direction: 'row' }, options.defaultConfig);
             this.events = Object.assign({ onFocus: () => { }, onBlur: () => { }, onChange: () => { }, onLoad: () => { } }, options.events);
@@ -25478,13 +25478,13 @@
             const htmlStr = this.getValue();
             this.renderIframe(htmlStr, this.currFile.type);
         }
-        getResources(type, src) {
+        getPublicResources(type, src) {
             return __awaiter(this, void 0, void 0, function* () {
-                const ldqStaticResources = window['ldqStaticResources'] || {};
-                if (!ldqStaticResources[src]) {
-                    ldqStaticResources[src] = yield FileLoader(type, src);
+                const ldqPublicResources = window['ldqPublicResources'] || {};
+                if (!ldqPublicResources[src]) {
+                    ldqPublicResources[src] = yield FileLoader(type, src);
                 }
-                return ldqStaticResources[src];
+                return ldqPublicResources[src];
             });
         }
         triggleLoading(status) {
@@ -25493,7 +25493,7 @@
         renderIframe(context, type = 'html') {
             var _a;
             return __awaiter(this, void 0, void 0, function* () {
-                const { resource } = this;
+                const { publicResources } = this;
                 const currFile = this.currFile;
                 // 等待 iframe 刷新
                 yield new Promise(resolve => {
@@ -25509,9 +25509,9 @@
                 if (!iframeDocument)
                     return;
                 // 加载静态资源
-                const allResources = yield Promise.all([
-                    ...resource.cssLibs.concat(currFile.cssLibs).map(src => this.getResources('style', src)),
-                    ...resource.jsLibs.concat(currFile.jsLibs).map(src => this.getResources('script', src)),
+                const allPublicResources = yield Promise.all([
+                    ...publicResources.cssLibs.concat(currFile.cssLibs).map(src => this.getPublicResources('style', src)),
+                    ...publicResources.jsLibs.concat(currFile.jsLibs).map(src => this.getPublicResources('script', src)),
                 ]);
                 // 渲染模板
                 const renderTemplate = (context) => `
@@ -25522,10 +25522,10 @@
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Mini Sandbox</title>
-          ${allResources.join('\n')}
-          ${resource.css && '<style>' + resource.css + '</style>'}
+          ${allPublicResources.join('\n')}
+          ${publicResources.css && '<style>' + publicResources.css + '</style>'}
           ${currFile.css && '<style>' + currFile.css + '</style>'}
-          ${resource.js && '<script>' + resource.js + '</script>'}
+          ${publicResources.js && '<script>' + publicResources.js + '</script>'}
           ${currFile.js && '<script>' + currFile.js + '</script>'}
         <\/head>
         <body>

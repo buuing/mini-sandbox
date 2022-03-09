@@ -6,40 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mini Sandbox</title>
 </head>
-<body style="
-/* overflow: hidden;
-background: #ffefba;
-background: linear-gradient(to right, #ffefba, #ffffff); */
-">
+<body>
   <style>
-    h1 {
-      margin: 100px 0 0;
-      text-align: center;
-    }
-    p {
-      text-align: center;
+  </style>
+  <style>
+    body {
+      background-color: #eee;
+      position: relative;
+      height: 400px;
+      overflow: hidden;
     }
     #my-sandbox {
-      width: 100%;
-      max-width: 1000px;
+      width: 80vw;
       margin: 50px auto;
-      box-shadow: 0 1px 5px #666;
-      border-radius: 10px;
+      border: 2px solid rgb(19, 121, 255);
+      border-radius: 5px;
     }
   </style>
-  <div id="box">
-    <h1>Mini Sandbox</h1>
-    <!-- <p>为 web 前端提供一个代码 / 组件演示工具, 其他人可以很方便的调试组件</p> -->
-    <!-- <p>
-      <a href="https://github.com/buuing/mini-sandbox">文档</a>
-      &emsp;
-      <a href="https://github.com/buuing/mini-sandbox">Github</a>
-    </p> -->
-    <div id="my-sandbox"></div>
-  </div>
+  <div id="my-sandbox"></div>
 
-  <script src="./dist/index.umd.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@latest"></script> -->
+  <script src="../dist/index.umd.js"></script>
   <script>
     var mp = new MiniSandbox({
       el: '#my-sandbox',
@@ -51,7 +37,7 @@ background: linear-gradient(to right, #ffefba, #ffffff); */
           urlField: 'html',
         },
         'test.html': {
-          defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n",
+          defaultValue: `<button onclick="alert('Hello')">按钮</button>`,
         }
         // 'app.vue': {
         //   type: 'vue',
@@ -60,7 +46,7 @@ background: linear-gradient(to right, #ffefba, #ffffff); */
         //   urlField: 'vue',
         // },
       },
-      resource: {
+      publicResource: {
         css: '* { text-align: center }',
         js: '',
         jsLibs: [],
@@ -70,7 +56,7 @@ background: linear-gradient(to right, #ffefba, #ffffff); */
         theme: 'light',
         autoRun: true, // 是否自动保存
         editorWidth: '55%', // 编辑区域的默认宽度占比
-        height: '60vh',
+        height: '300px',
         draggable: true,
       },
       events: {

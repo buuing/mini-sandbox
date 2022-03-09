@@ -1,6 +1,6 @@
 
 // 公共静态资源
-export type ResourceType = {
+export type PublicResourcesType = {
   cssLibs?: string[]
   jsLibs?: string[]
   css?: string
@@ -11,10 +11,10 @@ export type ResourceType = {
 export type FileType = {
   type: string
   defaultValue?: string
-  cssLibs?: ResourceType['cssLibs']
-  jsLibs?: ResourceType['jsLibs']
-  css?: ResourceType['css']
-  js?: ResourceType['js']
+  cssLibs?: PublicResourcesType['cssLibs']
+  jsLibs?: PublicResourcesType['jsLibs']
+  css?: PublicResourcesType['css']
+  js?: PublicResourcesType['js']
   urlField?: string
 }
 
@@ -42,7 +42,7 @@ export type OptionsType = {
   files?: {
     [fileName: string]: FileType
   },
-  resource?: ResourceType
+  publicResources?: PublicResourcesType
   defaultConfig?: DefaultConfigType
   events?: EventsType
 }

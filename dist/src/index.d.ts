@@ -1,5 +1,5 @@
 import { EditorView } from '@codemirror/view';
-import { OptionsType, ResourceType, FileType, DefaultConfigType, EventsType } from './type';
+import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType } from './type';
 import './theme.less';
 import './style.less';
 declare type CurrFileType = Required<FileType> & {
@@ -14,7 +14,7 @@ export default class MiniSandbox {
     readonly version: string;
     el: HTMLDivElement;
     files: Required<FileType>[];
-    resource: Required<ResourceType>;
+    publicResources: Required<PublicResourcesType>;
     defaultConfig: Required<DefaultConfigType>;
     events: Required<EventsType>;
     editor: EditorView;
@@ -30,7 +30,7 @@ export default class MiniSandbox {
     lineEl: HTMLDivElement;
     contentEl: HTMLDivElement;
     searchEl: HTMLInputElement;
-    ldqStaticResources: string[];
+    ldqPublicResources: string[];
     run: Function;
     constructor(options?: OptionsType);
     initOptions(options: OptionsType): void;
@@ -50,7 +50,7 @@ export default class MiniSandbox {
     }): void;
     private addClass;
     render(): void;
-    private getResources;
+    private getPublicResources;
     private triggleLoading;
     private renderIframe;
     triggleTheme(theme?: "light" | "dark"): void;

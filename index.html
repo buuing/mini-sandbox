@@ -7,42 +7,120 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="./docs/vue.css">
+  <link rel="stylesheet" href="./docs/main.css">
 </head>
 <body>
+  <style>
+    .mini-sandbox-docsify {
+      margin: 20px 0;
+      border: 2px solid #6190e8;
+      border-radius: 5px;
+      box-shadow: 0 2px 12px 0 rgba(94, 144, 232, 0.5);
+    }
+  </style>
   <div id="app"></div>
   <script>
     window.$docsify = {
       name: '',
       repo: '',
-      loadSidebar: true, // 自定义侧边栏
+      themeColor: '#6190e8',
+      // 自定义侧边栏
+      loadSidebar: true,
+      // 抓取目录渲染
+      maxLevel: 3,
+      subMaxLevel: 3,
+      // 开启封面页
+      coverpage: false,
+      // 切换页面后跳到顶部
+      auto2top: false,
+      // 路由
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md',
+      },
+      plugins: [
+        function(hook) {
+          hook.afterEach(function(html, next) {
+            html = html.replace(/>\^\^\^|\^\^\^</gm, (res, ...arg) => {
+              switch (res) {
+                case '>^^^': return '>```'
+                case '^^^<': return '```<'
+                default: return res
+              }
+            })
+            next(html)
+          })
+        }
+      ]
     }
+    // 公共配置项
+    window.$sandboxOptions = {
+      defaultConfig: {
+        height: '300px',
+        autoRun: true,
+        editorWidth: '55%',
+      },
+      publicResources: {},
+    }
+    // 单独的配置项
+    window.$sandboxData = {
+      ldqConfig: {
+        css: `
+          div {
+            width: 100px;
+            height: 100px;
+            background: green;
+          }
+        `,
+        js: `
+          console.log(document.querySelector('div'))
+        `
+      }
+    }
+
   </script>
   <!-- Docsify v4 -->
   <!-- <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.1"></script> -->
   <script src="./dist/index.umd.js"></script>
   <script src="./docs/docsify.js"></script>
+  <script src="./docs/prism-bash.js"></script>
   <script>
     function initMiniSandbox(hook) {
+      let options = [], index = 0
       hook.beforeEach(function(content) {
-        return content.replace(/```\s?html\s\[(.*)\]\n*(.*?)\n*```/gm, (...arg) => {
-          console.log(arg)
-          return `<div class="mini-sandbox-docsify" style="border: 1px solid red">&&</div>`
+        content = content.replace(/```\s?([a-z]+)\s+\[(.*)\]\s?(\$\{.*\}|\{.*\})?\n([^`]*)\n```/gm, (res, ...arg) => {
+          options[index] = arg.slice(0, -2).map(_ => String(_))
+          return `<div class="mini-sandbox-docsify" data-index="${index++}"></div>`
         })
         return content
       })
-      hook.ready(function() {
+      hook.doneEach(function() {
         const arr = document.querySelectorAll('.mini-sandbox-docsify')
         for (const el of arr) {
+          const currIndex = el.getAttribute('data-index')
+          let [type, fileName, config, value] = options[currIndex]
+          const regConfig = /^\$\{(.*)\}$/.exec(config)
+          if (regConfig) {
+            const key = regConfig[1]
+            config = window.$sandboxData && window.$sandboxData[key]
+          } else if (typeof config === 'string' && config !== 'undefined') {
+            try {
+              config = new Function('return ' + config)()
+            } catch (err) {
+              console.error(config, err)
+              config = {}
+            }
+          }
           new MiniSandbox({
             el: el,
             files: {
-              'index.html': {
-                defaultValue: '123'
+              [fileName]: {
+                type,
+                ...config,
+                defaultValue: value,
               }
             },
             defaultConfig: {
-              autoRun: true,
-              height: '300px',
+              ...$sandboxOptions && $sandboxOptions.defaultConfig
             }
           })
         }

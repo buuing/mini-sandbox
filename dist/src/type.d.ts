@@ -1,4 +1,4 @@
-export declare type ResourceType = {
+export declare type PublicResourcesType = {
     cssLibs?: string[];
     jsLibs?: string[];
     css?: string;
@@ -7,10 +7,10 @@ export declare type ResourceType = {
 export declare type FileType = {
     type: string;
     defaultValue?: string;
-    cssLibs?: ResourceType['cssLibs'];
-    jsLibs?: ResourceType['jsLibs'];
-    css?: ResourceType['css'];
-    js?: ResourceType['js'];
+    cssLibs?: PublicResourcesType['cssLibs'];
+    jsLibs?: PublicResourcesType['jsLibs'];
+    css?: PublicResourcesType['css'];
+    js?: PublicResourcesType['js'];
     urlField?: string;
 };
 export declare type DefaultConfigType = {
@@ -33,7 +33,7 @@ export declare type OptionsType = {
     files?: {
         [fileName: string]: FileType;
     };
-    resource?: ResourceType;
+    publicResources?: PublicResourcesType;
     defaultConfig?: DefaultConfigType;
     events?: EventsType;
 };

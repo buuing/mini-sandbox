@@ -3,7 +3,7 @@ import { EditorView, keymap } from '@codemirror/view'
 import { indentWithTab } from '@codemirror/commands'
 import { html } from '@codemirror/lang-html'
 import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
-import { OptionsType, ResourceType, FileType, DefaultConfigType, EventsType } from './type'
+import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType } from './type'
 import { name, version } from '../package.json'
 import './theme.less'
 import './style.less'
@@ -21,7 +21,7 @@ export default class MiniSandbox {
   readonly version = version
   el!: HTMLDivElement
   files!: Required<FileType>[]
-  resource!: Required<ResourceType>
+  publicResources!: Required<PublicResourcesType>
   defaultConfig!: Required<DefaultConfigType>
   events!: Required<EventsType>
   editor!: EditorView
@@ -37,7 +37,7 @@ export default class MiniSandbox {
   lineEl!: HTMLDivElement
   contentEl!: HTMLDivElement
   searchEl!: HTMLInputElement
-  ldqStaticResources: string[] = []
+  ldqPublicResources: string[] = []
   public run: Function
 
   constructor(options = {} as OptionsType) {
@@ -73,12 +73,12 @@ export default class MiniSandbox {
       }
     })
     // 初始化公共静态资源
-    this.resource = {
+    this.publicResources = {
       cssLibs: [],
       jsLibs: [],
       css: '',
       js: '',
-      ...options.resource,
+      ...options.publicResources,
     }
     // 初始化默认配置
     this.defaultConfig = {
@@ -332,12 +332,12 @@ export default class MiniSandbox {
     this.renderIframe(htmlStr, this.currFile.type)
   }
 
-  private async getResources(type: 'style' | 'script', src: string) {
-    const ldqStaticResources = window['ldqStaticResources'] || {}
-    if (!ldqStaticResources[src]) {
-      ldqStaticResources[src] = await FileLoader(type, src)
+  private async getPublicResources(type: 'style' | 'script', src: string) {
+    const ldqPublicResources = window['ldqPublicResources'] || {}
+    if (!ldqPublicResources[src]) {
+      ldqPublicResources[src] = await FileLoader(type, src)
     }
-    return ldqStaticResources[src]
+    return ldqPublicResources[src]
   }
 
   private triggleLoading(status: boolean) {
@@ -345,7 +345,7 @@ export default class MiniSandbox {
   }
 
   private async renderIframe(context: string, type: string = 'html') {
-    const { resource } = this
+    const { publicResources } = this
     const currFile = this.currFile
     // 等待 iframe 刷新
     await new Promise<void>(resolve => {
@@ -359,9 +359,9 @@ export default class MiniSandbox {
     const iframeDocument = iframe.contentWindow?.document
     if (!iframeDocument) return
     // 加载静态资源
-    const allResources = await Promise.all([
-      ...resource.cssLibs.concat(currFile.cssLibs).map(src => this.getResources('style', src)),
-      ...resource.jsLibs.concat(currFile.jsLibs).map(src => this.getResources('script', src)),
+    const allPublicResources = await Promise.all([
+      ...publicResources.cssLibs.concat(currFile.cssLibs).map(src => this.getPublicResources('style', src)),
+      ...publicResources.jsLibs.concat(currFile.jsLibs).map(src => this.getPublicResources('script', src)),
     ])
     // 渲染模板
     const renderTemplate = (context: string) => `
@@ -372,10 +372,10 @@ export default class MiniSandbox {
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Mini Sandbox</title>
-          ${allResources.join('\n')}
-          ${resource.css && '<style>' + resource.css + '</style>'}
+          ${allPublicResources.join('\n')}
+          ${publicResources.css && '<style>' + publicResources.css + '</style>'}
           ${currFile.css && '<style>' + currFile.css + '</style>'}
-          ${resource.js && '<script>' + resource.js + '</script>'}
+          ${publicResources.js && '<script>' + publicResources.js + '</script>'}
           ${currFile.js && '<script>' + currFile.js + '</script>'}
         <\/head>
         <body>
