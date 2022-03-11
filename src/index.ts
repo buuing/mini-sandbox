@@ -4,6 +4,8 @@ import { indentWithTab } from '@codemirror/commands'
 import { html } from '@codemirror/lang-html'
 import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
 import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType } from './type'
+import RightMenu from '@right-menu/core'
+import { generateMenuOptions } from './config'
 import { name, version } from '../package.json'
 import './theme.less'
 import './style.less'
@@ -83,7 +85,7 @@ export default class MiniSandbox {
     // 初始化默认配置
     this.defaultConfig = {
       theme: 'light',
-      autoRun: false,
+      autoRun: true,
       autoRunInterval: 300,
       height: '300px',
       editorWidth: '50%',
@@ -111,6 +113,8 @@ export default class MiniSandbox {
     this.initEvent()
     // 初始化编辑器
     this.initCodeMirror()
+    // 初始化菜单栏
+    this.initMenu()
     // 初始主题
     this.triggleTheme()
     // 初始化编辑器内容
@@ -201,6 +205,7 @@ export default class MiniSandbox {
     this.searchEl.addEventListener('keypress', e => {
       if (e.keyCode === 13) this.setCode(this.searchEl.value)
     })
+    // 点击 tab 标签页
     const tabBar = el.querySelector('.sandbox-tab')!
     tabBar.addEventListener('click', e => {
       const targetEl = e.target as HTMLDivElement
@@ -217,6 +222,15 @@ export default class MiniSandbox {
         this.addClass(targetEl, 'sandbox-tab-active')
       }
     })
+  }
+
+  private initMenu() {
+    // 绑定菜单事件
+    new RightMenu({
+      el: this.el.querySelector('.sandbox-setting') as HTMLElement,
+      theme: 'mac',
+      mode: 'click',
+    }, generateMenuOptions.call(this))
   }
 
   private initEvent() {
@@ -286,6 +300,9 @@ export default class MiniSandbox {
       parent: this.codeEl,
     })
     this.editorEl = this.el.querySelector('.cm-editor') as HTMLDivElement
+    this.setStyle(this.editorEl, {
+      'font-size': '14px',
+    })
   }
 
   private changeTab() {
@@ -395,6 +412,12 @@ export default class MiniSandbox {
 
   // 切换主题
   triggleTheme(theme = this.defaultConfig.theme) {
-    this.addClass(this.el, 'sandbox-theme-' + theme)
+    if (this.el.classList.value.indexOf('sandbox-theme-light') > -1) {
+      this.el.classList.remove('sandbox-theme-light')
+      this.el.classList.add('sandbox-theme-dark')
+    } else {
+      this.el.classList.remove('sandbox-theme-dark')
+      this.el.classList.add('sandbox-theme-light')
+    }
   }
 }

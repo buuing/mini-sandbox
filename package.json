@@ -1,6 +1,6 @@
 {
   "name": "mini-sandbox",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "",
   "main": "dist/index.esm.js",
   "module": "dist/index.esm.js",
@@ -15,7 +15,8 @@
   "files": [
     "dist/src",
     "dist/index.esm.js",
-    "dist/index.umd.js"
+    "dist/index.umd.js",
+    "dist/docsify-plugin.js"
   ],
   "devDependencies": {
     "@babel/core": "^7.15.5",
@@ -25,6 +26,7 @@
     "@codemirror/commands": "^0.19.8",
     "@codemirror/lang-html": "^0.19.4",
     "@codemirror/view": "^0.19.44",
+    "@right-menu/core": "0.0.8",
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-eslint": "^8.0.1",
     "@rollup/plugin-json": "^4.1.0",

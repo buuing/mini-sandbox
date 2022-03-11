@@ -37,6 +37,7 @@ export default class MiniSandbox {
     init(): Promise<void>;
     reset(): void;
     private initDom;
+    private initMenu;
     private initEvent;
     private handleChange;
     private initCodeMirror;

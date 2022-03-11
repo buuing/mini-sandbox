@@ -50,9 +50,11 @@
 
 <br />
 
-### 使用简写方式
+### 简写用法
 
 #### 示例1: 创建一个空的 sandbox
+
+至少需要留一个空行, 因为我需要读取代码块的内容 *(哪怕他是空的)*
 
 ```
 ^^^html [demo1.html]
@@ -66,37 +68,138 @@
 
 <br />
 
-#### 示例2: 增加默认 css 样式
+#### 示例2: 设置默认 css / js (只针对当前标签页生效)
+
+你可以像这样显式的把 style 标签放到编辑器里
+
+```html
+^^^html [demo2.html]
+<style>
+  div {
+    border: 1px solid red;
+  }
+</style>
+
+<div>这是一个盒子</div>
+^^^
+```
+
+```html [demo2.html]
+<style>
+  div {
+    border: 1px solid red;
+  }
+</style>
+
+<div>这是一个盒子</div>
+```
+
+<br />
+
+也可以在起始行, 写一个对象格式 *(FileType)* 的数据
 
 ```html
 ^^^html [demo2.html] { css: 'div { border: 1px solid red; }' }
 <div>这是一个盒子</div>
 ^^^
-```
 
-```html [demo2.html] { css: 'div { border: 1px solid red; }' }
+^^^html [demo3.html] { css: 'div { border: 1px solid red; }', js: 'console.log("hello")' }
 <div>这是一个盒子</div>
+^^^
+```
+
+!> 但是需要注意: 标签名后面的对象数据 **不能换行!**
+
+```js
+{ css: '.box { color: red text-align: center }' } // 错误, 注意css属性之间要加分号
+{ css: 'span { color: red; }', css: 'a { color: blue; }' } // 错误, 对象不能拥有相同的key
+{ js: 'console.log('hello')' } // 错误, 注意单双引号的嵌套
+{ // 错误, 不能换行 (我知道这样写起来很爽, 但是我匹配不出来)
+  css: `
+    * {
+      border: 1px solid red;
+    }
+  `,
+  js: 'console.log("hello")'
+}
+
+// 以下为正确写法
+{ css: '* { border: 1px solid red; }' }
+{ css: 'div { border: 1px solid red; } .box { color: red; text-align: center; }' }
+{ js: 'console.log("hello")' }
+{ js: "console.log('hello')" }
+{ js: 'console.log("hello")', css: '* { border: 1px solid red; }' }
+```
+
+<br />
+
+#### 示例3: 使用全局变量代替行内对象
+
+如果你觉得行内写一堆预置`css`或`js`太难受了, 可以像下面这样使用全局变量, 而且变量是可以复用的
+
+##### 1. 首先你要去`index.html`里提前定义好`Demo1Config`变量
+
+```js
+window.Demo1Config = {
+  css: `
+    .box {
+      width: 100px;
+      height: 100px;
+      background: green;
+      position: absolute;
+    }
+  `,
+  js: `
+    const box = document.querySelector('div')
+    setInterval(() => {
+      const left = Math.sin(Date.now() / 500) * 100 + 100
+      box.style.left = left + 'px'
+    }, 1000 / 60)
+  `
+}
+```
+
+##### 2. 然后使用该变量
+
+变量可以写成`${window.Demo1Config}`, 也可以写成`${Demo1Config}`, 因为全局变量默认是从 window 下面寻找
+
+```html
+^^^html [demo4.html] ${window.Demo1Config}
+<div class="box"></div>
+^^^
+```
+
+```html [demo4.html] ${window.Demo1Config}
+<div class="box"></div>
 ```
 
 <br />
 <br />
 <br />
 
-### 使用完整方式
+### 完整用法
 
-```
-待完善...
+#### 1. 找到 index.html
+
+```js
+window.$docsify = {
+  ...
+  executeScript: true, // 在 markdown 中使用 <script> 标签
+  ...
+}
 ```
 
-<div id="test-demo"></div>
+#### 2. 把下面的代码放到 markdown 文档中
+
+```md
+<div id="my-sandbox"></div>
 
 <script>
 new MiniSandbox({
-  el: document.querySelector('#test-demo'),
+  el: document.querySelector('#my-sandbox'),
   files: {
     'index.html': {
-      type: 'html',
-      defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n",
+      defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>",
       css: '* { color: red }',
     },
     'test.html': {
@@ -105,20 +208,44 @@ new MiniSandbox({
   },
   publicResource: {
     css: '* { text-align: center }',
-    js: '',
-    jsLibs: [],
-    cssLibs: [],
   },
   defaultConfig: {
-    theme: 'light',
     autoRun: true, // 是否自动保存
     editorWidth: '55%', // 编辑区域的默认宽度占比
-    height: '400px',
-    draggable: true,
+    height: '400px', // sandbox 高度
   },
-  events: {
-    onChange: () => {},
-    onLoad: () => {},
-  }
+})
+</script>
+```
+
+#### 3. 然后你就能看到效果了
+
+- 更多的使用示例, 请参考**【Demo & 演示】**页面
+- 更详细的配置, 请参考**【Options & 配置选项】**页面
+
+!> `提示`: 在 docsify 中, 同一个 md 页面下只有第一个`<script>`标签生效
+
+<div id="my-sandbox"></div>
+
+<script>
+new MiniSandbox({
+  el: document.querySelector('#my-sandbox'),
+  files: {
+    'index.html': {
+      defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>",
+      css: '* { color: red }',
+    },
+    'test.html': {
+      defaultValue: `<button onclick="alert('Hello')">按钮</button>`,
+    }
+  },
+  publicResource: {
+    css: '* { text-align: center }',
+  },
+  defaultConfig: {
+    autoRun: true, // 是否自动保存
+    editorWidth: '55%', // 编辑区域的默认宽度占比
+    height: '400px', // sandbox 高度
+  },
 })
 </script>

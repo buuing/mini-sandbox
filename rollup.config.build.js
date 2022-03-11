@@ -45,7 +45,7 @@ export default [
     input: 'src/docsify-plugin.js',
     output: [
       {
-        file: `dist/docsify-plugin.js`,
+        file: 'dist/docsify-plugin.js',
         format: 'umd',
         name: 'MiniSandboxDocsify',
         sourcemap: false,
@@ -58,5 +58,5 @@ export default [
       resolve(),
       commonjs(),
     ],
-  }
+  },
 ]

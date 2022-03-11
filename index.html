@@ -31,7 +31,7 @@
   <script>
     window.$docsify = {
       name: '',
-      repo: '',
+      repo: 'buuing/mini-sandbox',
       themeColor: 'red',
       // 自定义侧边栏
       loadSidebar: true,
@@ -41,7 +41,7 @@
       // 开启封面页
       coverpage: false,
       // 切换页面后跳到顶部
-      auto2top: false,
+      auto2top: true,
       // 路由
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md',
@@ -50,14 +50,7 @@
       plugins: [
         function(hook) {
           hook.afterEach(function(html, next) {
-            html = html.replace(/>\^\^\^|\^\^\^</gm, (res, ...arg) => {
-              switch (res) {
-                case '>^^^': return '>```'
-                case '^^^<': return '```<'
-                default: return res
-              }
-            })
-            next(html)
+            next(html.replace(/\^\^\^/gm, (res, ...arg) => '```'))
           })
         }
       ],
@@ -82,20 +75,24 @@
       },
       publicResources: {},
     }
-    // 单独的配置项
-    window.$sandboxData = {
-      ldqConfig: {
-        css: `
-          div {
-            width: 100px;
-            height: 100px;
-            background: green;
-          }
-        `,
-        js: `
-          console.log(document.querySelector('div'))
-        `
-      }
+
+    // sandbox 配置项
+    window.Demo1Config = {
+      css: `
+        .box {
+          width: 100px;
+          height: 100px;
+          background: green;
+          position: absolute;
+        }
+      `,
+      js: `
+        const box = document.querySelector('div')
+        setInterval(() => {
+          const left = Math.sin(Date.now() / 500) * 100 + 100
+          box.style.left = left + 'px'
+        }, 1000 / 60)
+      `
     }
 
   </script>

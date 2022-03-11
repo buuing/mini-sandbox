@@ -22,5 +22,9 @@ module.exports = {
     'dot-notation': 'off',
     // 允许转义字符
     'no-useless-escape': 'off',
+    // 允许 new 不赋值
+    'no-new': 'off',
+    // 允许使用 eval
+    'no-eval': 'off',
   },
 }

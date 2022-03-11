@@ -102,7 +102,7 @@ new MiniSandbox({
 - **属性:**
 
   - `height?: string` Sandbox 的高度, 默认为 auto
-  - `autoRun?: boolean` 每次修改后是否自动运行, 默认等于 false
+  - `autoRun?: boolean` 每次修改后是否自动运行, 默认等于 true
   - `autoRunInterval?: number` 每次自动运行的时间间隔, 单位为毫秒, 默认等于 300
   - `editorWidth?: string` 编辑区域默认的宽度占比, 默认编辑区域宽 50%
   - `draggable?: boolean` 是否可以左右拖动布局, 默认为 true
