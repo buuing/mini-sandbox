@@ -10,3 +10,5 @@ export declare const FileLoader: (type: 'style' | 'script', src: string) => Prom
 export declare const encode: (value: string) => string;
 export declare const decode: (value: string) => string;
 export declare const define: (obj: object, key: string, cb: () => void) => void;
+export declare const isExpectType: (param: any, ...types: string[]) => boolean;
+export declare const get: (data: object, strKeys: string) => any;

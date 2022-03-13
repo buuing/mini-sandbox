@@ -26,6 +26,7 @@
   <div id="my-sandbox"></div>
 
   <script src="../dist/index.umd.js"></script>
+  <script src="../dist/vue-loader.js"></script>
   <script>
     var mp = new MiniSandbox({
       el: '#my-sandbox',
@@ -38,13 +39,16 @@
         },
         'test.html': {
           defaultValue: `<button onclick="alert('Hello')">按钮</button>`,
-        }
-        // 'app.vue': {
-        //   type: 'vue',
-        //   defaultValue: "<template>\n    <button @click=\"cli\">count: {{num}}</button>\n</template>\n\n<script>\nexport default {\n    data () {\n        return {\n            num: 1\n        }\n    },\n    methods: {\n        cli () {\n            this.num++\n        }\n    }\n}\n<\/script>\n\n<style>\n\n</style>",
-        //   jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
-        //   urlField: 'vue',
-        // },
+        },
+        'app.vue': {
+          type: 'vue',
+          defaultValue: "<template>\n  <button @click=\"cli\">count: {{num}}</button>\n</template>\n\n<script>\nexport default {\n  data () {\n    return {\n      num: 1\n    }\n  },\n  methods: {\n    cli () {\n      this.num++\n    }\n  }\n}\n<\/script>\n\n<style>\n  button {\n    color: red;\n  }\n</style>\n\n<style>\n  button {\n    background: pink;\n  }\n</style>",
+          jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
+          urlField: 'vue',
+        },
+      },
+      loaders: {
+        '.vue': SandboxVueLoader
       },
       publicResource: {
         css: '* { text-align: center }',

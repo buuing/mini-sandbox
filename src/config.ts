@@ -67,6 +67,17 @@ export function generateMenuOptions(this: MiniSandbox): OptionsType {
     { type: 'hr' },
     {
       type: 'ul',
+      text: '调试工具',
+      children: [
+        {
+          type: 'li',
+          text: '打印 JSON 字符串',
+          callback: () => console.log(JSON.stringify(this.getValue()).replace(/<\/script>/g, '<\\/script>')),
+        },
+      ],
+    },
+    {
+      type: 'ul',
       text: '关于 Mini Sandbox',
       children: [
         {

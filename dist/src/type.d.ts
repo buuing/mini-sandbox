@@ -13,6 +13,9 @@ export declare type FileType = {
     js?: PublicResourcesType['js'];
     urlField?: string;
 };
+export declare type LoadersType = {
+    [key: string]: Array<(context: string) => string>;
+};
 export declare type DefaultConfigType = {
     theme?: 'light' | 'dark';
     autoRun?: boolean;
@@ -33,6 +36,7 @@ export declare type OptionsType = {
     files?: {
         [fileName: string]: FileType;
     };
+    loaders: LoadersType;
     publicResources?: PublicResourcesType;
     defaultConfig?: DefaultConfigType;
     events?: EventsType;

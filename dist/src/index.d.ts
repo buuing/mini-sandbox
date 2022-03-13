@@ -1,9 +1,9 @@
 import { EditorView } from '@codemirror/view';
-import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType } from './type';
+import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType, LoadersType } from './type';
 import './theme.less';
 import './style.less';
 declare type CurrFileType = Required<FileType> & {
-    name: string;
+    filename: string;
     value: string;
     renderTemplate: (s: string) => string;
 };
@@ -14,6 +14,7 @@ export default class MiniSandbox {
     readonly version: string;
     el: HTMLDivElement;
     files: Required<FileType>[];
+    loaders: LoadersType;
     publicResources: Required<PublicResourcesType>;
     defaultConfig: Required<DefaultConfigType>;
     events: Required<EventsType>;

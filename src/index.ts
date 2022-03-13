@@ -3,7 +3,7 @@ import { EditorView, keymap } from '@codemirror/view'
 import { indentWithTab } from '@codemirror/commands'
 import { html } from '@codemirror/lang-html'
 import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
-import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType } from './type'
+import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType, LoadersType } from './type'
 import RightMenu from '@right-menu/core'
 import { generateMenuOptions } from './config'
 import { name, version } from '../package.json'
@@ -11,7 +11,7 @@ import './theme.less'
 import './style.less'
 
 type CurrFileType = Required<FileType> & {
-  name: string,
+  filename: string,
   value: string,
   renderTemplate: (s: string) => string
 }
@@ -23,6 +23,7 @@ export default class MiniSandbox {
   readonly version = version
   el!: HTMLDivElement
   files!: Required<FileType>[]
+  loaders!: LoadersType
   publicResources!: Required<PublicResourcesType>
   defaultConfig!: Required<DefaultConfigType>
   events!: Required<EventsType>
@@ -59,8 +60,8 @@ export default class MiniSandbox {
     const query = getQuery()
     // 初始化 files
     this.fileIndex = 0
-    this.files = Object.keys(options.files || {}).map(name => {
-      const file = (options.files!)[name]
+    this.files = Object.keys(options.files || {}).map(filename => {
+      const file = (options.files!)[filename]
       const htmlStr = decode(query[file.urlField || ''])
       return {
         defaultValue: '',
@@ -70,10 +71,14 @@ export default class MiniSandbox {
         js: '',
         urlField: '',
         ...file,
-        name,
+        filename: filename.lastIndexOf('.') > -1 ? filename : filename + '.html',
         value: htmlStr || file.defaultValue || '',
       }
     })
+    // 初始化loader
+    this.loaders = {
+      ...options.loaders,
+    }
     // 初始化公共静态资源
     this.publicResources = {
       cssLibs: [],
@@ -155,7 +160,7 @@ export default class MiniSandbox {
           <div class="sandbox-tab">
             ${this.files.map((file, index) => {
               const className = 'sandbox-tab-item' + (this.fileIndex === index ? ' sandbox-tab-active' : '')
-              return `<div class="${className}" data-index="${index}">${file['name']}</div>`
+              return `<div class="${className}" data-index="${index}">${file['filename']}</div>`
             }).join('\n')}
           </div>
         </div>
@@ -362,7 +367,7 @@ export default class MiniSandbox {
   }
 
   private async renderIframe(context: string, type: string = 'html') {
-    const { publicResources } = this
+    const { publicResources, loaders } = this
     const currFile = this.currFile
     // 等待 iframe 刷新
     await new Promise<void>(resolve => {
@@ -376,12 +381,12 @@ export default class MiniSandbox {
     const iframeDocument = iframe.contentWindow?.document
     if (!iframeDocument) return
     // 加载静态资源
-    const allPublicResources = await Promise.all([
-      ...publicResources.cssLibs.concat(currFile.cssLibs).map(src => this.getPublicResources('style', src)),
-      ...publicResources.jsLibs.concat(currFile.jsLibs).map(src => this.getPublicResources('script', src)),
-    ])
+    const cssLibs = await Promise.all(publicResources.cssLibs.concat(currFile.cssLibs).map(src => this.getPublicResources('style', src)))
+    const jsLibs = await Promise.all(publicResources.jsLibs.concat(currFile.jsLibs).map(src => this.getPublicResources('script', src)))
+    cssLibs.push(`<style>\n${publicResources.css && publicResources.css}\n${currFile.css && currFile.css}\n</style>`)
+    jsLibs.push(`<script>\n${publicResources.js && publicResources.js}\n${currFile.js && currFile.js}\n</script>`)
     // 渲染模板
-    const renderTemplate = (context: string) => `
+    const HTMLLoader = (context: string) => `
       <!DOCTYPE html>
       <html lang="en">
         <head>
@@ -389,21 +394,20 @@ export default class MiniSandbox {
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>Mini Sandbox</title>
-          ${allPublicResources.join('\n')}
-          ${publicResources.css && '<style>' + publicResources.css + '</style>'}
-          ${currFile.css && '<style>' + currFile.css + '</style>'}
+          ${cssLibs.join('\n')}
         <\/head>
         <body>
           ${context}
-          ${publicResources.js && '<script>' + publicResources.js + '</script>'}
-          ${currFile.js && '<script>' + currFile.js + '</script>'}
-        <\/body>
+          ${jsLibs.join('\n')}
+          <\/body>
       <\/html>
     `
-    let template = renderTemplate(context)
-    if (typeof currFile.renderTemplate === 'function') {
-      template = renderTemplate(currFile.renderTemplate(context))
-    }
+    const filenameSuffixes = currFile.filename.slice(currFile.filename.lastIndexOf('.'))
+    const value = loaders[filenameSuffixes]
+    const fileLoaders = Array.isArray(value) ? value : [value]
+    const template = [HTMLLoader, ...fileLoaders].reverse()
+      .filter(loader => typeof loader === 'function')
+      .reduce((context, loader) => loader(context), context)
     iframeDocument.open()
     iframeDocument.write(template)
     iframeDocument.close()

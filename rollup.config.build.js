@@ -41,18 +41,48 @@ export default [
       commonjs(),
     ],
   },
+  // docsify plugin
   {
-    input: 'src/docsify-plugin.js',
+    input: 'src/plugins/docsify-plugin.ts',
     output: [
       {
         file: 'dist/docsify-plugin.js',
         format: 'umd',
-        name: 'MiniSandboxDocsify',
+        name: 'SandboxDocsifyPlugin',
         sourcemap: false,
         plugins: [terser()],
       },
     ],
     plugins: [
+      ts({
+        tsconfig: path.resolve(__dirname, './tsconfig.json'),
+        extensions: ['.js', '.ts'],
+        declaration: true,
+      }),
+      json(),
+      babel({ exclude: 'node_modules/**' }),
+      resolve(),
+      commonjs(),
+    ],
+  },
+  // vue loader
+  {
+    input: 'src/loaders/vue-loader.ts',
+    output: [
+      {
+        file: 'dist/vue-loader.js',
+        format: 'umd',
+        name: 'SandboxVueLoader',
+        sourcemap: false,
+        plugins: [terser()],
+      },
+    ],
+    plugins: [
+      ts({
+        tsconfig: path.resolve(__dirname, './tsconfig.json'),
+        extensions: ['.js', '.ts'],
+        declaration: true,
+      }),
       json(),
       babel({ exclude: 'node_modules/**' }),
       resolve(),

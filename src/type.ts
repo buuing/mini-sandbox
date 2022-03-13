@@ -18,6 +18,10 @@ export type FileType = {
   urlField?: string
 }
 
+export type LoadersType = {
+  [key: string]: Array<(context: string) => string>
+}
+
 // 默认配置
 export type DefaultConfigType = {
   theme?: 'light' | 'dark'
@@ -42,6 +46,7 @@ export type OptionsType = {
   files?: {
     [fileName: string]: FileType
   },
+  loaders: LoadersType
   publicResources?: PublicResourcesType
   defaultConfig?: DefaultConfigType
   events?: EventsType

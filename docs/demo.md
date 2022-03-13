@@ -124,7 +124,7 @@
       }
     },
     publicResources: {
-      css: 'body: margin: 10px',
+      css: 'body { margin: 10px }',
       cssLibs: ['https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css'],
       jsLibs: ['https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'],
     }

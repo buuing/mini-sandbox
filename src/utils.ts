@@ -1,6 +1,3 @@
-// @ts-ignore
-// import { parseComponent } from 'vue-template-compiler/browser'
-// import { transform } from '@babel/standalone'
 import {
   compressToEncodedURIComponent,
   decompressFromEncodedURIComponent,
@@ -68,25 +65,16 @@ export const define = (obj: object, key: string, cb: () => void) => {
   })
 }
 
-// const getScript = (script: string, template: any): string => {
-//   return `
-//     try {
-//       var exports = {};
-//       ${script}
-//       var component = exports.default;
-//       // 如果定义了 template函数, 则无需 template
-//       component.template = component.template || ${template}
-//     } catch (err){
-//       console.error(err)
-//     }
-//     new Vue(component).$mount('#app')
-//   `
-// }
+export const isExpectType = (param: any, ...types: string[]) => {
+  return types.some(type => Object.prototype.toString.call(param).slice(8, -1).toLowerCase() === type)
+}
 
-// export const VueLoader = (value: string) => {
-//   // styles
-//   const { template, script } = parseComponent(value)
-//   const templateStr = template ? JSON.stringify(template.content) : '""'
-//   const scriptStr = transform(script?.content || '', { presets: ['es2015'] }).code
-//   return getScript(scriptStr, templateStr)
-// }
+export const get = (data: object, strKeys: string) => {
+  const keys = strKeys.split('.')
+  for (const key of keys) {
+    const res = data[key]
+    if (!isExpectType(res, 'object', 'array')) return res
+    data = res
+  }
+  return data
+}
