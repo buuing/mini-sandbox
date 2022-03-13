@@ -330,6 +330,10 @@ export default class MiniSandbox {
     return this.editor.state.doc.toString()
   }
 
+  public getJSONString() {
+    return JSON.stringify(this.getValue()).replace(/<\/script>/g, '<\\/script>')
+  }
+
   public setCode(code: string) {
     return this.setValue(decode(code))
   }
@@ -355,7 +359,8 @@ export default class MiniSandbox {
   }
 
   private async getPublicResources(type: 'style' | 'script', src: string) {
-    const ldqPublicResources = window['ldqPublicResources'] || {}
+    if (!window['ldqPublicResources']) window['ldqPublicResources'] = {}
+    const ldqPublicResources = window['ldqPublicResources']
     if (!ldqPublicResources[src]) {
       ldqPublicResources[src] = await FileLoader(type, src)
     }
@@ -371,9 +376,7 @@ export default class MiniSandbox {
     const currFile = this.currFile
     // 等待 iframe 刷新
     await new Promise<void>(resolve => {
-      this.iframe.onload = async() => {
-        resolve()
-      }
+      this.iframe.addEventListener('load', () => resolve())
       this.iframe.contentWindow?.location.reload()
     })
     // 重新获取 iframe

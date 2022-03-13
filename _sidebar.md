@@ -4,6 +4,6 @@
   - [在 javascript 中使用](/docs/usage)
   - [在 docsify 中使用](/docs/usage-docsify)
 - [**Options & 配置选项**](/docs/options)
-- [**Demo & 演示**](/docs/demo)
+- [**Examples & 示例**](/docs/examples)
 
 <!-- - [**测试页**](/docs/test) -->

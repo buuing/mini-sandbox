@@ -52,20 +52,13 @@
           hook.afterEach(function(html, next) {
             next(html.replace(/\^\^\^/gm, (res, ...arg) => '```'))
           })
-        }
+        },
+        function(hook) {
+          hook.beforeEach(function(content) {
+            return content.replace(/\$\{version\}/gm, (res, ...arg) => '0.2.4')
+          })
+        },
       ],
-      miniSandbox: {
-        data: {
-
-        },
-        defaultConfig: {
-          height: '300px',
-          autoRun: true,
-        },
-        publicResources: {
-
-        }
-      }
     }
     // 公共配置项
     window.$sandboxOptions = {
@@ -99,6 +92,7 @@
   <!-- Docsify v4 -->
   <!-- <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.1"></script> -->
   <script src="./dist/index.umd.js"></script>
+  <script src="./dist/vue-loader.js"></script>
   <script src="./docs/docsify.js"></script>
   <script src="./docs/prism-bash.js"></script>
   <script src="./dist/docsify-plugin.js"></script>

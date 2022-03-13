@@ -45,6 +45,7 @@ export default class MiniSandbox {
     private changeTab;
     setValue(value: string): void;
     getValue(): string;
+    getJSONString(): string;
     setCode(code: string): void;
     getCode(value?: string): string;
     setStyle(el: HTMLDivElement, styles: {

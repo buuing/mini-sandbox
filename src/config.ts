@@ -72,7 +72,7 @@ export function generateMenuOptions(this: MiniSandbox): OptionsType {
         {
           type: 'li',
           text: '打印 JSON 字符串',
-          callback: () => console.log(JSON.stringify(this.getValue()).replace(/<\/script>/g, '<\\/script>')),
+          callback: () => console.log(this.getJSONString()),
         },
       ],
     },
