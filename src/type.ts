@@ -44,7 +44,7 @@ export type EventsType = {
 export type OptionsType = {
   el: string | HTMLDivElement
   files?: {
-    [fileName: string]: FileType
+    [filename: string]: FileType
   },
   loaders: LoadersType
   publicResources?: PublicResourcesType

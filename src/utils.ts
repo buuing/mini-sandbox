@@ -42,11 +42,14 @@ export const setQuery = (query: { [key: string]: string | number }) => {
   history.pushState(null, '', search)
 }
 
-export const CSSLoader = (src: string) => fetch(src).then(res => res.text()).then(str => `<style>${str}<\/style>`)
-export const JSLoader = (src: string) => fetch(src).then(res => res.text()).then(str => `<script type="text/javascript">${str}<\/script>`)
+export const ElementGenerator = (type: 'style' | 'script', innerText: string) => ({
+  style: `<style>${innerText}<\/style>`,
+  script: `<script type="text/javascript">${innerText}<\/script>`,
+}[type])
 
-const resLoader = { style: CSSLoader, script: JSLoader }
-export const FileLoader = (type: 'style' | 'script', src: string) => resLoader[type](src)
+export const FileLoader = (type: 'style' | 'script', src: string) => {
+  return fetch(src).then(res => res.text()).then(innerText => ElementGenerator(type, innerText))
+}
 
 export const encode = (value: string) => {
   return encodeURIComponent(compressToEncodedURIComponent(value))

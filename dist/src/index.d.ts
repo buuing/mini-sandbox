@@ -1,11 +1,11 @@
 import { EditorView } from '@codemirror/view';
 import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType, LoadersType } from './type';
-import './theme.less';
-import './style.less';
-declare type CurrFileType = Required<FileType> & {
+import './style/theme.less';
+import './style/index.less';
+declare type LocalFileType = Required<FileType> & {
     filename: string;
     value: string;
-    renderTemplate: (s: string) => string;
+    type: string;
 };
 export default class MiniSandbox {
     static version: string;
@@ -13,14 +13,19 @@ export default class MiniSandbox {
     static decode: (value: string) => string;
     readonly version: string;
     el: HTMLDivElement;
-    files: Required<FileType>[];
+    files: {
+        [filename: string]: LocalFileType;
+    };
+    fileList: Required<LocalFileType>[];
     loaders: LoadersType;
     publicResources: Required<PublicResourcesType>;
     defaultConfig: Required<DefaultConfigType>;
     events: Required<EventsType>;
     editor: EditorView;
     fileIndex: number;
-    currFile: CurrFileType;
+    currFile: LocalFileType;
+    currTemplate: LocalFileType;
+    templateTypeSet: Set<string>;
     loading: boolean;
     isClick: boolean;
     iframe: HTMLIFrameElement;
@@ -29,7 +34,7 @@ export default class MiniSandbox {
     codeEl: HTMLDivElement;
     editorEl: HTMLDivElement;
     lineEl: HTMLDivElement;
-    contentEl: HTMLDivElement;
+    renderEl: HTMLDivElement;
     searchEl: HTMLInputElement;
     ldqPublicResources: string[];
     run: Function;

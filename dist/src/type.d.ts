@@ -34,7 +34,7 @@ export declare type EventsType = {
 export declare type OptionsType = {
     el: string | HTMLDivElement;
     files?: {
-        [fileName: string]: FileType;
+        [filename: string]: FileType;
     };
     loaders: LoadersType;
     publicResources?: PublicResourcesType;

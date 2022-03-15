@@ -2,18 +2,18 @@ import { EditorState, basicSetup } from '@codemirror/basic-setup'
 import { EditorView, keymap } from '@codemirror/view'
 import { indentWithTab } from '@codemirror/commands'
 import { html } from '@codemirror/lang-html'
-import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
+import { debounce, getQuery, setQuery, ElementGenerator, FileLoader, encode, decode, define } from './utils'
 import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType, LoadersType } from './type'
 import RightMenu from '@right-menu/core'
 import { generateMenuOptions } from './config'
 import { name, version } from '../package.json'
-import './theme.less'
-import './style.less'
+import './style/theme.less'
+import './style/index.less'
 
-type CurrFileType = Required<FileType> & {
+type LocalFileType = Required<FileType> & {
   filename: string,
   value: string,
-  renderTemplate: (s: string) => string
+  type: string
 }
 
 export default class MiniSandbox {
@@ -22,14 +22,17 @@ export default class MiniSandbox {
   static decode = decode
   readonly version = version
   el!: HTMLDivElement
-  files!: Required<FileType>[]
+  files: { [filename: string]: LocalFileType } = {}
+  fileList!: Required<LocalFileType>[]
   loaders!: LoadersType
   publicResources!: Required<PublicResourcesType>
   defaultConfig!: Required<DefaultConfigType>
   events!: Required<EventsType>
   editor!: EditorView
   fileIndex: number = 0
-  currFile!: CurrFileType
+  currFile!: LocalFileType
+  currTemplate!: LocalFileType
+  templateTypeSet!: Set<string>
   loading = false
   isClick = false
   iframe!: HTMLIFrameElement
@@ -38,7 +41,7 @@ export default class MiniSandbox {
   codeEl!: HTMLDivElement
   editorEl!: HTMLDivElement
   lineEl!: HTMLDivElement
-  contentEl!: HTMLDivElement
+  renderEl!: HTMLDivElement
   searchEl!: HTMLInputElement
   ldqPublicResources: string[] = []
   public run: Function
@@ -47,7 +50,7 @@ export default class MiniSandbox {
     // 初始化配置项
     this.initOptions(options)
     // 初始化一些 getter
-    define(this, 'currFile', () => this.files[this.fileIndex])
+    define(this, 'currFile', () => this.fileList[this.fileIndex])
     // 设置防抖
     this.run = debounce(this.render, this.defaultConfig.autoRunInterval).bind(this)
     // 初始化
@@ -58,12 +61,17 @@ export default class MiniSandbox {
 
   initOptions(options: OptionsType) {
     const query = getQuery()
+    // 初始化loader
+    this.loaders = {
+      ...options.loaders,
+    }
+    this.templateTypeSet = new Set(Object.keys(this.loaders).concat('.html'))
     // 初始化 files
     this.fileIndex = 0
-    this.files = Object.keys(options.files || {}).map(filename => {
+    this.fileList = Object.keys(options.files || {}).map(filename => {
       const file = (options.files!)[filename]
       const htmlStr = decode(query[file.urlField || ''])
-      return {
+      const _file = {
         defaultValue: '',
         cssLibs: [],
         jsLibs: [],
@@ -74,11 +82,14 @@ export default class MiniSandbox {
         filename: filename.lastIndexOf('.') > -1 ? filename : filename + '.html',
         value: htmlStr || file.defaultValue || '',
       }
+      _file.type = _file.filename.slice(_file.filename.lastIndexOf('.'))
+      if (!this.currTemplate && this.templateTypeSet.has(_file.type)) {
+        this.currTemplate = _file
+      }
+      this.files[filename] = _file
+      return _file
     })
-    // 初始化loader
-    this.loaders = {
-      ...options.loaders,
-    }
+
     // 初始化公共静态资源
     this.publicResources = {
       cssLibs: [],
@@ -155,43 +166,54 @@ export default class MiniSandbox {
     el.innerHTML = `
       <div class="sandbox-code" style="width: ${defaultConfig.editorWidth}">
         <div class="sandbox-head">
-          <div class="sandbox-setting">≡</div>
+          <div class="sandbox-setting">
+            <span class="sandbox-icon icon-active">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 14C9.55228 14 10 13.5523 10 13C10 12.4477 9.55228 12 9 12C8.44771 12 8 12.4477 8 13C8 13.5523 8.44771 14 9 14Z" fill="currentColor" /><path d="M16 13C16 13.5523 15.5523 14 15 14C14.4477 14 14 13.5523 14 13C14 12.4477 14.4477 12 15 12C15.5523 12 16 12.4477 16 13Z" fill="currentColor" /><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 11.1637 19.8717 10.3574 19.6337 9.59973C18.7991 9.82556 17.9212 9.94604 17.0152 9.94604C13.2921 9.94604 10.0442 7.91139 8.32277 4.89334C5.75469 6.22486 4 8.90751 4 12C4 16.4183 7.58172 20 12 20Z" fill="currentColor" /></svg>
+            <span>
+          </div>
           &ensp;
           <div class="sandbox-tab">
-            ${this.files.map((file, index) => {
+            ${this.fileList.map((file, index) => {
               const className = 'sandbox-tab-item' + (this.fileIndex === index ? ' sandbox-tab-active' : '')
-              return `<div class="${className}" data-index="${index}">${file['filename']}</div>`
+              return `
+                <div class="${className}" data-index="${index}">
+                  <span>${file['filename']}</span>
+                  <!-- <span class="sandbox-icon icon-close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.2253 4.81108C5.83477 4.42056 5.20161 4.42056 4.81108 4.81108C4.42056 5.20161 4.42056 5.83477 4.81108 6.2253L10.5858 12L4.81114 17.7747C4.42062 18.1652 4.42062 18.7984 4.81114 19.1889C5.20167 19.5794 5.83483 19.5794 6.22535 19.1889L12 13.4142L17.7747 19.1889C18.1652 19.5794 18.7984 19.5794 19.1889 19.1889C19.5794 18.7984 19.5794 18.1652 19.1889 17.7747L13.4142 12L19.189 6.2253C19.5795 5.83477 19.5795 5.20161 19.189 4.81108C18.7985 4.42056 18.1653 4.42056 17.7748 4.81108L12 10.5858L6.2253 4.81108Z" fill="currentColor" /></svg>
+                  </span> -->
+                </div>
+              `
             }).join('\n')}
           </div>
         </div>
       </div>
       <div class="sandbox-gutter"></div>
-      <div class="sandbox-content">
+      <div class="sandbox-render">
         <div class="sandbox-head">
           &ensp;
-          <span class="sandbox-icon sandbox-reset" title="还原">
-            <?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" fill="white" fill-opacity="0.01"/><path fill-rule="evenodd" clip-rule="evenodd" d="M44 40.8361C39.1069 34.8632 34.7617 31.4739 30.9644 30.6682C27.1671 29.8625 23.5517 29.7408 20.1182 30.303V41L4 23.5453L20.1182 7V17.167C26.4667 17.2172 31.8638 19.4948 36.3095 24C40.7553 28.5052 43.3187 34.1172 44 40.8361Z" fill="none" stroke="#333" stroke-width="3" stroke-linejoin="round"/></svg>
+          <span class="sandbox-icon icon-active sandbox-reset" title="还原">
+            <svg width="24" height="24" viewBox="0 1 24 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.3623 15.529L8.94804 16.9432L3.99829 11.9934L8.94804 7.0437L10.3623 8.45791L7.86379 10.9564H16.0018C18.2109 10.9564 20.0018 12.7472 20.0018 14.9564V16.9564H18.0018V14.9564C18.0018 13.8518 17.1063 12.9564 16.0018 12.9564H7.78965L10.3623 15.529Z" fill="currentColor" /></svg>
           </span>
-          <span class="sandbox-icon sandbox-reload" title="刷新">
-            <?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M42 8V24" stroke="#333" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><path d="M6 24L6 40" stroke="#333" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><path d="M6 24C6 33.9411 14.0589 42 24 42C28.8556 42 33.2622 40.0774 36.5 36.9519" stroke="#333" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><path d="M42.0007 24C42.0007 14.0589 33.9418 6 24.0007 6C18.9152 6 14.3223 8.10896 11.0488 11.5" stroke="#333" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></svg>
+          <span class="sandbox-icon icon-active sandbox-reload" title="刷新">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.1459 11.0499L12.9716 9.05752L15.3462 8.84977C14.4471 7.98322 13.2242 7.4503 11.8769 7.4503C9.11547 7.4503 6.87689 9.68888 6.87689 12.4503C6.87689 15.2117 9.11547 17.4503 11.8769 17.4503C13.6977 17.4503 15.2911 16.4771 16.1654 15.0224L18.1682 15.5231C17.0301 17.8487 14.6405 19.4503 11.8769 19.4503C8.0109 19.4503 4.87689 16.3163 4.87689 12.4503C4.87689 8.58431 8.0109 5.4503 11.8769 5.4503C13.8233 5.4503 15.5842 6.24474 16.853 7.52706L16.6078 4.72412L18.6002 4.5498L19.1231 10.527L13.1459 11.0499Z" fill="currentColor" /></svg>
           </span>
           <input class="sandbox-search" spellcheck="false" />
-          <span class="sandbox-icon sandbox-copy" title="复制链接">
-            <?xml version="1.0" encoding="UTF-8"?><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path d="M0 0H48V48H0V0Z" fill="white" fill-opacity="0.01"/><g><g><rect width="48" height="48" fill="white" fill-opacity="0.01"/><path d="M12 9.92704V7C12 5.34315 13.3431 4 15 4H41C42.6569 4 44 5.34315 44 7V33C44 34.6569 42.6569 36 41 36H38.0174" stroke="#333" stroke-width="3"/><rect x="4" y="10" width="34" height="34" rx="3" fill="none" stroke="#333" stroke-width="3" stroke-linejoin="round"/></g><g><g><path d="M18.4396 23.1098L23.7321 17.6003C25.1838 16.1486 27.5693 16.1806 29.0604 17.6717C30.5515 19.1628 30.5835 21.5483 29.1319 23L27.2218 25.0228" stroke="#333" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><path d="M13.4661 28.7469C12.9558 29.2573 11.9006 30.2762 11.9006 30.2762C10.4489 31.7279 10.4095 34.3152 11.9006 35.8063C13.3917 37.2974 15.7772 37.3294 17.2289 35.8777L22.3931 31.1894" stroke="#333" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><path d="M18.6631 28.3283C17.9705 27.6357 17.5927 26.7501 17.5321 25.8547C17.4624 24.8225 17.8143 23.7774 18.5916 23" stroke="#333" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/><path d="M22.3218 25.8611C23.8129 27.3522 23.8449 29.7377 22.3932 31.1894" stroke="#333" stroke-width="3" stroke-linecap="butt" stroke-linejoin="round"/></g></g></g></g></svg>
-          </span>
+          <!-- <span class="sandbox-icon icon-active sandbox-copy" title="复制链接">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.8284 12L16.2426 13.4142L19.071 10.5858C20.6331 9.02365 20.6331 6.49099 19.071 4.9289C17.509 3.3668 14.9763 3.3668 13.4142 4.9289L10.5858 7.75732L12 9.17154L14.8284 6.34311C15.6095 5.56206 16.8758 5.56206 17.6568 6.34311C18.4379 7.12416 18.4379 8.39049 17.6568 9.17154L14.8284 12Z" fill="currentColor" /><path d="M12 14.8285L13.4142 16.2427L10.5858 19.0711C9.02372 20.6332 6.49106 20.6332 4.92896 19.0711C3.36686 17.509 3.36686 14.9764 4.92896 13.4143L7.75739 10.5858L9.1716 12L6.34317 14.8285C5.56212 15.6095 5.56212 16.8758 6.34317 17.6569C7.12422 18.4379 8.39055 18.4379 9.1716 17.6569L12 14.8285Z" fill="currentColor" /><path d="M14.8285 10.5857C15.219 10.1952 15.219 9.56199 14.8285 9.17147C14.4379 8.78094 13.8048 8.78094 13.4142 9.17147L9.1716 13.4141C8.78107 13.8046 8.78107 14.4378 9.1716 14.8283C9.56212 15.2188 10.1953 15.2188 10.5858 14.8283L14.8285 10.5857Z" fill="currentColor" /></svg>
+          </span> -->
           &ensp;
         </div>
-        <iframe class="sandbox-iframe"></iframe>
+        <iframe class="sandbox-body"></iframe>
         <div class="sandbox-loading"></div>
       </div>
       <div class="sandbox-mask"></div>
     `
-    this.iframe = el.querySelector('.sandbox-iframe')!
+    this.iframe = el.querySelector('iframe')!
     this.maskEl = el.querySelector('.sandbox-mask')!
     this.loadEl = el.querySelector('.sandbox-loading')!
     this.codeEl = el.querySelector('.sandbox-code')!
     this.lineEl = el.querySelector('.sandbox-gutter')!
-    this.contentEl = el.querySelector('.sandbox-content')!
+    this.renderEl = el.querySelector('.sandbox-render')!
     this.searchEl = el.querySelector('.sandbox-search')!
     // 重置
     el.querySelector('.sandbox-reset')?.addEventListener('click', () => {
@@ -208,15 +230,14 @@ export default class MiniSandbox {
     })
     // 绑定回车事件
     this.searchEl.addEventListener('keypress', e => {
-      if (e.keyCode === 13) this.setCode(this.searchEl.value)
+      // if (e.keyCode === 13) this.setCode(this.searchEl.value)
     })
     // 点击 tab 标签页
     const tabBar = el.querySelector('.sandbox-tab')!
     tabBar.addEventListener('click', e => {
-      const targetEl = e.target as HTMLDivElement
-      const fileIndex = Number(targetEl.getAttribute('data-index'))
-      if (targetEl !== tabBar && this.fileIndex !== fileIndex) {
-        this.fileIndex = fileIndex
+      const targetEl = (e['path'] as HTMLElement[]).find(dom => dom.className === 'sandbox-tab-item')
+      if (targetEl) {
+        this.fileIndex = Number(targetEl.getAttribute('data-index'))
         // 切换 tab 页面
         this.changeTab()
         // 设置样式
@@ -224,7 +245,7 @@ export default class MiniSandbox {
         for (const item of items) {
           item.className = 'sandbox-tab-item'
         }
-        this.addClass(targetEl, 'sandbox-tab-active')
+        this.addClass(targetEl!, 'sandbox-tab-active')
       }
     })
   }
@@ -278,7 +299,7 @@ export default class MiniSandbox {
     const htmlStr = this.getValue()
     const codeStr = encode(htmlStr)
     // 替换输入框
-    this.searchEl.value = codeStr
+    this.searchEl.value = '127.0.0.1:3000/' + encodeURIComponent(this.currTemplate.filename)
     // 替换字符串缓存
     currFile.value = htmlStr
     // 替换顶部 url
@@ -312,6 +333,9 @@ export default class MiniSandbox {
 
   private changeTab() {
     const currFile = this.currFile
+    if (this.templateTypeSet.has(currFile.type)) {
+      this.currTemplate = currFile
+    }
     this.setValue(currFile.value || currFile.defaultValue)
   }
 
@@ -348,19 +372,25 @@ export default class MiniSandbox {
     }
   }
 
-  private addClass(el: HTMLDivElement, className: string) {
+  private addClass(el: HTMLElement, className: string) {
     el.classList.add(className)
   }
 
   public render() {
+    const { currTemplate } = this
     this.triggleLoading(true)
-    const htmlStr = this.getValue()
-    this.renderIframe(htmlStr, this.currFile.type)
+    if (currTemplate) {
+      this.renderIframe(currTemplate.value)
+    }
   }
 
   private async getPublicResources(type: 'style' | 'script', src: string) {
     if (!window['ldqPublicResources']) window['ldqPublicResources'] = {}
     const ldqPublicResources = window['ldqPublicResources']
+    const localFile = this.files[src]
+    if (localFile) {
+      ldqPublicResources[src] = ElementGenerator(type, localFile.value)
+    }
     if (!ldqPublicResources[src]) {
       ldqPublicResources[src] = await FileLoader(type, src)
     }
@@ -371,9 +401,9 @@ export default class MiniSandbox {
     this.loadEl.style.display = status ? 'block' : 'none'
   }
 
-  private async renderIframe(context: string, type: string = 'html') {
+  private async renderIframe(context: string) {
     const { publicResources, loaders } = this
-    const currFile = this.currFile
+    const currTemplate = this.currTemplate
     // 等待 iframe 刷新
     await new Promise<void>(resolve => {
       this.iframe.addEventListener('load', () => resolve())
@@ -384,10 +414,10 @@ export default class MiniSandbox {
     const iframeDocument = iframe.contentWindow?.document
     if (!iframeDocument) return
     // 加载静态资源
-    const cssLibs = await Promise.all(publicResources.cssLibs.concat(currFile.cssLibs).map(src => this.getPublicResources('style', src)))
-    const jsLibs = await Promise.all(publicResources.jsLibs.concat(currFile.jsLibs).map(src => this.getPublicResources('script', src)))
-    cssLibs.push(`<style>\n${publicResources.css && publicResources.css}\n${currFile.css && currFile.css}\n</style>`)
-    jsLibs.push(`<script>\n${publicResources.js && publicResources.js}\n${currFile.js && currFile.js}\n</script>`)
+    const cssLibs = await Promise.all(publicResources.cssLibs.concat(currTemplate.cssLibs).map(src => this.getPublicResources('style', src)))
+    const jsLibs = await Promise.all(publicResources.jsLibs.concat(currTemplate.jsLibs).map(src => this.getPublicResources('script', src)))
+    cssLibs.push(`<style>\n${publicResources.css && publicResources.css}\n${currTemplate.css && currTemplate.css}\n</style>`)
+    jsLibs.push(`<script>\n${publicResources.js && publicResources.js}\n${currTemplate.js && currTemplate.js}\n</script>`)
     // 渲染模板
     const HTMLLoader = (context: string) => `
       <!DOCTYPE html>
@@ -405,8 +435,7 @@ export default class MiniSandbox {
           <\/body>
       <\/html>
     `
-    const filenameSuffixes = currFile.filename.slice(currFile.filename.lastIndexOf('.'))
-    const value = loaders[filenameSuffixes]
+    const value = loaders[currTemplate.type]
     const fileLoaders = Array.isArray(value) ? value : [value]
     const template = [HTMLLoader, ...fileLoaders].reverse()
       .filter(loader => typeof loader === 'function')

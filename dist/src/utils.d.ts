@@ -4,8 +4,7 @@ export declare const getQuery: (search?: string) => {};
 export declare const setQuery: (query: {
     [key: string]: string | number;
 }) => void;
-export declare const CSSLoader: (src: string) => Promise<string>;
-export declare const JSLoader: (src: string) => Promise<string>;
+export declare const ElementGenerator: (type: 'style' | 'script', innerText: string) => string;
 export declare const FileLoader: (type: 'style' | 'script', src: string) => Promise<string>;
 export declare const encode: (value: string) => string;
 export declare const decode: (value: string) => string;
