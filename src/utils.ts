@@ -42,13 +42,17 @@ export const setQuery = (query: { [key: string]: string | number }) => {
   history.pushState(null, '', search)
 }
 
-export const ElementGenerator = (type: 'style' | 'script', innerText: string) => ({
-  style: `<style>${innerText}<\/style>`,
-  script: `<script type="text/javascript">${innerText}<\/script>`,
-}[type])
+export const ElementGenerator = (innerText: string | undefined, type?: 'style' | 'script') => type
+  ? (
+      {
+        style: `<style>${innerText || ''}<\/style>`,
+        script: `<script type="text/javascript">${innerText || ''}<\/script>`,
+      }[type]
+    )
+  : innerText
 
-export const FileLoader = (type: 'style' | 'script', src: string) => {
-  return fetch(src).then(res => res.text()).then(innerText => ElementGenerator(type, innerText))
+export const FileLoader = (src: string, type: 'style' | 'script') => {
+  return fetch(src).then(res => res.text()).then(innerText => ElementGenerator(innerText, type))
 }
 
 export const encode = (value: string) => {

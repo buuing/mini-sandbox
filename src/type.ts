@@ -1,3 +1,7 @@
+import MiniSandbox from './index'
+
+export type GetObjectItemType<T> = T extends object ? T[keyof T] : never
+export type GetArrayItemType<T> = T extends any[] ? T[number] : never
 
 // 公共静态资源
 export type PublicResourcesType = {
@@ -9,7 +13,7 @@ export type PublicResourcesType = {
 
 // tab页类型
 export type FileType = {
-  type: string
+  title?: string
   defaultValue?: string
   cssLibs?: PublicResourcesType['cssLibs']
   jsLibs?: PublicResourcesType['jsLibs']
@@ -18,8 +22,14 @@ export type FileType = {
   urlField?: string
 }
 
+export type LoaderFunctionType = (
+  this: MiniSandbox,
+  context: string,
+  config: FileType
+) => (string | Promise<string>)
+
 export type LoadersType = {
-  [key: string]: Array<(context: string) => string>
+  [key: string]: LoaderFunctionType[]
 }
 
 // 默认配置

@@ -33,28 +33,33 @@
       el: '#my-sandbox',
       files: {
         'index.html': {
-          defaultValue: `<button id="btn">点击 0</button>`,
-          cssLibs: ['style.css'],
-          jsLibs: ['app.js']
+          defaultValue: "<h1>标题1</h1>\n<h2>标题1</h2>\n<h3>标题1</h3>\n<h4>标题1</h4>\n<h5>标题1</h5>\n",
+          cssLibs: ['index.css'],
+          jsLibs: ['index.js']
         },
-        'style.css': {
-          defaultValue: "body {\n  background: pink;\n}\n",
+        'index.js': {
+          defaultValue: "const dom = document.querySelector('h1')\ndom.addEventListener('click', function(e) {\n  this.style.color = 'red'\n})\n",
         },
-        'app.js': {
-          defaultValue: "const btn = document.querySelector('button')\nbtn.addEventListener('click', e => {\n  console.log(e)\n})\n",
+        'index.css': {
+          defaultValue: "* {\n  text-align: center;\n}\n",
         },
-        // 'app.vue': {
-        //   type: 'vue',
-        //   defaultValue: "<template>\n  <button @click=\"cli\">count: {{num}}</button>\n</template>\n\n<script>\nexport default {\n  data () {\n    return {\n      num: 1\n    }\n  },\n  methods: {\n    cli () {\n      this.num++\n    }\n  }\n}\n<\/script>\n\n<style>\n  button {\n    color: red;\n  }\n</style>\n\n<style>\n  button {\n    background: pink;\n  }\n</style>",
-        //   jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
-        //   urlField: 'vue',
-        // },
+        'App.vue': {
+          defaultValue: "<template>\n  <button @click=\"cli\">count: {{num}}</button>\n</template>\n",
+          cssLibs: ['index.css'],
+          jsLibs: [
+            'https://cdn.jsdelivr.net/npm/vue@2.6.14', // vue的模板必须引入 vue.js
+            'App.js'
+          ],
+        },
+        'App.js': {
+          defaultValue: "export default {\n  data () {\n    return {\n      num: 100\n    }\n  },\n  methods: {\n    cli () {\n      this.num++\n    }\n  }\n}\n"
+        }
       },
       loaders: {
         '.vue': SandboxVueLoader
       },
-      publicResource: {
-        css: '* { text-align: center }',
+      publicResources: {
+        css: '',
         js: '',
         jsLibs: [],
         cssLibs: [],

@@ -1,2 +1,3 @@
-declare const SandboxVueLoader: (value: string) => string;
+import { LoaderFunctionType } from '../type';
+declare const SandboxVueLoader: LoaderFunctionType;
 export default SandboxVueLoader;

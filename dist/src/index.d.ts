@@ -36,7 +36,7 @@ export default class MiniSandbox {
     lineEl: HTMLDivElement;
     renderEl: HTMLDivElement;
     searchEl: HTMLInputElement;
-    ldqPublicResources: string[];
+    ldqResources: string[];
     run: Function;
     constructor(options?: OptionsType);
     initOptions(options: OptionsType): void;
@@ -58,7 +58,7 @@ export default class MiniSandbox {
     }): void;
     private addClass;
     render(): void;
-    private getPublicResources;
+    getResources(src: string, type?: 'style' | 'script'): Promise<any>;
     private triggleLoading;
     private renderIframe;
     triggleTheme(theme?: "light" | "dark"): void;

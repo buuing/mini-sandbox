@@ -1,3 +1,6 @@
+import MiniSandbox from './index';
+export declare type GetObjectItemType<T> = T extends object ? T[keyof T] : never;
+export declare type GetArrayItemType<T> = T extends any[] ? T[number] : never;
 export declare type PublicResourcesType = {
     cssLibs?: string[];
     jsLibs?: string[];
@@ -5,7 +8,7 @@ export declare type PublicResourcesType = {
     js?: string;
 };
 export declare type FileType = {
-    type: string;
+    title?: string;
     defaultValue?: string;
     cssLibs?: PublicResourcesType['cssLibs'];
     jsLibs?: PublicResourcesType['jsLibs'];
@@ -13,8 +16,9 @@ export declare type FileType = {
     js?: PublicResourcesType['js'];
     urlField?: string;
 };
+export declare type LoaderFunctionType = (this: MiniSandbox, context: string, config: FileType) => (string | Promise<string>);
 export declare type LoadersType = {
-    [key: string]: Array<(context: string) => string>;
+    [key: string]: LoaderFunctionType[];
 };
 export declare type DefaultConfigType = {
     theme?: 'light' | 'dark';
