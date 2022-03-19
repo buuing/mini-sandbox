@@ -11,15 +11,16 @@
   </style>
   <style>
     body {
-      background-color: #eee;
       position: relative;
       height: 400px;
       overflow: hidden;
     }
     #my-sandbox {
+      box-shadow: 0.8rem 0.8rem 1.4rem #c8d0e7,
+                  -0.2rem -0.2rem 1.8rem #dddfea;
       width: 80vw;
       margin: 50px auto;
-      border: 2px solid rgb(19, 121, 255);
+      /* border: 2px solid rgb(19, 121, 255); */
       border-radius: 5px;
     }
   </style>
@@ -33,33 +34,40 @@
       el: '#my-sandbox',
       files: {
         'index.html': {
-          type: 'html',
-          defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>\n",
-          css: '* { color: red }',
-          urlField: 'html',
+          defaultValue: "<h1>标题1</h1>\n<h2>标题1</h2>\n<h3>标题1</h3>\n<h4>标题1</h4>\n<h5>标题1</h5>\n",
+          cssLibs: ['index.css'],
+          jsLibs: ['index.js']
         },
-        'test.html': {
-          defaultValue: `<button onclick="alert('Hello')">按钮</button>`,
+        'index.js': {
+          defaultValue: "const dom = document.querySelector('h1')\ndom.addEventListener('click', function(e) {\n  this.style.color = 'red'\n})\n",
         },
-        'app.vue': {
-          type: 'vue',
-          defaultValue: "<template>\n  <button @click=\"cli\">count: {{num}}</button>\n</template>\n\n<script>\nexport default {\n  data () {\n    return {\n      num: 1\n    }\n  },\n  methods: {\n    cli () {\n      this.num++\n    }\n  }\n}\n<\/script>\n\n<style>\n  button {\n    color: red;\n  }\n</style>\n\n<style>\n  button {\n    background: pink;\n  }\n</style>",
-          jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
-          urlField: 'vue',
+        'index.css': {
+          defaultValue: "* {\n  text-align: center;\n}\n",
         },
         'app.jsx': {
           type: 'react',
           defaultValue: `function App () {\n  return <div> Hello world! </div>\n}\n\nReactDOM.render(<App />, document.getElementById("container"))`,
           jsLibs: ['https://unpkg.com/react@17/umd/react.production.min.js', 'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'],
           urlFiled: 'react'
+        },
+        'App.vue': {
+          defaultValue: "<template>\n  <button @click=\"cli\">count: {{num}}</button>\n</template>\n",
+          cssLibs: ['index.css'],
+          jsLibs: [
+            'https://cdn.jsdelivr.net/npm/vue@2.6.14', // vue的模板必须引入 vue.js
+            'App.js'
+          ],
+        },
+        'App.js': {
+          defaultValue: "export default {\n  data () {\n    return {\n      num: 100\n    }\n  },\n  methods: {\n    cli () {\n      this.num++\n    }\n  }\n}\n"
         }
       },
       loaders: {
         '.vue': SandboxVueLoader,
         '.jsx': SandboxReactLoader
       },
-      publicResource: {
-        css: '* { text-align: center }',
+      publicResources: {
+        css: '',
         js: '',
         jsLibs: [],
         cssLibs: [],
