@@ -6,7 +6,7 @@ const BaseLoader: LoaderFunctionType = async function(context) {
   const cssLibs = await Promise.all(publicResources.cssLibs.map(src => this.getResources(src, 'style')))
   const jsLibs = await Promise.all(publicResources.jsLibs.map(src => this.getResources(src, 'script')))
   cssLibs.push(ElementGenerator(publicResources.css, 'style'))
-  jsLibs.push(ElementGenerator(publicResources.js, 'script'))
+  const script = ElementGenerator(publicResources.js, 'script')
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -18,9 +18,10 @@ const BaseLoader: LoaderFunctionType = async function(context) {
         ${cssLibs.join('\n')}
       <\/head>
       <body>
-        ${context}
         ${jsLibs.join('\n')}
-        <\/body>
+        ${context}
+        ${script}
+      <\/body>
     <\/html>
   `
 }
