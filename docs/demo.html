@@ -27,6 +27,7 @@
 
   <script src="../dist/index.umd.js"></script>
   <script src="../dist/vue-loader.js"></script>
+  <script src="../dist/react-loader.js"></script>
   <script>
     var mp = new MiniSandbox({
       el: '#my-sandbox',
@@ -46,9 +47,16 @@
           jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
           urlField: 'vue',
         },
+        'app.jsx': {
+          type: 'react',
+          defaultValue: `function App () {\n  return <div> Hello world! </div>\n}\n\nReactDOM.render(<App />, document.getElementById("container"))`,
+          jsLibs: ['https://unpkg.com/react@17/umd/react.production.min.js', 'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'],
+          urlFiled: 'react'
+        }
       },
       loaders: {
-        '.vue': SandboxVueLoader
+        '.vue': SandboxVueLoader,
+        '.jsx': SandboxReactLoader
       },
       publicResource: {
         css: '* { text-align: center }',
