@@ -5,6 +5,7 @@ const BaseLoader: LoaderFunctionType = async function(context) {
   const { publicResources } = this
   const cssLibs = await Promise.all(publicResources.cssLibs.map(src => this.getResources(src, 'style')))
   const jsLibs = await Promise.all(publicResources.jsLibs.map(src => this.getResources(src, 'script')))
+  console.log(publicResources, jsLibs)
   cssLibs.push(ElementGenerator(publicResources.css, 'style'))
   const script = ElementGenerator(publicResources.js, 'script')
   return `

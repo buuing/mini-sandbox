@@ -93,4 +93,27 @@ export default [
       commonjs(),
     ],
   },
+  // vue loader
+  {
+    input: 'src/loaders/react-loader.ts',
+    output: [
+      {
+        file: 'dist/react-loader.js',
+        format: 'umd',
+        name: 'SandboxReactLoader',
+        sourcemap: false,
+      },
+    ],
+    plugins: [
+      ts({
+        tsconfig: path.resolve(__dirname, './tsconfig.json'),
+        extensions: ['.js', '.ts'],
+        declaration: true,
+      }),
+      json(),
+      babel({ exclude: 'node_modules/**' }),
+      resolve(),
+      commonjs(),
+    ],
+  },
 ]
