@@ -28,6 +28,7 @@
 
   <script src="../dist/index.umd.js"></script>
   <script src="../dist/vue-loader.js"></script>
+  <script src="../dist/react-loader.js"></script>
   <script>
     var mp = new MiniSandbox({
       el: '#my-sandbox',
@@ -43,6 +44,11 @@
         'index.css': {
           defaultValue: "* {\n  text-align: center;\n}\n",
         },
+        'app.jsx': {
+          type: 'react',
+          defaultValue: `function App () {\n  return <div> Hello world! </div>\n}\n\nReactDOM.render(<App />, document.getElementById("container"))`,
+          jsLibs: ['https://unpkg.com/react@17/umd/react.production.min.js', 'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'],
+        },
         'App.vue': {
           defaultValue: "<template>\n  <button @click=\"cli\">count: {{num}}</button>\n</template>\n",
           cssLibs: ['index.css'],
@@ -56,7 +62,8 @@
         }
       },
       loaders: {
-        '.vue': SandboxVueLoader
+        '.vue': SandboxVueLoader,
+        '.jsx': SandboxReactLoader
       },
       publicResources: {
         css: '',
