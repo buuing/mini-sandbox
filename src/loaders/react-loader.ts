@@ -14,9 +14,7 @@ const SandboxReactLoader: LoaderFunctionType = async function(value, config) {
     <div id="container"></div>
     ${jsLibs.join('\n')}
     <script>
-      setTimeout(() =>   {
-        ${script}
-      })
+      ${script}
     </script>
   `
   return await BaseLoader.call(this, content, config)

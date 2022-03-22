@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Sandbox</title>
+</head>
+<body>
+  <style>
+  </style>
+  <style>
+    body {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+    }
+    #my-sandbox {
+      box-shadow: 0.8rem 0.8rem 1.4rem #c8d0e7,
+                  -0.2rem -0.2rem 1.8rem #dddfea;
+      width: 90vw;
+      height: 80vh;
+      margin: 10vh auto;
+      /* border: 2px solid rgb(19, 121, 255); */
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+  </style>
+  <div id="my-sandbox"></div>
+
+  <script src="./dist/index.umd.js"></script>
+  <script src="./dist/vue-loader.js"></script>
+  <script src="./dist/react-loader.js"></script>
+  <script>
+    var mp = new MiniSandbox({
+      el: '#my-sandbox',
+      files: {
+        'index.html': {
+          title: 'HTML',
+          urlField: 'html',
+          defaultValue: "<style>\n  button {\n    color: red;\n  }\n</style>\n\n<button>测试</button>\n\n<script>\n  const btn = document.querySelector('button')\n  btn.addEventListener('click', () => {\n    alert('click 事件')\n  })\n<\/script>",
+        },
+        'App.vue': {
+          title: 'Vue',
+          urlField: 'vue',
+          defaultValue: "<template>\n  <button @click=\"add\">number: {{num}}</button>\n</template>\n\n<script>\nexport default {\n  data () {\n    return {\n      num: 100\n    }\n  },\n  methods: {\n    add () {\n      this.num++\n    }\n  }\n}\n<\/script>\n",
+          jsLibs: [
+            'https://cdn.jsdelivr.net/npm/vue@2.6.14', // vue的模板必须引入 vue.js
+          ],
+        },
+        'app.jsx': {
+          title: 'React',
+          urlField: 'react',
+          defaultValue: `function App () {\n  return <div> Hello world! </div>\n}\n\nReactDOM.render(<App />, document.getElementById("container"))\n`,
+          jsLibs: [
+            'https://unpkg.com/react@17/umd/react.production.min.js',
+            'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'
+          ],
+        },
+      },
+      loaders: {
+        '.vue': SandboxVueLoader,
+        '.jsx': SandboxReactLoader
+      },
+      publicResources: {
+        css: '',
+        js: '',
+        jsLibs: [],
+        cssLibs: [],
+      },
+      defaultConfig: {
+        theme: 'light',
+        autoRun: true, // 是否自动保存
+        editorWidth: '55%', // 编辑区域的默认宽度占比
+        height: '80vh',
+        draggable: true,
+      },
+      events: {
+        onChange: () => {},
+        onLoad: () => {},
+      }
+    })
+  </script>
+</body>
+</html>

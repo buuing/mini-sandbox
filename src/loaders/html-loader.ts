@@ -12,14 +12,15 @@ const HTMLLoader: LoaderFunctionType = async function(content, config) {
   const jsLibs = await Promise.all(scriptForLibs.map(src => this.getResources(src, 'script')))
   const scriptForTab = config.jsLibs?.find(src => !reg.test(src)) || ''
   const esModuleForTab = scriptForTab && await this.getResources(scriptForTab)
-  const script = ElementGenerator(config.js, 'script')
   // 重新设置模板
   content = `
     ${cssLibs.join('\n')}
     ${jsLibs.join('\n')}
     ${content}
-    ${esModuleForTab}
-    ${script}
+    <script>
+      ${esModuleForTab}
+      ${config.js}
+    </script>
   `
   return await BaseLoader.call(this, content, config)
 }

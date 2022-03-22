@@ -1,7 +1,7 @@
 
 # 在 javascript 中使用
 
-[filename](./demo.html ':include')
+[filename](../demo.html ':include')
 
 ### 通过 CDN 链接使用
 
