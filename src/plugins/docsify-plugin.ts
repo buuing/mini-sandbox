@@ -7,6 +7,12 @@ export default function initMiniSandbox(hook: {
   const options: Array<string[]> = []; let index = 0
   // const $sandbox = (window as any).$docsify.miniSandbox
   hook.beforeEach((content) => {
+    const reg = /```([^`]+)```\n{1}(?=```)|(?<=```\n{1})```([^`]+)```/g
+    content = content.replace(reg, (res, ...arg) => {
+      console.log(arg)
+      return ''
+    })
+    console.log(content)
     content = content.replace(/```\s?([a-z]+)\s+\[(.*)\]\s?(\$\{.*\}|\{.*\})?\n([^`]*)\n```/gm, (res, ...arg) => {
       options[index] = arg.slice(0, -2).map(_ => String(_))
       return `<div class="mini-sandbox-docsify" data-index="${index++}"></div>`

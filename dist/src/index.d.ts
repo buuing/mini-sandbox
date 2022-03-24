@@ -49,7 +49,7 @@ export default class MiniSandbox {
     private initCodeMirror;
     private changeTab;
     setValue(value: string): void;
-    getValue(): string;
+    getValue(): any;
     getJSONString(): string;
     setCode(code: string): void;
     getCode(value?: string): string;
