@@ -9,7 +9,6 @@ const SandboxReactLoader: LoaderFunctionType = async function(value, config) {
   const reg = /\:\/\/.*/
   const scriptForLibs = config.jsLibs?.filter(src => reg.test(src)) || []
   const jsLibs = await Promise.all(scriptForLibs.map(src => this.getResources(src, 'script')))
-  console.log(config, 'config')
   const content = `
     <div id="container"></div>
     ${jsLibs.join('\n')}

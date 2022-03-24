@@ -42,7 +42,7 @@ export default [
       livereload(),
       serve({
         open: true,
-        openPage: '/docs/demo.html',
+        openPage: '/demo.html',
         contentBase: './',
       }),
     ],

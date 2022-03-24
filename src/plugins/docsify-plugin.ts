@@ -5,15 +5,14 @@ export default function initMiniSandbox(hook: {
   doneEach: (fn: Function) => void
 }) {
   const options: Array<string[]> = []; let index = 0
-  // const $sandbox = (window as any).$docsify.miniSandbox
+  const sandboxOptions = (window as any).$docsify && (window as any).$docsify.sandboxOptions || {}
   hook.beforeEach((content) => {
-    const reg = /```([^`]+)```\n{1}(?=```)|(?<=```\n{1})```([^`]+)```/g
-    content = content.replace(reg, (res, ...arg) => {
-      console.log(arg)
-      return ''
-    })
-    console.log(content)
-    content = content.replace(/```\s?([a-z]+)\s+\[(.*)\]\s?(\$\{.*\}|\{.*\})?\n([^`]*)\n```/gm, (res, ...arg) => {
+    // const reg = /```([^`]+)```\n{1}(?=```)|(?<=```\n{1})```([^`]+)```/g
+    // content = content.replace(reg, (res, ...arg) => {
+    //   console.log(arg)
+    //   return ''
+    // })
+    content = content.replace(/`{3}\s?([a-z]+)\s+\[(.*)\]\s?(\$\{.*\}|\{.*\})?\n([^`]*)\n`{3}/gm, (res, ...arg) => {
       options[index] = arg.slice(0, -2).map(_ => String(_))
       return `<div class="mini-sandbox-docsify" data-index="${index++}"></div>`
     })
@@ -23,7 +22,7 @@ export default function initMiniSandbox(hook: {
     const arr = document.querySelectorAll('.mini-sandbox-docsify')
     for (const el of arr) {
       const currIndex = Number(el.getAttribute('data-index'))
-      const [type, fileName, config, value] = options[currIndex]
+      const [type, filename, config, value] = options[currIndex]
       const regConfig = /^\$\{(.*)\}$/.exec(config)
       let fileConfig = {}
       try {
@@ -38,18 +37,17 @@ export default function initMiniSandbox(hook: {
         console.error(config, err)
         fileConfig = {}
       }
+      console.log(filename)
       new (window as any).MiniSandbox({
+        ...sandboxOptions,
         el: el,
         files: {
-          [fileName]: {
+          [filename]: {
             type,
             ...fileConfig,
             defaultValue: value,
           },
         },
-        // defaultConfig: {
-        //   ...$sandbox && $sandbox.defaultConfig,
-        // },
       })
     }
   })
