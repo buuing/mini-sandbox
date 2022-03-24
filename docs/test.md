@@ -64,3 +64,48 @@
 
 <style></style>
 ```
+
+### 测试7, 两个代码块分开显示
+
+
+```html [demo1]
+<div style="border: 1px solid red">这是一个盒子</div>
+```
+
+```html [demo2]
+<style>
+  .box {
+    border: 1px solid red;
+  }
+</style>
+<div class="box">这是一个盒子</div>
+```
+
+
+### 测试8, 两个代码块合并显示
+
+```html [testeight-demo1]
+<div style="border: 1px solid red">这是一个盒子</div>
+```
+```html [testeight-demo2]
+<style>
+  .box {
+    border: 1px solid red;
+  }
+</style>
+<div class="box">这是一个盒子</div>
+```
+
+### 测试9, 两个代码块合并显示
+
+```html [testnight-demo1]
+<div style="border: 1px solid blue">这是一个盒子</div>
+```
+```html [testnight-demo2]
+<style>
+  .box {
+    border: 1px solid blue;
+  }
+</style>
+<div class="box">这是一个盒子</div>
+```
