@@ -28,9 +28,9 @@
   </style>
   <div id="my-sandbox"></div>
 
-  <script src="./dist/index.umd.js"></script>
-  <script src="./dist/vue-loader.js"></script>
-  <script src="./dist/react-loader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.9"></script>
+  <!-- <script src="./dist/vue-loader.js"></script>
+  <script src="./dist/react-loader.js"></script> -->
   <script>
     var mp = new MiniSandbox({
       el: '#my-sandbox',
@@ -40,28 +40,28 @@
           urlField: 'html',
           defaultValue: "<style>\n  button {\n    color: red;\n  }\n</style>\n\n<button>测试</button>\n\n<script>\n  const btn = document.querySelector('button')\n  btn.addEventListener('click', () => {\n    alert('click 事件')\n  })\n<\/script>",
         },
-        'App.vue': {
-          title: 'Vue',
-          urlField: 'vue',
-          defaultValue: "<template>\n  <button @click=\"add\">number: {{num}}</button>\n</template>\n\n<script>\nexport default {\n  data () {\n    return {\n      num: 100\n    }\n  },\n  methods: {\n    add () {\n      this.num++\n    }\n  }\n}\n<\/script>\n",
-          jsLibs: [
-            'https://cdn.jsdelivr.net/npm/vue@2.6.14', // vue的模板必须引入 vue.js
-          ],
-        },
-        'app.jsx': {
-          title: 'React',
-          urlField: 'react',
-          defaultValue: `function App () {\n  return <div> Hello world! </div>\n}\n\nReactDOM.render(<App />, document.getElementById("container"))\n`,
-          jsLibs: [
-            'https://unpkg.com/react@17/umd/react.production.min.js',
-            'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'
-          ],
-        },
+        // 'App.vue': {
+        //   title: 'Vue',
+        //   urlField: 'vue',
+        //   defaultValue: "<template>\n  <button @click=\"add\">number: {{num}}</button>\n</template>\n\n<script>\nexport default {\n  data () {\n    return {\n      num: 100\n    }\n  },\n  methods: {\n    add () {\n      this.num++\n    }\n  }\n}\n<\/script>\n",
+        //   jsLibs: [
+        //     'https://cdn.jsdelivr.net/npm/vue@2.6.14', // vue的模板必须引入 vue.js
+        //   ],
+        // },
+        // 'app.jsx': {
+        //   title: 'React',
+        //   urlField: 'react',
+        //   defaultValue: `function App () {\n  return <div> Hello world! </div>\n}\n\nReactDOM.render(<App />, document.getElementById("container"))\n`,
+        //   jsLibs: [
+        //     'https://unpkg.com/react@17/umd/react.production.min.js',
+        //     'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'
+        //   ],
+        // },
       },
-      loaders: {
-        '.vue': SandboxVueLoader,
-        '.jsx': SandboxReactLoader
-      },
+      // loaders: {
+      //   '.vue': SandboxVueLoader,
+      //   '.jsx': SandboxReactLoader
+      // },
       publicResources: {
         css: '',
         js: '',

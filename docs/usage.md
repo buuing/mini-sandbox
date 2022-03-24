@@ -8,7 +8,7 @@
 ```html
 <div id="my-sandbox"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.2"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
 <script>
   new MiniSandbox({
     el: '#my-sandbox',

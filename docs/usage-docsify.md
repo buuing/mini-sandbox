@@ -43,8 +43,8 @@
 #### 通过 CDN 引入
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.2"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.2/dist/docsify-plugin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/docsify-plugin.js"></script>
 ```
 
 
