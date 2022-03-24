@@ -42,7 +42,7 @@ export default [
       livereload(),
       serve({
         open: true,
-        openPage: '/demo.html',
+        openPage: '/docs/demo.html',
         contentBase: './',
       }),
     ],
@@ -71,49 +71,49 @@ export default [
     ],
   },
   // vue loader
-  // {
-  //   input: 'src/loaders/vue-loader.ts',
-  //   output: [
-  //     {
-  //       file: 'dist/vue-loader.js',
-  //       format: 'umd',
-  //       name: 'SandboxVueLoader',
-  //       sourcemap: false,
-  //     },
-  //   ],
-  //   plugins: [
-  //     ts({
-  //       tsconfig: path.resolve(__dirname, './tsconfig.json'),
-  //       extensions: ['.js', '.ts'],
-  //       declaration: true,
-  //     }),
-  //     json(),
-  //     babel({ exclude: 'node_modules/**' }),
-  //     resolve(),
-  //     commonjs(),
-  //   ],
-  // },
-  // // vue loader
-  // {
-  //   input: 'src/loaders/react-loader.ts',
-  //   output: [
-  //     {
-  //       file: 'dist/react-loader.js',
-  //       format: 'umd',
-  //       name: 'SandboxReactLoader',
-  //       sourcemap: false,
-  //     },
-  //   ],
-  //   plugins: [
-  //     ts({
-  //       tsconfig: path.resolve(__dirname, './tsconfig.json'),
-  //       extensions: ['.js', '.ts'],
-  //       declaration: true,
-  //     }),
-  //     json(),
-  //     babel({ exclude: 'node_modules/**' }),
-  //     resolve(),
-  //     commonjs(),
-  //   ],
-  // },
+  {
+    input: 'src/loaders/vue-loader.ts',
+    output: [
+      {
+        file: 'dist/vue-loader.js',
+        format: 'umd',
+        name: 'SandboxVueLoader',
+        sourcemap: false,
+      },
+    ],
+    plugins: [
+      ts({
+        tsconfig: path.resolve(__dirname, './tsconfig.json'),
+        extensions: ['.js', '.ts'],
+        declaration: true,
+      }),
+      json(),
+      babel({ exclude: 'node_modules/**' }),
+      resolve(),
+      commonjs(),
+    ],
+  },
+  // vue loader
+  {
+    input: 'src/loaders/react-loader.ts',
+    output: [
+      {
+        file: 'dist/react-loader.js',
+        format: 'umd',
+        name: 'SandboxReactLoader',
+        sourcemap: false,
+      },
+    ],
+    plugins: [
+      ts({
+        tsconfig: path.resolve(__dirname, './tsconfig.json'),
+        extensions: ['.js', '.ts'],
+        declaration: true,
+      }),
+      json(),
+      babel({ exclude: 'node_modules/**' }),
+      resolve(),
+      commonjs(),
+    ],
+  },
 ]
