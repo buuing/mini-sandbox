@@ -12,7 +12,7 @@ export default function initMiniSandbox(hook: {
     //   console.log(arg)
     //   return ''
     // })
-    content = content.replace(/`{3}\s?([a-z]+)\s+\[(.*)\]\s?(\$\{.*\}|\{.*\})?\n([^`]*)\n`{3}/gm, (res, ...arg) => {
+    content = content.replace(/`{3}\s?([a-z]+)\s+\[(.*?)\]\s?(\$\{.*?\}|\{.*?\})?\n(.*?)`{3}/gms, (res, ...arg) => {
       options[index] = arg.slice(0, -2).map(_ => String(_))
       return `<div class="mini-sandbox-docsify" data-index="${index++}"></div>`
     })
