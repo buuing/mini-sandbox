@@ -5,13 +5,14 @@ export default function initMiniSandbox(hook: {
   doneEach: (fn: Function) => void
 }) {
   const options: Array<string[]> = []; let index = 0
-  const sandboxOptions = (window as any).$docsify && (window as any).$docsify.sandboxOptions || {}
+  const sandboxOptions = ((window as any).$docsify && (window as any).$docsify.sandboxOptions) || {}
   hook.beforeEach((content) => {
-    // const reg = /```([^`]+)```\n{1}(?=```)|(?<=```\n{1})```([^`]+)```/g
-    // content = content.replace(reg, (res, ...arg) => {
-    //   console.log(arg)
-    //   return ''
-    // })
+    const reg = /```([^`]+)```\n{1}(?=```)|(?<=```\n{1})```([^`]+)```/g
+    content.replace(reg, (res, ...arg) => {
+      console.log(res)
+      return ''
+    })
+    // 这行代码临时放这里, 先别删: content = content.replace(/```\s?([a-z]+)\s+\[(.*)\]\s?(\$\{.*\}|\{.*\})?\n([^`]*)\n```/gm, (res, ...arg) => {
     content = content.replace(/`{3}\s?([a-z]+)\s+\[([^\s]*)\]\s?(.*?\})?\n(.*?)`{3}/gms, (res, ...arg) => {
       options[index] = arg.slice(0, -2).map(_ => String(_))
       return `<div class="mini-sandbox-docsify" data-index="${index++}"></div>`
@@ -37,7 +38,6 @@ export default function initMiniSandbox(hook: {
         console.error(config, err)
         fileConfig = {}
       }
-      console.log(filename)
       new (window as any).MiniSandbox({
         ...sandboxOptions,
         el: el,

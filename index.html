@@ -61,7 +61,7 @@
       // 全局默认配置
       sandboxOptions: {
         defaultConfig: {
-          height: '300px',
+          height: '200px',
           autoRun: true,
         },
       },
@@ -88,9 +88,15 @@
 
   </script>
   <!-- Docsify v4 -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.1"></script> -->
   <script src="./docs/docsify.js"></script>
   <script src="./docs/prism-bash.js"></script>
+
+  <!-- 下面的用于本地开发 -->
+  <!-- <script src="./dist/index.umd.js"></script>
+  <script src="./dist/docsify-plugin.js"></script>
+  <script src="./dist/vue-loader.js"></script> -->
+
+  <!-- 下面的用于线上 -->
   <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.9"></script>
   <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.9/dist/docsify-plugin.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.9/dist/vue-loader.js"></script>

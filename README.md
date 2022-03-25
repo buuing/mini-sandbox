@@ -1,9 +1,9 @@
 
 <div align="center" style="display: flex; flex-direction: column; align-items: center;">
-  <img src="./docs/undraw_static_website_re_x70h.svg" width="256" />
+  <img src="./docs/logo.svg" width="256" />
   <br />
   <h1 style="margin: 10px 0 0">Mini Sandbox</h1>
-  <p>一个基于 CodeMirror6 封装的 HTML【在线编辑 & 实时预览】插件</p>
+  <p>一个前端【代码/组件】的可视化方案，融合了【在线编辑 & 实时预览】等特点</p>
   <p>
     <a href="https://github.com/buuing/mini-sandbox/stargazers" target="_black">
       <img src="https://img.shields.io/github/stars/buuing/mini-sandbox?color=%236a90e1&logo=github&style=flat-square" alt="stars" />
@@ -43,6 +43,16 @@
 
 - [在 javascript 中使用](https://buuing.github.io/mini-sandbox/#/docs/usage)
 - [在 docsify 中使用](https://buuing.github.io/mini-sandbox/#/docs/usage-docsify)
+
+<br />
+
+<!-- ## 赞赏码
+
+- **Bug 反馈请直接去 Github 上面提 Issues，**我会实时收到邮件提醒前去查看
+- 如果是小白需要技术指导的话, 下边是我的赞赏码, **备注好你的微信号,** 我看到后会主动加你
+- 但如果是因为我文档没写清楚，或者是插件本身的bug，导致你无法正常使用的话，赞赏全额返还
+
+<img src="./docs/wx.png" width="256" /> -->
 
 <br />
 
