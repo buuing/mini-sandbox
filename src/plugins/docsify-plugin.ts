@@ -4,56 +4,48 @@ export default function initMiniSandbox(hook: {
   beforeEach: (fn: (content: string) => string) => void
   doneEach: (fn: Function) => void
 }) {
-  let options: string[][][] = []
-  let c = ''
-
   const sandboxOptions = ((window as any).$docsify && (window as any).$docsify.sandboxOptions) || {}
-
-  hook.beforeEach((content) => {
-    const reg = /```((?!```).+?(?!```)\n)```(?=\n(?!```))/gms
-    const codeList = content.match(reg)
-
-    if (codeList) {
-      options = codeList.map((code, index) => {
-        const everyCodetoList = code.split(/```\n```/)
-        const temp: string[][] = []
-
-        everyCodetoList.forEach((s) => {
-          const array = /[`{3}]?\s?([a-zA-Z]+)\s+?\[(.*?)\]\s+(\{.*?\})?(.*?)(?=\n)/gs.exec(s)
-          if (array) {
-            const [, type, name, config, value] = array
-            temp.push([type, name, config, value])
-          }
-        })
-        c += `<div class="mini-sandbox-docsify" data-index="${index}"></div>`
-        return temp
-      })
+  let options: Array<{
+    [key: string]: {
+      type: string,
+      config: string,
+      value: string
     }
-
-    // 这行代码临时放这里, 先别删: content = content.replace(/```\s?([a-z]+)\s+\[(.*)\]\s?(\$\{.*\}|\{.*\})?\n([^`]*)\n```/gm, (res, ...arg) => {
-    // content = content.replace(/`{3}\s?([a-z]+)\s+\[([^\s]*)\]\s?(.*?\})?\n(.*?)`{3}/gms, (res, ...arg) => {
-    //   options[index] = arg.slice(0, -2).map(_ => String(_))
-    //   return `<div class="mini-sandbox-docsify" data-index="${index++}"></div>`
-    // })
-    // console.log(options)
-    return c
+  }> = []
+  hook.beforeEach((content) => {
+    let index = 0
+    content += '\n'
+    // 匹配混合代码块
+    return content.replace(/```((?!```).+?(?!```)\n)```(?=\n(?!```))/gms, (res) => {
+      const codeList = res.split(/```\n```/)
+      const len = codeList.length
+      const currOption = {}
+      options[index] = currOption
+      // 处理单一代码块
+      codeList.map((code, i) => {
+        if (i > 0) code = '```' + code
+        if (i < len - 1) code += '```'
+        console.log(code)
+        const reg = /`{3}\s?([a-z]+)\s+\[([^\s]*)\]\s?(\$\{.*\}|\{.*\})?\n(.*?)`{3}/gms
+        const [, type, filename, config, value] = (reg.exec(code) || []).map(_ => String(_))
+        if (filename) {
+          currOption[filename] = { type, config, value }
+        }
+      })
+      if (!Object.keys(currOption).length) return res
+      return `\n<div class="mini-sandbox-docsify" data-index="${index++}"></div>\n`
+    })
   })
   hook.doneEach(function() {
     const arr = document.querySelectorAll('.mini-sandbox-docsify')
-
     for (const el of arr) {
       const currIndex = Number(el.getAttribute('data-index'))
-      const temp = options[currIndex]
-
-      if (!temp.length) continue
-
-      const fileObj = {}
-      temp.forEach(codeTemp => {
-        const [type, filename, config, value] = codeTemp
-        const regConfig = /^\$\{(.*)\}$/.exec(config)
-
-        let fileConfig = {}
-
+      const currOption = options[currIndex]
+      const files = {}
+      // 处理 files 数据结构
+      for (const filename in currOption) {
+        const { type, config, value } = currOption[filename]
+        let regConfig = /^\$\{(.*)\}$/.exec(config), fileConfig
         try {
           if (regConfig) {
             let keyStr = regConfig[1]
@@ -66,19 +58,17 @@ export default function initMiniSandbox(hook: {
           console.error(config, err)
           fileConfig = {}
         }
-        fileObj[filename] = {
+        files[filename] = {
           type,
           ...fileConfig,
           defaultValue: value,
         }
-      })
-
+      }
+      // 渲染 mini-sandbox
       new (window as any).MiniSandbox({
         ...sandboxOptions,
-        el: el,
-        files: {
-          ...fileObj,
-        },
+        el,
+        files,
       })
     }
   })
