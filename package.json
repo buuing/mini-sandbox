@@ -1,6 +1,6 @@
 {
   "name": "mini-sandbox",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "description": "",
   "main": "dist/index.esm.js",
   "module": "dist/index.esm.js",
@@ -17,6 +17,7 @@
     "dist/index.esm.js",
     "dist/index.umd.js",
     "dist/vue-loader.js",
+    "dist/react-loader.js",
     "dist/docsify-plugin.js"
   ],
   "devDependencies": {

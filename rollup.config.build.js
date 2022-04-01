@@ -9,6 +9,7 @@ import { terser } from 'rollup-plugin-terser'
 // import del from 'rollup-plugin-delete'
 import pkg from './package.json'
 import styles from 'rollup-plugin-styles'
+
 export default [
   {
     input: 'src/index.ts',

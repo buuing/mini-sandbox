@@ -46,7 +46,7 @@ export const ElementGenerator = (innerText: string | undefined, type?: 'style' |
   ? (
       {
         style: `<style>${innerText || ''}<\/style>`,
-        script: `<script type="text/javascript">${innerText || ''}<\/script>`,
+        script: `<script>${innerText || ''}<\/script>`,
       }[type]
     )
   : innerText

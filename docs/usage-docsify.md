@@ -38,9 +38,9 @@
 
 <br />
 
-### 在 index.html 中引入
+### 【引入CDN】
 
-#### 通过 CDN 引入
+#### 在 `index.html` 中引入
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
@@ -50,13 +50,13 @@
 
 <br />
 
-### 简写用法
+### 【简写用法】
 
 #### 示例1: 创建一个空的 sandbox
 
-至少需要留一个空行, 因为我需要读取代码块的内容 *(哪怕他是空的)*
+`[demo1.html]` 这个中括号内的字符, 将会作为标签页的名称
 
-```
+```md
 ^^^html [demo1.html]
 
 ^^^
@@ -70,47 +70,28 @@
 
 #### 示例2: 设置默认 css / js (只针对当前标签页生效)
 
-你可以像这样显式的把 style 标签放到编辑器里
-
-```html
-^^^html [demo2.html]
-<style>
-  div {
-    border: 1px solid red;
-  }
-</style>
-
-<div>这是一个盒子</div>
-^^^
-```
-
-```html [demo2.html]
-<style>
-  div {
-    border: 1px solid red;
-  }
-</style>
-
-<div>这是一个盒子</div>
-```
-
-<br />
-
-也可以在起始行, 写一个对象格式 *(FileType)* 的数据
+在起始行写一个对象格式的数据 **`(不要换行)`**
 
 ```html
 ^^^html [demo2.html] { css: 'div { border: 1px solid red; }' }
-<div>这是一个盒子</div>
+<div>红盒子</div>
 ^^^
+^^^html [demo3.html] { css: 'div { border: 1px solid blue; }', js: 'console.log("hello")' }
+<div>蓝盒子</div>
+^^^
+```
 
-^^^html [demo3.html] { css: 'div { border: 1px solid red; }', js: 'console.log("hello")' }
-<div>这是一个盒子</div>
-^^^
+```html [demo2.html] { css: 'div { border: 1px solid red; }' }
+<div>红盒子</div>
+```
+```html [demo3.html] { css: 'div { border: 1px solid blue; }', js: 'console.log("hello")' }
+<div>蓝盒子</div>
 ```
 
 !> 但是需要注意: 标签名后面的对象数据 **不能换行!**
 
 ```js
+// 错误示例
 { css: '.box { color: red text-align: center }' } // 错误, 注意css属性之间要加分号
 { css: 'span { color: red; }', css: 'a { color: blue; }' } // 错误, 对象不能拥有相同的key
 { js: 'console.log('hello')' } // 错误, 注意单双引号的嵌套
@@ -122,6 +103,8 @@
   `,
   js: 'console.log("hello")'
 }
+
+-------------------------------------------------------------------------------------
 
 // 以下为正确写法
 { css: '* { border: 1px solid red; }' }
@@ -137,7 +120,7 @@
 
 如果你觉得行内写一堆预置`css`或`js`太难受了, 可以像下面这样使用全局变量, 而且变量是可以复用的
 
-##### 1. 首先你要去`index.html`里提前定义好`Demo1Config`变量
+##### 1. 首先你要去`index.html`里提前定义好变量名, 并挂载到`window`下面
 
 ```js
 window.Demo1Config = {
@@ -177,7 +160,7 @@ window.Demo1Config = {
 <br />
 <br />
 
-### 完整用法
+### 【完整用法】
 
 #### 1. 找到 index.html
 
@@ -194,7 +177,7 @@ window.$docsify = {
 ```md
 <div id="my-sandbox"></div>
 
-<script>
+<script type="text/javascript">
 new MiniSandbox({
   el: document.querySelector('#my-sandbox'),
   files: {
@@ -206,7 +189,7 @@ new MiniSandbox({
       defaultValue: `<button onclick="alert('Hello')">按钮</button>`,
     }
   },
-  publicResource: {
+  publicResources: {
     css: '* { text-align: center }',
   },
   defaultConfig: {
@@ -226,26 +209,3 @@ new MiniSandbox({
 !> `提示`: 在 docsify 中, 同一个 md 页面下只有第一个`<script>`标签生效
 
 <div id="my-sandbox"></div>
-
-<script>
-new MiniSandbox({
-  el: document.querySelector('#my-sandbox'),
-  files: {
-    'index.html': {
-      defaultValue: "<style>\n  h2 {\n    color: red;\n  }\n</style>\n\n<div>\n  <h2>这是一个 Demo</h2>\n  <button id=\"btn\">点击 0</button>\n</div>\n\n<\script>\n  let num = 1\n  const btn = document.querySelector('#btn')\n  btn.addEventListener('click', e => {\n    btn.innerHTML = '点击 ' + num++\n  })\n<\/script>",
-      css: '* { color: red }',
-    },
-    'test.html': {
-      defaultValue: `<button onclick="alert('Hello')">按钮</button>`,
-    }
-  },
-  publicResource: {
-    css: '* { text-align: center }',
-  },
-  defaultConfig: {
-    autoRun: true, // 是否自动保存
-    editorWidth: '55%', // 编辑区域的默认宽度占比
-    height: '400px', // sandbox 高度
-  },
-})
-</script>

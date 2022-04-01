@@ -5,7 +5,7 @@ export default function initMiniSandbox(hook: {
   doneEach: (fn: Function) => void
 }) {
   const sandboxOptions = ((window as any).$docsify && (window as any).$docsify.sandboxOptions) || {}
-  const options: Array<{
+  let options: Array<{
     [key: string]: {
       type: string,
       config: string,
@@ -71,6 +71,7 @@ export default function initMiniSandbox(hook: {
         files,
       })
     }
+    options = []
   })
 }
 

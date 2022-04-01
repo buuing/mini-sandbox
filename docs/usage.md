@@ -3,7 +3,7 @@
 
 [filename](../demo.html ':include')
 
-### 通过 CDN 链接使用
+### 【通过 CDN 链接使用】
 
 ```html
 <div id="my-sandbox"></div>
@@ -23,7 +23,7 @@
 
 <br />
 
-### 通过 NPM 包下载
+### 【通过 NPM 包下载】
 
 1. 安装
 
