@@ -1,7 +1,10 @@
 import { EditorState, basicSetup } from '@codemirror/basic-setup'
 import { EditorView, keymap } from '@codemirror/view'
 import { indentWithTab } from '@codemirror/commands'
+import { Compartment } from '@codemirror/state'
 import { html } from '@codemirror/lang-html'
+import { css } from '@codemirror/lang-css'
+import { javascript } from '@codemirror/lang-javascript'
 import { debounce, getQuery, setQuery, ElementGenerator, FileLoader, encode, decode, define } from './utils'
 import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType, LoadersType } from './type'
 import RightMenu from '@right-menu/core'
@@ -10,6 +13,8 @@ import HTMLLoader from './loaders/html-loader'
 import { name, version } from '../package.json'
 import './style/theme.less'
 import './style/index.less'
+
+const languageCompartment = new Compartment()
 
 type LocalFileType = Required<FileType> & {
   filename: string,
@@ -150,6 +155,7 @@ export default class MiniSandbox {
       // 否则就渲染
       this.render()
     }
+    this.changeLang()
   }
 
   // 重置
@@ -322,7 +328,7 @@ export default class MiniSandbox {
         extensions: [
           basicSetup,
           keymap.of([indentWithTab]),
-          html(),
+          languageCompartment.of([]),
           handleChange,
         ],
       }),
@@ -339,7 +345,39 @@ export default class MiniSandbox {
     if (this.templateTypeSet.has(currFile.type)) {
       this.currTemplate = currFile
     }
+    // 切换语言
+    this.changeLang()
     this.setValue(currFile.value || currFile.defaultValue)
+  }
+
+  private changeLang() {
+    const currFile = this.currFile
+    let res
+    switch (currFile.type) {
+      case '.html':
+        res = html()
+        break
+      case '.css':
+        res = css()
+        break
+      case '.js':
+        res = javascript()
+        break
+      case '.vue':
+        res = html()
+        break
+      case '.jsx':
+        res = javascript({ jsx: true })
+        break
+      case '.ts':
+        res = javascript({ typescript: true })
+        break
+      default:
+        res = []
+    }
+    this.editor.dispatch({
+      effects: languageCompartment.reconfigure(res),
+    })
   }
 
   public setValue(value: string) {

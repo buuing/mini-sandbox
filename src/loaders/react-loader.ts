@@ -20,7 +20,7 @@ const SandboxReactLoader: LoaderFunctionType = async function(value, config) {
   ]
   const content = `
     ${cssLibs.join('\n')}
-    <div id="container"></div>
+    <div id="root"></div>
     ${jsLibs.join('\n')}
     <script>
       ${script}

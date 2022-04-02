@@ -43,10 +43,8 @@
 #### 在 `index.html` 中引入
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/docsify-plugin.js"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/mini-sandbox@${version},npm/mini-sandbox@${version}/dist/docsify-plugin.js"></script>
 ```
-
 
 <br />
 
