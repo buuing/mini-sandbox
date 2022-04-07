@@ -25,8 +25,10 @@ export default function initMiniSandbox(hook: {
       codeList.forEach((code, i) => {
         if (i > 0) code = '```' + code
         if (i < len - 1) code += '```'
-        const reg = /`{3}\s?([a-z]+)\s+\[([^\s]*)\]\s?(\$\{.*\}|\{.*\})?\n(.*?)`{3}/gms
-        const [, type, filename, config, value] = (reg.exec(code) || []).map(_ => String(_))
+        const lines = code.split('\n')
+        const value = lines.slice(1, -1).join('\n')
+        const reg = /^`{3}\s?([a-z]+)\s+\[([^\s]*)\]\s?(\$\{.*\}|\{.*\})?/gms
+        const [, type, filename, config] = (reg.exec(lines[0]) || []).map(_ => String(_))
         if (filename) {
           currOption[filename] = { type, config, value }
         }
