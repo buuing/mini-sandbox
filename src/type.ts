@@ -20,6 +20,9 @@ export type FileType = {
   css?: PublicResourcesType['css']
   js?: PublicResourcesType['js']
   urlField?: string
+  module?: 'iife' | 'esm'
+  hidden?: boolean
+  // disabled?: boolean
 }
 
 export type LoaderFunctionType = (

@@ -86,6 +86,8 @@ export default class MiniSandbox {
         js: '',
         urlField: '',
         title: '',
+        module: 'iife' as const,
+        hidden: false,
         ...file,
         filename: filename.lastIndexOf('.') > -1 ? filename : filename + '.html',
         value: htmlStr || file.defaultValue || '',
@@ -182,7 +184,7 @@ export default class MiniSandbox {
           </div>
           &ensp;
           <div class="sandbox-tab">
-            ${this.fileList.map((file, index) => {
+            ${this.fileList.filter(file => !file.hidden).map((file, index) => {
               const className = 'sandbox-tab-item' + (this.fileIndex === index ? ' sandbox-tab-active' : '')
               return `
                 <div class="${className}" data-index="${index}">
