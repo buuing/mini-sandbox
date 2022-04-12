@@ -58,8 +58,11 @@
 
 <br />
 
-## 友情链接
+## 谁在使用
 
-- [🎁 lucky-canvas 一个跨平台、兼容多端的【大转盘 / 九宫格 / 老虎机】抽奖插件](https://github.com/LuckDraw/lucky-canvas)
+- [🎁 lucky-canvas 【大转盘 / 九宫格 / 老虎机】抽奖插件](https://100px.net/playground.html)
+- [🎁 right-menu 一个功能强大的右键菜单插件](https://buuing.github.io/right-menu/#/docs/options)
+
+欢迎通过 PR / ISSUES 补充 (链接请指向具体使用该插件的页面)
 
 <br />
