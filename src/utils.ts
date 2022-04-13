@@ -42,7 +42,7 @@ export const setQuery = (query: { [key: string]: string | number }) => {
   history.pushState(null, '', search)
 }
 
-export const ElementGenerator = (innerText: string | undefined, type?: 'style' | 'script') => type
+export const ElementGenerator = (innerText: string, type?: 'style' | 'script') => type
   ? (
       {
         style: `<style>${innerText || ''}<\/style>`,
@@ -51,7 +51,7 @@ export const ElementGenerator = (innerText: string | undefined, type?: 'style' |
     )
   : innerText
 
-export const FileLoader = (src: string, type: 'style' | 'script') => {
+export const FileLoader = (src: string, type: 'style' | 'script'): Promise<string> => {
   return fetch(src).then(res => res.text()).then(innerText => ElementGenerator(innerText, type))
 }
 

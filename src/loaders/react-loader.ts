@@ -12,7 +12,7 @@ const SandboxReactLoader: LoaderFunctionType = async function(value, config) {
     ...await Promise.all(publicResources.cssLibs.map(src => this.getResources(src, 'style'))),
     ...await Promise.all((config.cssLibs || []).map(src => this.getResources(src, 'style'))),
     ElementGenerator(publicResources.css, 'style'),
-    ElementGenerator(config.css, 'style'),
+    ElementGenerator(config.css || '', 'style'),
   ]
   const jsLibs = [
     ...await Promise.all(publicResources.jsLibs.map(src => this.getResources(src, 'script'))),

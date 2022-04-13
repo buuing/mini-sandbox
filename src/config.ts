@@ -105,7 +105,7 @@ export function generateMenuOptions(this: MiniSandbox): OptionsType {
         { type: 'hr' },
         {
           type: 'li',
-          text: '📋 开源协议 License',
+          text: '📋 开源协议 MIT License',
           callback: () => window.open('https://github.com/buuing/mini-sandbox/blob/master/LICENSE'),
         },
       ],

@@ -19,7 +19,12 @@
     el: '#sandbox-demo10',
     files: {
       'app.jsx': {
-        defaultValue: `function App () {\n  return <div> Hello world! </div>\n}\n\nReactDOM.render(<App />, document.getElementById("root"))\n`,
+        defaultValue: `function App () {
+  return <div> Hello world! </div>
+}
+
+ReactDOM.render(<App />, document.getElementById("root"))
+`,
         jsLibs: [
           'https://unpkg.com/react@17/umd/react.production.min.js',
           'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'

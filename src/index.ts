@@ -427,16 +427,16 @@ export default class MiniSandbox {
     }
   }
 
-  public async getResources(src: string, type?: 'style' | 'script') {
+  public async getResources(src: string, type?: 'style' | 'script'): Promise<string> {
     if (!window['ldqResources']) window['ldqResources'] = {}
-    const ldqResources = window['ldqResources']
+    const ldqResources: { [key: string]: string | Promise<string> } = window['ldqResources']
     const localFile = this.files[src]
     if (localFile) {
       ldqResources[src] = ElementGenerator(localFile.value, type)
     }
     if (!ldqResources[src]) {
-      if (!type) return console.error('type 不可为空')
-      ldqResources[src] = await FileLoader(src, type)
+      if (!type) throw new Error('type is Required!')
+      ldqResources[src] = FileLoader(src, type)
     }
     return ldqResources[src]
   }

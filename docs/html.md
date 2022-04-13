@@ -238,3 +238,47 @@
 ```
 
 <br /><br /><br />
+
+### 【使用 import 和 export】
+
+<div id="sandbox-demo7"></div>
+
+```html
+<div id="sandbox-demo7"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
+<script type="text/javascript">
+  new MiniSandbox({
+    el: '#sandbox-demo7',
+    files: {
+      'index.html': {
+        defaultValue: "<style>\n  h3 {\n    text-align: center;\n  }\n</style>\n\n<h3 class=\"box\"></h3>\n",
+        jsLibs: ['app.js'],
+      },
+      'app.js': {
+        module: 'esm',
+        defaultValue: `import { getTime } from './utils.js'
+
+const dom = document.querySelector('.box')
+  setInterval(() => {
+  dom.innerHTML = '当前时间: ' + getTime()
+}, 1000 / 60)`
+      },
+      'utils.js': {
+        module: 'esm',
+        defaultValue: `const fillZero = str => {
+  return ('0' + str).slice(-2)
+}
+
+export const getTime = (x, y) => {
+  const dt = new Date()
+  const h = dt.getHours()
+  const m = dt.getMinutes()
+  const s = dt.getSeconds()
+  return \`\${fillZero(h)}\:\${fillZero(m)}:\${fillZero(s)}\`
+}`
+      }
+    },
+  })
+</script>
+```

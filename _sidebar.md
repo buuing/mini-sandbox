@@ -8,5 +8,6 @@
   - [&ensp;- HTML 模板](/docs/html)
   - [&ensp;- Vue 模板](/docs/vue)
   - [&ensp;- React 模板](/docs/react)
+- [**历史更新 & History**](/docs/history)
 
 <!-- - [**测试页**](/docs/test) -->

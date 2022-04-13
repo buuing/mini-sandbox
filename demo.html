@@ -28,57 +28,43 @@
   </style>
   <div id="my-sandbox"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.2.9"></script>
-  <!-- <script src="./dist/vue-loader.js"></script>
-  <script src="./dist/react-loader.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.3"></script>
+
+  <!-- <script src="./dist/index.umd.js"></script> -->
+  <!-- <script src="./dist/vue-loader.js"></script> -->
+  <!-- <script src="./dist/react-loader.js"></script> -->
   <script>
     var mp = new MiniSandbox({
       el: '#my-sandbox',
       files: {
         'index.html': {
-          title: 'HTML',
-          urlField: 'html',
-          defaultValue: "<style>\n  button {\n    color: red;\n  }\n</style>\n\n<button>测试</button>\n\n<script>\n  const btn = document.querySelector('button')\n  btn.addEventListener('click', () => {\n    alert('click 事件')\n  })\n<\/script>",
+          defaultValue: "<style>\n  h3 {\n    text-align: center;\n  }\n</style>\n\n<h3 class=\"box\"></h3>\n",
+          jsLibs: ['app.js'],
         },
-        // 'App.vue': {
-        //   title: 'Vue',
-        //   urlField: 'vue',
-        //   defaultValue: "<template>\n  <button @click=\"add\">number: {{num}}</button>\n</template>\n\n<script>\nexport default {\n  data () {\n    return {\n      num: 100\n    }\n  },\n  methods: {\n    add () {\n      this.num++\n    }\n  }\n}\n<\/script>\n",
-        //   jsLibs: [
-        //     'https://cdn.jsdelivr.net/npm/vue@2.6.14', // vue的模板必须引入 vue.js
-        //   ],
-        // },
-        // 'app.jsx': {
-        //   title: 'React',
-        //   urlField: 'react',
-        //   defaultValue: `function App () {\n  return <div> Hello world! </div>\n}\n\nReactDOM.render(<App />, document.getElementById("container"))\n`,
-        //   jsLibs: [
-        //     'https://unpkg.com/react@17/umd/react.production.min.js',
-        //     'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'
-        //   ],
-        // },
+        'app.js': {
+          module: 'esm',
+          defaultValue: `import { getTime } from './utils.js'
+
+const dom = document.querySelector('.box')
+setInterval(() => {
+  dom.innerHTML = '当前时间: ' + getTime()
+}, 1000 / 60)`
+        },
+        'utils.js': {
+          module: 'esm',
+          defaultValue: `const fillZero = str => {
+  return ('0' + str).slice(-2)
+}
+
+export const getTime = (x, y) => {
+  const dt = new Date()
+  const h = dt.getHours()
+  const m = dt.getMinutes()
+  const s = dt.getSeconds()
+  return \`\${fillZero(h)}\:\${fillZero(m)}:\${fillZero(s)}\`
+}`
+        }
       },
-      // loaders: {
-      //   '.vue': SandboxVueLoader,
-      //   '.jsx': SandboxReactLoader
-      // },
-      publicResources: {
-        css: '',
-        js: '',
-        jsLibs: [],
-        cssLibs: [],
-      },
-      defaultConfig: {
-        theme: 'light',
-        autoRun: true, // 是否自动保存
-        editorWidth: '55%', // 编辑区域的默认宽度占比
-        height: '80vh',
-        draggable: true,
-      },
-      events: {
-        onChange: () => {},
-        onLoad: () => {},
-      }
     })
   </script>
 </body>
