@@ -1,24 +1,11 @@
 import { LoaderFunctionType } from '../type'
-import { ElementGenerator } from '../utils'
 import BaseLoader from './base-loader'
+import { getCssLibs, getJsLibs, getScriptForTab } from './index'
 
 const HTMLLoader: LoaderFunctionType = async function(content, config) {
-  const { publicResources } = this
-  const reg = /\:\/\/.*/
-  const scriptForLibs = config.jsLibs?.filter(src => reg.test(src)) || []
-  const cssLibs = [
-    ...await Promise.all(publicResources.cssLibs.map(src => this.getResources(src, 'style'))),
-    ...await Promise.all((config.cssLibs || []).map(src => this.getResources(src, 'style'))),
-    ElementGenerator(publicResources.css, 'style'),
-    ElementGenerator(config.css || '', 'style'),
-  ]
-  const jsLibs = [
-    ...await Promise.all(publicResources.jsLibs.map(src => this.getResources(src, 'script'))),
-    ...await Promise.all(scriptForLibs.map(src => this.getResources(src, 'script'))),
-  ]
-  // 分离 js 标签页
-  let scriptForTab = config.jsLibs?.find(src => !reg.test(src)) || ''
-  scriptForTab = scriptForTab && await this.getResources(scriptForTab)
+  const cssLibs = await getCssLibs.call(this, config)
+  const jsLibs = await getJsLibs.call(this, config)
+  const scriptForTab = await getScriptForTab.call(this, config)
   // 获取本地 esm 模块
   const esmFiles = this.fileList.filter(file => file.module === 'esm')
   const esModules = {}
@@ -51,7 +38,7 @@ const HTMLLoader: LoaderFunctionType = async function(content, config) {
     <script type="importmap-shim">${JSON.stringify(config['importmap'] || {})}</script>
     ${content}
     <script>
-      ${publicResources.js}
+      ${this.publicResources.js}
       ${config.js}
     </script>
     <script type="module-shim">
