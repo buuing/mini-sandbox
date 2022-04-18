@@ -11,7 +11,9 @@ const SandboxReactLoader: LoaderFunctionType = async function(value, config) {
     ${cssLibs.join('\n')}
     <div id="root"></div>
     ${jsLibs.join('\n')}
-    <script>
+    ${await this.getResources('https://cdn.jsdelivr.net/npm/es-module-shims@1.5.4/dist/es-module-shims.min.js', 'script')}
+    <script type="importmap-shim">${JSON.stringify(config['importMap'] || {})}</script>
+    <script type="module-shim">
       ${script}
     </script>
   `

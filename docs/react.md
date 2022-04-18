@@ -19,16 +19,28 @@
     el: '#sandbox-demo10',
     files: {
       'app.jsx': {
-        defaultValue: `function App () {
+        defaultValue: `import React from 'react'
+import ReactDOM from 'react-dom'
+
+function App () {
   return <div> Hello world! </div>
 }
 
 ReactDOM.render(<App />, document.getElementById("root"))
 `,
-        jsLibs: [
-          'https://unpkg.com/react@17/umd/react.production.min.js',
-          'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'
-        ],
+        importMap: {
+          "imports": {
+            "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
+            "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js"
+          },
+          "scopes": {
+            "https://ga.jspm.io/": {
+              "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
+              "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
+              "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
+            }
+          }
+        }
       },
     },
     loaders: {
