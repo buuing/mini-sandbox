@@ -48,7 +48,7 @@
 <div id="sandbox-demo8"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/vue-loader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/vue-loader.js"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo8',
@@ -98,7 +98,7 @@
 <div id="sandbox-demo9"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/vue-loader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/vue-loader.js"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo9',

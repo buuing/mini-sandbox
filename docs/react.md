@@ -13,7 +13,7 @@
 <div id="sandbox-demo10"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/react-loader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/react-loader.js"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo10',
