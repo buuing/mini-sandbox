@@ -1,7 +1,7 @@
 
-# Vue 模板
+# Vue Single File Component
 
-### 【单 Vue 组件】
+### 【展示 Vue Template】
 
 - **说明:**
   - 如果你想展示 Vue 组件你只需要做两步即可
@@ -28,6 +28,9 @@
     },
     publicResources: {
       jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
+    },
+    defaultConfig: {
+      height: '450px'
     }
   })
 </script>

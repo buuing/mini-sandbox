@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+<div id="sandbox-demo10"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.4/dist/react-loader.js"></script>
+<script type="text/javascript">
+  new MiniSandbox({
+    el: '#sandbox-demo10',
+    files: {
+      'App.jsx': {
+        urlField: 'code',
+        defaultValue: `import React from 'react'
+import ReactDOM from 'react-dom'
+
+function App () {
+  return <div>Hello world!</div>
+}
+
+ReactDOM.render(<App />, document.getElementById("root"))
+`,
+        importMap: {
+          "imports": {
+            "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
+            "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
+            "@right-menu/react": "http://127.0.0.1:5501/packages/react/dist/index.esm.js",
+            "@lucky-canvas/react": "https://cdn.jsdelivr.net/npm/@lucky-canvas/react@0.1.7/dist/index.esm.js"
+          },
+          "scopes": {
+            "https://ga.jspm.io/": {
+              "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
+              "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
+              "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
+            }
+          }
+        }
+      },
+    },
+    loaders: {
+      '.jsx': SandboxReactLoader
+    },
+    defaultConfig: {
+      height: '100vh'
+    }
+  })
+</script>
+</body>
+</html>
