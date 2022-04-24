@@ -81,10 +81,10 @@ import ReactDOM from 'react-dom'
 import { LuckyWheel } from '@lucky-canvas/react'
 
 function App () {
-  const [blocks] = useState([
+  const [blocks, setBlocks] = useState([
     { padding: '10px', background: '#869cfa' }
   ])
-  const [prizes] = useState([
+  const [prizes, setPrizes] = useState([
     { background: '#e9e8fe', fonts: [{ text: '0' }] },
     { background: '#b8c5f2', fonts: [{ text: '1' }] },
     { background: '#e9e8fe', fonts: [{ text: '2' }] },
@@ -92,7 +92,7 @@ function App () {
     { background: '#e9e8fe', fonts: [{ text: '4' }] },
     { background: '#b8c5f2', fonts: [{ text: '5' }] },
   ])
-  const [buttons] = useState([
+  const [buttons, setBottons] = useState([
     { radius: '40%', background: '#617df2' },
     { radius: '35%', background: '#afc8ff' },
     {
@@ -146,6 +146,7 @@ ReactDOM.render(<App />, document.getElementById("root"))
       '.jsx': SandboxReactLoader
     },
     defaultConfig: {
+      height: '500px',
       editorWidth: '60%'
     }
   })
