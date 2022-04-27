@@ -41,7 +41,7 @@ export type DefaultConfigType = {
   autoRun?: boolean
   autoRunInterval?: number
   height?: string
-  editorWidth?: string
+  editorRange?: string
   draggable?: boolean
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
 }

@@ -1,4 +1,8 @@
 
+- **`v0.3.5`**
+  - [x] React SFC 用 `export default` 包装, 隐藏 `ReactDOM.render`
+  - [x] `editorWidth` 属性改为 `editorRange` 效果不变
+
 - **`v0.3.4`**
   - [x] React SFC 单文件组件增加 import 模式
 

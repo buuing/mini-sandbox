@@ -192,7 +192,7 @@ new MiniSandbox({
   },
   defaultConfig: {
     autoRun: true, // 是否自动保存
-    editorWidth: '55%', // 编辑区域的默认宽度占比
+    editorRange: '55%', // 编辑区域的默认宽度占比
     height: '400px', // sandbox 高度
   },
 })

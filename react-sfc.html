@@ -5,48 +5,85 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-</head>
-<body>
   <style>
     body {
       margin: 0;
       overflow: hidden;
     }
   </style>
-<div id="sandbox-demo10"></div>
+</head>
+<body>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.4"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.4/dist/react-loader.js"></script>
+<div id="sandbox-demo10"></div>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.5"></script>
+<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.5/dist/react-loader.js"></script>
+<!-- <script src="./dist/index.umd.js"></script>
+<script src="./dist/react-loader.js"></script> -->
+
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo10',
     files: {
       'App.jsx': {
         urlField: 'code',
-        defaultValue: `import React from 'react'
-import ReactDOM from 'react-dom'
+        defaultValue: `import React, { useState } from 'react'
+import antd from 'antd'
 
-function App () {
-  return <div>Hello world!</div>
-}
+const { Button, Pagination, Badge, Space, Switch, Alert } = antd
 
-ReactDOM.render(<App />, document.getElementById("root"))
-`,
+export default function App() {
+  const [show, setShow] = useState(true)
+  return <>
+    {/* 按钮组件 */}
+    <Space>
+      <Button type="primary">普通按钮</Button>
+      <Button type="primary" loading>加载中</Button>
+      <Button type="primary" danger>危险按钮</Button>
+      <Button type="link">文字按钮</Button>
+      <Button>默认按钮</Button>
+    </Space>
+    <Button type="primary" block>超长按钮</Button>
+    {/* 徽章组件 */}
+    <Space>
+      <Switch checked={show} onChange={() => setShow(!show)} />
+      <Badge count={show ? 25 : 0} />
+      <Badge
+        count={show ? 109 : 0}
+        style={{ backgroundColor: '#52c41a' }}
+      />
+    </Space>
+    {/* 分页组件 */}
+    <div>
+      <Pagination
+        showSizeChanger
+        defaultCurrent={3}
+        total={500}
+      />
+    </div>
+    {/* 警告提示 */}
+    <Alert message="Success Tips" type="success" showIcon />
+    <Alert message="Informational Notes" type="info" showIcon />
+    <Alert message="Warning" type="warning" showIcon closable />
+    <Alert message="Error" type="error" showIcon />
+  </>
+}`,
         importMap: {
           "imports": {
             "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
             "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
-            "@right-menu/react": "https://cdn.jsdelivr.net/npm/@right-menu/react@0.0.5/dist/index.esm.js",
-            "@lucky-canvas/react": "https://cdn.jsdelivr.net/npm/@lucky-canvas/react@0.1.7/dist/index.esm.js",
+            "antd": "https://ga.jspm.io/npm:antd@4.20.1/dist/antd.js",
+            "moment": "https://ga.jspm.io/npm:moment@2.29.3/moment.js",
           },
           "scopes": {
             "https://ga.jspm.io/": {
               "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
               "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
-              "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
+              "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js",
             }
           }
-        }
+        },
+        cssLibs: ['https://cdn.jsdelivr.net/npm/antd@4.20.1/dist/antd.min.css'],
+        css: `body { padding: 10px; } #root>div { margin: 10px 0; }`
       },
     },
     loaders: {

@@ -241,6 +241,22 @@
 
 ### 【使用 import 和 export】
 
+- 说明:
+  - 这个示例用来演示, 如何在 html 中引入 esm 模块, 并支持了 export 导出
+  - 通过观察你会发现, `app.js`中的`getTime`方法是从`utils.js`里导出来的
+
+!> 补充: 关于在 html 引入 `app.js` 的方式有两种
+
+1. **方式1: 在 jsLibs 中提前定义**
+  - 像这样 `'index.html': { jsLibs: ['app.js'] }` 设置 jsLibs 属性
+  - 好处是用户也无法删除引入的 js 脚本
+  - 缺点是用户无法清晰的知道 app.js 是从哪引入的
+
+2. **方式2: 在 html 代码中引入**
+  - 像这样 `<script type="module" src="./app.js"><\/script>` 写一个*相对路径*
+  - 好处是用户可以在代码中删除 / 切换其他 esm 模块
+  - 缺点是用户如果在代码中删除了这一行, 他就看不到 js 实现的效果了
+
 <div id="sandbox-demo7"></div>
 
 ```html
@@ -251,31 +267,36 @@
   new MiniSandbox({
     el: '#sandbox-demo7',
     files: {
-      'index.html': {
-        defaultValue: "<style>\n  h3 {\n    text-align: center;\n  }\n</style>\n\n<h3 class=\"box\"></h3>\n",
-        jsLibs: ['app.js'],
-      },
-      'app.js': {
-        module: 'esm',
-        defaultValue: `import { getTime } from './utils.js'
+        'index.html': {
+          defaultValue: `<style>
+  h3 {
+    text-align: center;
+  }
+</style>
+
+<h3 class="box"></h3>
+
+<script type="module" src="./app.js"><\/script>`,
+        },
+        'app.js': {
+          module: 'esm',
+          defaultValue: `import { getTime } from './utils.js'
 
 const dom = document.querySelector('.box')
-  setInterval(() => {
+setInterval(() => {
   dom.innerHTML = '当前时间: ' + getTime()
 }, 1000 / 60)`
-      },
-      'utils.js': {
-        module: 'esm',
-        defaultValue: `const fillZero = str => {
-  return ('0' + str).slice(-2)
-}
+        },
+        'utils.js': {
+          module: 'esm',
+          defaultValue: `const fill = str => ('0' + str).slice(-2)
 
 export const getTime = (x, y) => {
   const dt = new Date()
   const h = dt.getHours()
   const m = dt.getMinutes()
   const s = dt.getSeconds()
-  return \`\${fillZero(h)}\:\${fillZero(m)}:\${fillZero(s)}\`
+  return \`\${fill(h)}\:\${fill(m)}:\${fill(s)}\`
 }`
       }
     },

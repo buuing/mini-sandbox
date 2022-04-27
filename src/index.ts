@@ -114,7 +114,7 @@ export default class MiniSandbox {
       autoRun: true,
       autoRunInterval: 300,
       height: '300px',
-      editorWidth: '50%',
+      editorRange: '50%',
       draggable: true,
       direction: 'row',
       ...options.defaultConfig,
@@ -175,7 +175,7 @@ export default class MiniSandbox {
       'flex-direction': defaultConfig.direction,
     })
     el.innerHTML = `
-      <div class="sandbox-code" style="width: ${defaultConfig.editorWidth}">
+      <div class="sandbox-code" style="width: ${defaultConfig.editorRange}">
         <div class="sandbox-head">
           <div class="sandbox-setting">
             <span class="sandbox-icon icon-active">
