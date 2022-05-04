@@ -15,6 +15,7 @@
 
 <div id="sandbox-demo10"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo10"></div>
 
@@ -57,6 +58,7 @@ export default App`,
   })
 </script>
 ```
+-->
 
 <br /><br /><br />
 
@@ -68,6 +70,7 @@ export default App`,
 
 <div id="sandbox-demo11"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo11"></div>
 
@@ -150,6 +153,7 @@ export default function App() {
   })
 </script>
 ```
+-->
 
 <br /><br /><br />
 
@@ -162,6 +166,7 @@ export default function App() {
 
 <div id="sandbox-demo12"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo12"></div>
 
@@ -241,5 +246,6 @@ export default function App() {
   })
 </script>
 ```
+ -->
 
 <br /><br /><br />
