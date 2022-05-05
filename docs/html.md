@@ -10,6 +10,7 @@
 
 <div id="sandbox-demo1"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo1"></div>
 
@@ -23,8 +24,9 @@
   })
 </script>
 ```
+ -->
 
-<br /><br /><br />
+<br />
 
 ### 【单标签页: html+css+js】
 
@@ -36,6 +38,7 @@
 
 <div id="sandbox-demo2"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo2"></div>
 
@@ -67,8 +70,9 @@
   })
 </script>
 ```
+ -->
 
-<br /><br /><br />
+<br />
 
 ### 【单标签页: 内置默认 css/js】
 
@@ -78,6 +82,7 @@
 
 <div id="sandbox-demo3"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo3"></div>
 
@@ -107,9 +112,9 @@
   })
 </script>
 ```
+ -->
 
-
-<br /><br /><br />
+<br />
 
 ### 【多标签页: 拆分 html/css/js】
 
@@ -123,6 +128,7 @@
 
 <div id="sandbox-demo4"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo4"></div>
 
@@ -149,8 +155,9 @@
   })
 </script>
 ```
+ -->
 
-<br /><br /><br />
+<br />
 
 ### 【多标签页: 渲染多个模板】
 
@@ -159,6 +166,7 @@
 
 <div id="sandbox-demo5"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo5"></div>
 
@@ -168,7 +176,7 @@
     el: '#sandbox-demo5',
     files: {
       'h1': {
-        defaultValue: `<!-- 标题 -->
+        defaultValue: `
 <h1>H1</h1>
 <h2>H2</h2>
 <h3>H3</h3>
@@ -177,7 +185,7 @@
 <h6>H6</h6>`
       },
       'button': {
-        defaultValue: `<!-- 按钮 -->
+        defaultValue: `
 <button onclick="alert('你好')">鼠标单击</button>
 <button ondblclick="alert('嗨!~')">鼠标双击</button>`
       }
@@ -188,8 +196,9 @@
   })
 </script>
 ```
+ -->
 
-<br /><br /><br />
+<br />
 
 
 ### 【展示 HTML 组件库 的代码】
@@ -200,6 +209,7 @@
 
 <div id="sandbox-demo6"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo6"></div>
 
@@ -209,14 +219,14 @@
     el: '#sandbox-demo6',
     files: {
       'Buttons': {
-        defaultValue: `<!-- 按钮组件 -->
+        defaultValue: `
 <button type="button" class="btn btn-primary">Primary</button>
 <button type="button" class="btn btn-success">Success</button>
 <button type="button" class="btn btn-danger">Danger</button>
 <button type="button" class="btn btn-warning">Warning</button>`,
       },
       'Alert': {
-        defaultValue: `<!-- 警告框组件 -->
+        defaultValue: `
 <div class="alert alert-primary" role="alert">
   消息
 </div>
@@ -236,8 +246,9 @@
   })
 </script>
 ```
+ -->
 
-<br /><br /><br />
+<br />
 
 ### 【使用 import 和 export】
 
@@ -259,6 +270,7 @@
 
 <div id="sandbox-demo7"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo7"></div>
 
@@ -303,3 +315,4 @@ export const getTime = (x, y) => {
   })
 </script>
 ```
+ -->

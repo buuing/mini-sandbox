@@ -51,9 +51,7 @@ export const ElementGenerator = (innerText: string, type?: 'style' | 'script') =
     )
   : innerText
 
-export const FileLoader = (src: string, type: 'style' | 'script'): Promise<string> => {
-  return fetch(src).then(res => res.text()).then(innerText => ElementGenerator(innerText, type))
-}
+export const FileLoader = (src: string): Promise<string> => fetch(src).then(res => res.text())
 
 export const encode = (value: string) => {
   return encodeURIComponent(compressToEncodedURIComponent(value))

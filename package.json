@@ -1,6 +1,6 @@
 {
   "name": "mini-sandbox",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "",
   "main": "dist/index.esm.js",
   "module": "dist/index.esm.js",
@@ -10,7 +10,8 @@
   "scripts": {
     "docs": "docsify serve -o",
     "dev": "rollup --config rollup.config.dev.js -w",
-    "build": "rollup --config rollup.config.build.js"
+    "build": "rollup --config rollup.config.build.js",
+    "upload": "npm config set registry https://registry.npmjs.org/ && npm publish"
   },
   "files": [
     "dist/src",
@@ -18,7 +19,8 @@
     "dist/index.umd.js",
     "dist/vue-loader.js",
     "dist/react-loader.js",
-    "dist/docsify-plugin.js"
+    "dist/docsify-plugin.js",
+    "es-module-shims.js"
   ],
   "devDependencies": {
     "@babel/core": "^7.15.5",

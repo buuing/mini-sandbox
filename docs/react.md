@@ -11,7 +11,7 @@
 ### 【展示 React 代码】
 
 - **说明:**
-  - 用来展示 React 组件
+  - 用来展示 React 代码片段
 
 <div id="sandbox-demo10"></div>
 
@@ -60,7 +60,7 @@ export default App`,
 ```
 -->
 
-<br /><br /><br />
+<br />
 
 ### 【展示 React 组件】
 
@@ -155,7 +155,7 @@ export default function App() {
 ```
 -->
 
-<br /><br /><br />
+<br />
 
 ### 【展示 React UI 组件库】
 
@@ -248,4 +248,4 @@ export default function App() {
 ```
  -->
 
-<br /><br /><br />
+<br />

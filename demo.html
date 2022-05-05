@@ -14,13 +14,13 @@
       position: relative;
       height: 100%;
       overflow: hidden;
+      margin: 0;
     }
     #my-sandbox {
       box-shadow: 0.8rem 0.8rem 1.4rem #c8d0e7,
                   -0.2rem -0.2rem 1.8rem #dddfea;
-      width: 90vw;
-      height: 80vh;
-      margin: 10vh auto;
+      width: 100vw;
+      height: 100vh;
       /* border: 2px solid rgb(19, 121, 255); */
       border-radius: 5px;
       box-sizing: border-box;
@@ -28,7 +28,7 @@
   </style>
   <div id="my-sandbox"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.6"></script>
 
   <!-- <script src="./dist/index.umd.js"></script> -->
   <!-- <script src="./dist/vue-loader.js"></script> -->
@@ -71,7 +71,7 @@ export const getTime = (x, y) => {
         }
       },
       defaultConfig: {
-        height: '80vh'
+        height: '100vh'
       }
     })
   </script>

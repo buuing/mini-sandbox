@@ -1,6 +1,8 @@
 
 # Vue Single File Component
 
+<br />
+
 ### 【展示 Vue Template】
 
 - **说明:**
@@ -10,6 +12,7 @@
 
 <div id="sandbox-demo7"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo7"></div>
 
@@ -35,10 +38,11 @@
   })
 </script>
 ```
+ -->
 
 <div id="sandbox-demo5"></div>
 
-<br /><br /><br />
+<br />
 
 ### 【拆分 Vue 模板】
 
@@ -47,6 +51,7 @@
 
 <div id="sandbox-demo8"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo8"></div>
 
@@ -86,8 +91,9 @@
   })
 </script>
 ```
+ -->
 
-<br /><br /><br />
+<br />
 
 ### 【展示 Vue 组件库 的代码】
 
@@ -97,6 +103,7 @@
 
 <div id="sandbox-demo9"></div>
 
+<!-- 
 ```html
 <div id="sandbox-demo9"></div>
 
@@ -132,5 +139,6 @@
   })
 </script>
 ```
+ -->
 
-<br /><br /><br />
+<br />

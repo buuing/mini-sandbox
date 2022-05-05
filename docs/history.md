@@ -1,4 +1,7 @@
 
+- **`v0.3.6`**
+  - [x] 优化 React SFC 的 CDN 缓存问题
+
 - **`v0.3.5`**
   - [x] React SFC 用 `export default` 包装, 隐藏 `ReactDOM.render`
   - [x] `editorWidth` 属性改为 `editorRange` 效果不变

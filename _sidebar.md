@@ -9,8 +9,8 @@
 
 - **Examples & 示例**
   - [&ensp;- HTML 模板](/docs/html)
-  - [&ensp;- Vue SFC](/docs/vue)
-  - [&ensp;- React SFC (开发中)](/docs/react)
+  - [&ensp;- ~~Vue SFC~~ (内测中)](/docs/vue)
+  - [&ensp;- ~~React SFC~~ (内测中)](/docs/react)
 
 - [**历史更新 & History**](/docs/history)
 
