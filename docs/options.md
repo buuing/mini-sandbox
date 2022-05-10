@@ -112,7 +112,7 @@ new MiniSandbox({
   - ~~`editorWidth?: string` 编辑区域默认的宽度占比, 默认编辑区域宽 50%~~ &ensp;*(版本大于`v0.3.4`后改为`editorRange`)*
   - `editorRange?: string` 编辑区域默认占比, 默认情况下编辑区域占 50%
   - `draggable?: boolean` 是否可以左右拖动布局, 默认为 true
-  - `direction?: 'row' | 'row-reverse'` 编辑区域和渲染区域的排列方向, 分别为: 从左向右 \| 从右向左, 默认为 'row'
+  - `direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'` 控制上下/左右布局, 默认为 'row'
 
 ```js
 new MiniSandbox({

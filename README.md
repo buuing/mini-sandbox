@@ -31,7 +31,7 @@
 - 代码自动保存到 URL 上, 支持自定义短链, 分享网址即可分享代码
 - 静态资源全局缓存, 多个 sandbox 之间资源共享, 拒绝浪费请求
 - 支持动态 import / export 引入或导出其他标签页的代码
-- 支持【 `Vue SFC` / [`React SFC`](https://buuing.github.io/mini-sandbox/react-sfc.html) 】单文件组件
+- 支持【 [`Vue SFC`](https://buuing.github.io/mini-sandbox/vue-sfc.html) / [`React SFC`](https://buuing.github.io/mini-sandbox/react-sfc.html) 】单文件组件
 - 纯前端部署, 不依赖服务器, 静态页即可实现代码/组件的预览
 
 <br />

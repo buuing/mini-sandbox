@@ -42,8 +42,10 @@ export type DefaultConfigType = {
   autoRunInterval?: number
   height?: string
   editorRange?: string
+  renderRange?: string
   draggable?: boolean
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
+  toolbar: Array<'reset' | 'reload' | 'left-layout' | 'right-layout' | 'top-layout' | 'bottom-layout'>
 }
 
 // 事件

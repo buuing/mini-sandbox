@@ -5,10 +5,10 @@ import { Compartment } from '@codemirror/state'
 import { html } from '@codemirror/lang-html'
 import { css } from '@codemirror/lang-css'
 import { javascript } from '@codemirror/lang-javascript'
-import { debounce, getQuery, setQuery, ElementGenerator, FileLoader, encode, decode, define } from './utils'
+import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
 import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType, LoadersType } from './type'
 import RightMenu from '@right-menu/core'
-import { generateMenuOptions } from './config'
+import { generateMenuOptions, allIcon } from './config'
 import HTMLLoader from './loaders/html-loader'
 import { name, version } from '../package.json'
 import './style/theme.less'
@@ -42,13 +42,11 @@ export default class MiniSandbox {
   loading = false
   isClick = false
   iframe!: HTMLIFrameElement
-  maskEl!: HTMLDivElement
   loadEl!: HTMLDivElement
   codeEl!: HTMLDivElement
   editorEl!: HTMLDivElement
   lineEl!: HTMLDivElement
-  renderEl!: HTMLDivElement
-  searchEl!: HTMLInputElement
+  bodyEl!: HTMLDivElement
   ldqResources: string[] = []
   public run: Function
 
@@ -115,8 +113,10 @@ export default class MiniSandbox {
       autoRunInterval: 300,
       height: '300px',
       editorRange: '50%',
+      renderRange: 'auto',
       draggable: true,
       direction: 'row',
+      toolbar: ['reset', 'reload'],
       ...options.defaultConfig,
     }
     this.events = {
@@ -172,77 +172,63 @@ export default class MiniSandbox {
     el.setAttribute('package', `${name}@${version}`)
     this.setStyle(el, {
       height: defaultConfig.height,
-      'flex-direction': defaultConfig.direction,
     })
+    const toolbarHTML = defaultConfig.toolbar.map((key, index) => {
+      return `<span class="sandbox-icon icon-active sandbox-icon-${key}" title="${key}" style="order: ${index}">${allIcon[key]}</span>`
+    }).join('\n')
     el.innerHTML = `
-      <div class="sandbox-code" style="width: ${defaultConfig.editorRange}">
-        <div class="sandbox-head">
-          <div class="sandbox-setting">
-            <span class="sandbox-icon icon-active">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 14C9.55228 14 10 13.5523 10 13C10 12.4477 9.55228 12 9 12C8.44771 12 8 12.4477 8 13C8 13.5523 8.44771 14 9 14Z" fill="currentColor" /><path d="M16 13C16 13.5523 15.5523 14 15 14C14.4477 14 14 13.5523 14 13C14 12.4477 14.4477 12 15 12C15.5523 12 16 12.4477 16 13Z" fill="currentColor" /><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 11.1637 19.8717 10.3574 19.6337 9.59973C18.7991 9.82556 17.9212 9.94604 17.0152 9.94604C13.2921 9.94604 10.0442 7.91139 8.32277 4.89334C5.75469 6.22486 4 8.90751 4 12C4 16.4183 7.58172 20 12 20Z" fill="currentColor" /></svg>
-            <span>
-          </div>
-          &ensp;
-          <div class="sandbox-tab">
-            ${this.fileList.filter(file => !file.hidden).map((file, index) => {
-              const className = 'sandbox-tab-item' + (this.fileIndex === index ? ' sandbox-tab-active' : '')
-              return `
-                <div class="${className}" data-index="${index}">
-                  <span>${file.title || file.filename}</span>
-                  <!-- <span class="sandbox-icon icon-close">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.2253 4.81108C5.83477 4.42056 5.20161 4.42056 4.81108 4.81108C4.42056 5.20161 4.42056 5.83477 4.81108 6.2253L10.5858 12L4.81114 17.7747C4.42062 18.1652 4.42062 18.7984 4.81114 19.1889C5.20167 19.5794 5.83483 19.5794 6.22535 19.1889L12 13.4142L17.7747 19.1889C18.1652 19.5794 18.7984 19.5794 19.1889 19.1889C19.5794 18.7984 19.5794 18.1652 19.1889 17.7747L13.4142 12L19.189 6.2253C19.5795 5.83477 19.5795 5.20161 19.189 4.81108C18.7985 4.42056 18.1653 4.42056 17.7748 4.81108L12 10.5858L6.2253 4.81108Z" fill="currentColor" /></svg>
-                  </span> -->
-                </div>
-              `
-            }).join('\n')}
-          </div>
+      <div class="sandbox-head">
+        <div class="sandbox-setting">
+          <span class="sandbox-icon icon-active">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 14C9.55228 14 10 13.5523 10 13C10 12.4477 9.55228 12 9 12C8.44771 12 8 12.4477 8 13C8 13.5523 8.44771 14 9 14Z" fill="currentColor" /><path d="M16 13C16 13.5523 15.5523 14 15 14C14.4477 14 14 13.5523 14 13C14 12.4477 14.4477 12 15 12C15.5523 12 16 12.4477 16 13Z" fill="currentColor" /><path fill-rule="evenodd" clip-rule="evenodd" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 11.1637 19.8717 10.3574 19.6337 9.59973C18.7991 9.82556 17.9212 9.94604 17.0152 9.94604C13.2921 9.94604 10.0442 7.91139 8.32277 4.89334C5.75469 6.22486 4 8.90751 4 12C4 16.4183 7.58172 20 12 20Z" fill="currentColor" /></svg>
+          <span>
         </div>
+        &ensp;
+        <div class="sandbox-tab">
+          ${this.fileList.filter(file => !file.hidden).map((file, index) => {
+            const className = 'sandbox-tab-item' + (this.fileIndex === index ? ' sandbox-tab-active' : '')
+            return `
+              <div class="${className}" data-index="${index}">
+                <span>${file.title || file.filename}</span>
+                <!-- <span class="sandbox-icon icon-close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.2253 4.81108C5.83477 4.42056 5.20161 4.42056 4.81108 4.81108C4.42056 5.20161 4.42056 5.83477 4.81108 6.2253L10.5858 12L4.81114 17.7747C4.42062 18.1652 4.42062 18.7984 4.81114 19.1889C5.20167 19.5794 5.83483 19.5794 6.22535 19.1889L12 13.4142L17.7747 19.1889C18.1652 19.5794 18.7984 19.5794 19.1889 19.1889C19.5794 18.7984 19.5794 18.1652 19.1889 17.7747L13.4142 12L19.189 6.2253C19.5795 5.83477 19.5795 5.20161 19.189 4.81108C18.7985 4.42056 18.1653 4.42056 17.7748 4.81108L12 10.5858L6.2253 4.81108Z" fill="currentColor" /></svg>
+                </span> -->
+              </div>
+            `
+          }).join('\n')}
+        </div>
+        ${toolbarHTML}
       </div>
-      <div class="sandbox-gutter"></div>
-      <div class="sandbox-render">
-        <div class="sandbox-head">
-          &ensp;
-          <span class="sandbox-icon icon-active sandbox-reset" title="还原">
-            <svg width="24" height="24" viewBox="0 1 24 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.3623 15.529L8.94804 16.9432L3.99829 11.9934L8.94804 7.0437L10.3623 8.45791L7.86379 10.9564H16.0018C18.2109 10.9564 20.0018 12.7472 20.0018 14.9564V16.9564H18.0018V14.9564C18.0018 13.8518 17.1063 12.9564 16.0018 12.9564H7.78965L10.3623 15.529Z" fill="currentColor" /></svg>
-          </span>
-          <span class="sandbox-icon icon-active sandbox-reload" title="刷新">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.1459 11.0499L12.9716 9.05752L15.3462 8.84977C14.4471 7.98322 13.2242 7.4503 11.8769 7.4503C9.11547 7.4503 6.87689 9.68888 6.87689 12.4503C6.87689 15.2117 9.11547 17.4503 11.8769 17.4503C13.6977 17.4503 15.2911 16.4771 16.1654 15.0224L18.1682 15.5231C17.0301 17.8487 14.6405 19.4503 11.8769 19.4503C8.0109 19.4503 4.87689 16.3163 4.87689 12.4503C4.87689 8.58431 8.0109 5.4503 11.8769 5.4503C13.8233 5.4503 15.5842 6.24474 16.853 7.52706L16.6078 4.72412L18.6002 4.5498L19.1231 10.527L13.1459 11.0499Z" fill="currentColor" /></svg>
-          </span>
-          <input class="sandbox-search" disabled spellcheck="false" />
-          <!-- <span class="sandbox-icon icon-active sandbox-copy" title="复制链接">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.8284 12L16.2426 13.4142L19.071 10.5858C20.6331 9.02365 20.6331 6.49099 19.071 4.9289C17.509 3.3668 14.9763 3.3668 13.4142 4.9289L10.5858 7.75732L12 9.17154L14.8284 6.34311C15.6095 5.56206 16.8758 5.56206 17.6568 6.34311C18.4379 7.12416 18.4379 8.39049 17.6568 9.17154L14.8284 12Z" fill="currentColor" /><path d="M12 14.8285L13.4142 16.2427L10.5858 19.0711C9.02372 20.6332 6.49106 20.6332 4.92896 19.0711C3.36686 17.509 3.36686 14.9764 4.92896 13.4143L7.75739 10.5858L9.1716 12L6.34317 14.8285C5.56212 15.6095 5.56212 16.8758 6.34317 17.6569C7.12422 18.4379 8.39055 18.4379 9.1716 17.6569L12 14.8285Z" fill="currentColor" /><path d="M14.8285 10.5857C15.219 10.1952 15.219 9.56199 14.8285 9.17147C14.4379 8.78094 13.8048 8.78094 13.4142 9.17147L9.1716 13.4141C8.78107 13.8046 8.78107 14.4378 9.1716 14.8283C9.56212 15.2188 10.1953 15.2188 10.5858 14.8283L14.8285 10.5857Z" fill="currentColor" /></svg>
-          </span> -->
-          &ensp;
+      <div class="sandbox-body">
+        <div class="sandbox-code" style="width: ${defaultConfig.editorRange}"></div>
+        <div class="sandbox-gutter"></div>
+        <div class="sandbox-render">
+          <iframe></iframe>
+          <div class="sandbox-loading"></div>
         </div>
-        <iframe class="sandbox-body"></iframe>
-        <div class="sandbox-loading"></div>
       </div>
       <div class="sandbox-mask"></div>
     `
     this.iframe = el.querySelector('iframe')!
-    this.maskEl = el.querySelector('.sandbox-mask')!
     this.loadEl = el.querySelector('.sandbox-loading')!
     this.codeEl = el.querySelector('.sandbox-code')!
     this.lineEl = el.querySelector('.sandbox-gutter')!
-    this.renderEl = el.querySelector('.sandbox-render')!
-    this.searchEl = el.querySelector('.sandbox-search')!
-    // 重置
-    el.querySelector('.sandbox-reset')?.addEventListener('click', () => {
+    this.bodyEl = el.querySelector('.sandbox-body')!
+    // 布局
+    this.triggleDirection(defaultConfig.direction)
+    // 绑定事件
+    const addEvent = (className: string, cb: () => void) => {
+      el.querySelector(className)?.addEventListener('click', cb)
+    }
+    addEvent('.sandbox-icon-reset', () => {
       this.reset()
+      this.render(true)
     })
-    // 刷新
-    el.querySelector('.sandbox-reload')?.addEventListener('click', () => {
-      this.render()
-    })
-    // 复制
-    el.querySelector('.sandbox-copy')?.addEventListener('click', () => {
-      this.searchEl.select()
-      document.execCommand('copy')
-    })
-    // 绑定回车事件
-    this.searchEl.addEventListener('keypress', e => {
-      // if (e.keyCode === 13) this.setCode(this.searchEl.value)
-    })
+    addEvent('.sandbox-icon-reload', () => this.render(true))
+    addEvent('.sandbox-icon-left-layout', () => this.triggleDirection('row'))
+    addEvent('.sandbox-icon-right-layout', () => this.triggleDirection('row-reverse'))
+    addEvent('.sandbox-icon-top-layout', () => this.triggleDirection('column'))
+    addEvent('.sandbox-icon-bottom-layout', () => this.triggleDirection('column-reverse'))
     // 点击 tab 标签页
     const tabBar = el.querySelector('.sandbox-tab')!
     tabBar.addEventListener('click', e => {
@@ -271,36 +257,49 @@ export default class MiniSandbox {
   }
 
   private initEvent() {
-    const { defaultConfig } = this
+    const { el, codeEl, defaultConfig } = this
     if (!defaultConfig.draggable) {
       this.addClass(this.lineEl, 'no-dragging')
       return
     }
-    let boxW: number, boxX: number, lineX: number
+    const maskEl = el.querySelector('.sandbox-mask') as HTMLDivElement
+    let boxW: number, boxH: number, boxX: number, boxY: number, lineX: number, lineY: number
     this.lineEl.addEventListener('mousedown', e => {
       lineX = e.offsetX
+      lineY = e.offsetY
       this.isClick = true
-      const { x, width } = this.el.getBoundingClientRect()
+      const { x, y, width, height } = this.bodyEl.getBoundingClientRect()
       boxW = width
+      boxH = height
       boxX = x
-      this.maskEl.style.display = 'block'
+      boxY = y
+      maskEl.style.display = 'block'
     })
-    this.el.addEventListener('mouseup', e => {
+    el.addEventListener('mouseup', e => {
       this.isClick = false
-      this.maskEl.style.display = 'none'
+      maskEl.style.display = 'none'
     })
-    this.el.addEventListener('mousemove', e => {
+    el.addEventListener('mousemove', e => {
       if (!this.isClick) return
       let val: number = 0.5
       switch (defaultConfig.direction) {
         case 'row':
           val = (e.clientX - boxX - lineX) / boxW
+          codeEl.style.width = val * 100 + '%'
           break
         case 'row-reverse':
           val = 1 - (e.clientX - boxX + lineX) / boxW
+          codeEl.style.width = val * 100 + '%'
+          break
+        case 'column':
+          val = (e.clientY - boxY - lineY) / boxH
+          codeEl.style.height = val * 100 + '%'
+          break
+        case 'column-reverse':
+          val = 1 - (e.clientY - boxY + lineY) / boxH
+          codeEl.style.height = val * 100 + '%'
           break
       }
-      this.codeEl.style.width = val * 100 + '%'
     })
   }
 
@@ -309,8 +308,6 @@ export default class MiniSandbox {
     const currFile = this.currFile
     const htmlStr = this.getValue()
     const codeStr = encode(htmlStr)
-    // 替换输入框
-    this.searchEl.value = '127.0.0.1:3000/' + encodeURIComponent(this.currTemplate.filename)
     // 替换字符串缓存
     currFile.value = htmlStr
     // 替换顶部 url
@@ -354,29 +351,14 @@ export default class MiniSandbox {
 
   private changeLang() {
     const currFile = this.currFile
-    let res
-    switch (currFile.type) {
-      case '.html':
-        res = html()
-        break
-      case '.css':
-        res = css()
-        break
-      case '.js':
-        res = javascript()
-        break
-      case '.vue':
-        res = html()
-        break
-      case '.jsx':
-        res = javascript({ jsx: true })
-        break
-      case '.ts':
-        res = javascript({ typescript: true })
-        break
-      default:
-        res = []
-    }
+    const res = {
+      '.html': html(),
+      '.css': css(),
+      '.js': javascript(),
+      '.vue': html(),
+      '.jsx': javascript({ jsx: true }),
+      '.ts': javascript({ typescript: true }),
+    }[currFile.type] || []
     this.editor.dispatch({
       effects: languageCompartment.reconfigure(res),
     })
@@ -419,43 +401,73 @@ export default class MiniSandbox {
     el.classList.add(className)
   }
 
-  public render() {
-    const { currTemplate } = this
-    this.triggleLoading(true)
-    if (currTemplate) {
-      this.renderIframe(currTemplate.value)
-    }
-  }
-
-  public async getResources(src: string, type?: 'style' | 'script'): Promise<string> {
+  public async getResource(src: string): Promise<string> {
     if (!window['ldqResources']) window['ldqResources'] = {}
     const ldqResources: { [key: string]: string | Promise<string> } = window['ldqResources']
     const localFile = this.files[src]
     if (localFile) {
-      ldqResources[src] = ElementGenerator(localFile.value, type)
+      ldqResources[src] = localFile.value
     }
     if (!ldqResources[src]) {
-      if (!type) throw new Error('type is Required!')
-      ldqResources[src] = FileLoader(src, type)
+      ldqResources[src] = FileLoader(src)
     }
     return ldqResources[src]
   }
 
+  // 切换Loading
   private triggleLoading(status: boolean) {
     this.loadEl.style.display = status ? 'block' : 'none'
   }
 
-  private async renderIframe(context: string) {
-    const { loaders } = this
-    const currTemplate = this.currTemplate
+  // 切换主题
+  public triggleTheme(theme = this.defaultConfig.theme) {
+    if (this.el.classList.value.indexOf('sandbox-theme-light') > -1) {
+      this.el.classList.remove('sandbox-theme-light')
+      this.el.classList.add('sandbox-theme-dark')
+    } else {
+      this.el.classList.remove('sandbox-theme-dark')
+      this.el.classList.add('sandbox-theme-light')
+    }
+  }
+
+  // 切换布局模式
+  public triggleDirection(direction: DefaultConfigType['direction'] = 'row') {
+    const { codeEl, defaultConfig } = this
+    const gutter = ['100%', '0%'].indexOf(defaultConfig.editorRange) > -1 ? '0px' : '5px'
+    const renderEl = this.el.querySelector('.sandbox-render') as HTMLDivElement
+    // 左右布局 / 上下布局
+    if (direction.indexOf('row') > -1) {
+      this.setStyle(codeEl, { width: defaultConfig.editorRange, height: '100%' })
+      this.setStyle(renderEl, { width: defaultConfig.renderRange, height: '100%' })
+      this.setStyle(this.lineEl, { width: gutter, height: '100%' })
+    } else if (direction.indexOf('column') > -1) {
+      this.setStyle(codeEl, { width: '100%', height: defaultConfig.editorRange })
+      this.setStyle(renderEl, { width: '100%', height: defaultConfig.renderRange })
+      this.setStyle(this.lineEl, { width: '100%', height: gutter })
+    } else return
+    // 设置flex布局
+    defaultConfig.direction = direction
+    this.setStyle(this.bodyEl, { 'flex-direction': direction })
+  }
+
+  public async render(isReload = false) {
+    const { loaders, iframe, currTemplate } = this
+    if (!currTemplate) return
+    const context = currTemplate.value
+    this.triggleLoading(true)
     // 等待 iframe 刷新
-    await new Promise<void>(resolve => {
-      this.iframe.addEventListener('load', () => resolve())
-      this.iframe.contentWindow?.location.reload()
-    })
-    // 重新获取 iframe
-    const iframe = this.iframe
-    const iframeDocument = iframe.contentWindow?.document
+    if (isReload || ['.html', '.vue'].indexOf(currTemplate.type) > -1) {
+      await new Promise<void>(resolve => {
+        const fn = () => {
+          resolve()
+          iframe.removeEventListener('load', fn)
+        }
+        iframe.addEventListener('load', fn)
+        iframe.contentWindow?.location.reload()
+      })
+    }
+    // 重新获取文档
+    const iframeDocument = this.iframe.contentWindow?.document
     if (!iframeDocument) return
     // 渲染模板
     const value = loaders[currTemplate.type]
@@ -469,16 +481,5 @@ export default class MiniSandbox {
     iframeDocument.write(template)
     iframeDocument.close()
     this.triggleLoading(false)
-  }
-
-  // 切换主题
-  triggleTheme(theme = this.defaultConfig.theme) {
-    if (this.el.classList.value.indexOf('sandbox-theme-light') > -1) {
-      this.el.classList.remove('sandbox-theme-light')
-      this.el.classList.add('sandbox-theme-dark')
-    } else {
-      this.el.classList.remove('sandbox-theme-dark')
-      this.el.classList.add('sandbox-theme-light')
-    }
   }
 }

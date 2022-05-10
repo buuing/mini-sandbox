@@ -1,5 +1,5 @@
 import { LoaderFunctionType } from './../type'
-import { getCssLibs, getJsLibs } from './index'
+import { getCssLibs, getJsLibs, getEsmsInitOptions } from './index'
 import { transform } from '@babel/standalone'
 import BaseLoader from './base-loader'
 
@@ -11,22 +11,8 @@ const SandboxReactLoader: LoaderFunctionType = async function(value, config) {
     ${cssLibs.join('\n')}
     <div id="root"></div>
     ${jsLibs.join('\n')}
-    <script>
-      const files = ${JSON.stringify(esModules)}
-      window.esmsInitOptions = {
-        shimMode: true,
-        polyfillEnable: ['css-modules', 'json-modules'],
-        fetch: async (url, options) => {
-          for (const filename in files) {
-            if (new RegExp(\`/\${filename}$\`).test(url)) {
-              return new Response(new Blob([files[filename]], { type: 'application/javascript' }))
-            }
-          }
-          return fetch(url, options)
-        },
-      }
-    </script>
-    ${await this.getResources('https://cdn.jsdelivr.net/npm/es-module-shims@1.5.4/dist/es-module-shims.min.js', 'script')}
+    <script>${getEsmsInitOptions(esModules)}</script>
+    <script async>${await this.getResource('https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.7/es-module-shims.min.js')}</script>
     <script type="importmap-shim">${JSON.stringify(config['importMap'] || {})}</script>
     <script type="module-shim">
       import React from 'react'

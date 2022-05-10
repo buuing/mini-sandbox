@@ -264,7 +264,7 @@
   - 缺点是用户无法清晰的知道 app.js 是从哪引入的
 
 2. **方式2: 在 html 代码中引入**
-  - 像这样 `<script type="module" src="./app.js"><\/script>` 写一个*相对路径*
+  - 像这样 `<script type="module" src="./app.js"></script>` 写一个*相对路径*
   - 好处是用户可以在代码中删除 / 切换其他 esm 模块
   - 缺点是用户如果在代码中删除了这一行, 他就看不到 js 实现的效果了
 
