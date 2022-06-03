@@ -8,13 +8,19 @@ export const has = (data: object, key: string | number): boolean => {
 }
 
 export const debounce = (fn: Function, wait = 300) => {
-  let timer: number = 0
-  return function(this: unknown) {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(() => {
+  const state = {
+    timer: 0,
+    immediate: false,
+  }
+  return function(this: unknown, immediate = false) {
+    state.immediate = immediate
+    if (state.timer) window.clearTimeout(state.timer)
+    state.timer = window.setTimeout(() => {
       fn.apply(this, arguments)
-      clearTimeout(timer)
-    }, wait)
+      clearTimeout(state.timer)
+      state.timer = 0
+      state.immediate = false
+    }, state.immediate ? 0 : wait)
   }
 }
 

@@ -222,9 +222,9 @@ export default class MiniSandbox {
     }
     addEvent('.sandbox-icon-reset', () => {
       this.reset()
-      this.render(true)
+      this.run(true)
     })
-    addEvent('.sandbox-icon-reload', () => this.render(true))
+    addEvent('.sandbox-icon-reload', () => this.run(true))
     addEvent('.sandbox-icon-left-layout', () => this.triggleDirection('row'))
     addEvent('.sandbox-icon-right-layout', () => this.triggleDirection('row-reverse'))
     addEvent('.sandbox-icon-top-layout', () => this.triggleDirection('column'))
