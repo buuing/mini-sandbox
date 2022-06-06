@@ -1,9 +1,4 @@
 
-?> 维护中, 数据结构可能会发生变化, 如果想使用请联系我
-
-![a](./temp.jpeg)
-
-<!-- 
 
 # Options & 配置选项
 
@@ -64,7 +59,7 @@ new MiniSandbox({
 
 <br />
 
-### publicResources: object
+### resource: object
 
 ?> **`可选项`** 作为当前 Sandbox 下的公共资源, 但是需要注意: 当前 Sandbox 下的所有 tab 标签页都会加载这些资源
 
@@ -80,7 +75,7 @@ new MiniSandbox({
   files: {
     'index.html': {}
   },
-  publicResources: {
+  resource: {
     cssLibs: [],
     jsLibs: [],
     css: `
@@ -153,4 +148,4 @@ new MiniSandbox({
     onChange: () => {},
   }
 })
-``` -->
+```

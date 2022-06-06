@@ -12,7 +12,7 @@ const SandboxReactLoader: LoaderFunctionType = async function(value, config) {
     <div id="root"></div>
     ${jsLibs.join('\n')}
     <script>${getEsmsInitOptions(esModules)}</script>
-    <script async>${await this.getResource('https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.8/es-module-shims.min.js')}</script>
+    <script async>${await this.getResource('https://unpkg.com/mini-sandbox@0.3.9/es-module-shims.min.js')}</script>
     <script type="importmap-shim">${JSON.stringify(config['importMap'] || {})}</script>
     <script type="module-shim">
       import React from 'react'

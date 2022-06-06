@@ -6,7 +6,7 @@ import { html } from '@codemirror/lang-html'
 import { css } from '@codemirror/lang-css'
 import { javascript } from '@codemirror/lang-javascript'
 import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
-import { OptionsType, PublicResourcesType, FileType, DefaultConfigType, EventsType, LoadersType } from './type'
+import { OptionsType, ResourceType, FileType, DefaultConfigType, EventsType, LoadersType } from './type'
 import RightMenu from '@right-menu/core'
 import { generateMenuOptions, allIcon } from './config'
 import HTMLLoader from './loaders/html-loader'
@@ -31,7 +31,7 @@ export default class MiniSandbox {
   files: { [filename: string]: LocalFileType } = {}
   fileList!: Required<LocalFileType>[]
   loaders!: LoadersType
-  publicResources!: Required<PublicResourcesType>
+  resource!: Required<ResourceType>
   defaultConfig!: Required<DefaultConfigType>
   events!: Required<EventsType>
   editor!: EditorView
@@ -47,7 +47,7 @@ export default class MiniSandbox {
   editorEl!: HTMLDivElement
   lineEl!: HTMLDivElement
   bodyEl!: HTMLDivElement
-  ldqResources: string[] = []
+  ldqResource: string[] = []
   public run: Function
 
   constructor(options = {} as OptionsType) {
@@ -99,12 +99,12 @@ export default class MiniSandbox {
       return _file
     })
     // 初始化公共静态资源
-    this.publicResources = {
+    this.resource = {
       cssLibs: [],
       jsLibs: [],
       css: '',
       js: '',
-      ...options.publicResources,
+      ...options.resource,
     }
     // 初始化默认配置
     this.defaultConfig = {
@@ -402,16 +402,16 @@ export default class MiniSandbox {
   }
 
   public async getResource(src: string): Promise<string> {
-    if (!window['ldqResources']) window['ldqResources'] = {}
-    const ldqResources: { [key: string]: string | Promise<string> } = window['ldqResources']
+    if (!window['ldqResource']) window['ldqResource'] = {}
+    const ldqResource: { [key: string]: string | Promise<string> } = window['ldqResource']
     const localFile = this.files[src]
     if (localFile) {
-      ldqResources[src] = localFile.value
+      ldqResource[src] = localFile.value
     }
-    if (!ldqResources[src]) {
-      ldqResources[src] = FileLoader(src)
+    if (!ldqResource[src]) {
+      ldqResource[src] = FileLoader(src)
     }
-    return ldqResources[src]
+    return ldqResource[src]
   }
 
   // 切换Loading

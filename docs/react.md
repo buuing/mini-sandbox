@@ -19,8 +19,8 @@
 ```html
 <div id="sandbox-demo10"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/react-loader.js"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}/dist/react-loader.js"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo10',
@@ -74,8 +74,8 @@ export default App`,
 ```html
 <div id="sandbox-demo11"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/react-loader.js"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}/dist/react-loader.js"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo11',
@@ -131,7 +131,7 @@ export default function App() {
           "imports": {
             "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
             "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
-            "@lucky-canvas/react": "https://cdn.jsdelivr.net/npm/@lucky-canvas/react@0.1.7/dist/index.esm.js"
+            "@lucky-canvas/react": "https://unpkg.com/@lucky-canvas/react@0.1.7/dist/index.esm.js"
           },
           "scopes": {
             "https://ga.jspm.io/": {
@@ -170,8 +170,8 @@ export default function App() {
 ```html
 <div id="sandbox-demo12"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/react-loader.js"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}/dist/react-loader.js"></script>
 <script type="text/javascript">
     new MiniSandbox({
     el: '#sandbox-demo12',
@@ -232,7 +232,7 @@ export default function App() {
             }
           }
         },
-        cssLibs: ['https://cdn.jsdelivr.net/npm/antd@4.20.1/dist/antd.min.css'],
+        cssLibs: ['https://unpkg.com/antd@4.20.1/dist/antd.min.css'],
         css: `body { padding: 10px; } #root>div { margin: 10px 0; }`
       },
     },

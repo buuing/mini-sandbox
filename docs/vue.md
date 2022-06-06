@@ -16,8 +16,8 @@
 ```html
 <div id="sandbox-demo7"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/vue-loader.js"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}/dist/vue-loader.js"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo7',
@@ -29,7 +29,7 @@
     loaders: {
       '.vue': SandboxVueLoader
     },
-    publicResources: {
+    resource: {
       jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
     },
     defaultConfig: {
@@ -55,8 +55,8 @@
 ```html
 <div id="sandbox-demo8"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/vue-loader.js"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}/dist/vue-loader.js"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo8',
@@ -85,7 +85,7 @@
     loaders: {
       '.vue': SandboxVueLoader
     },
-    publicResources: {
+    resource: {
       jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
     }
   })
@@ -107,8 +107,8 @@
 ```html
 <div id="sandbox-demo9"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}/dist/vue-loader.js"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}/dist/vue-loader.js"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo9',
@@ -168,7 +168,7 @@
     loaders: {
       '.vue': SandboxVueLoader
     },
-    publicResources: {
+    resource: {
       cssLibs: [
         'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
       ],

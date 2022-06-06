@@ -4,7 +4,7 @@ export type GetObjectItemType<T> = T extends object ? T[keyof T] : never
 export type GetArrayItemType<T> = T extends any[] ? T[number] : never
 
 // 公共静态资源
-export type PublicResourcesType = {
+export type ResourceType = {
   cssLibs?: string[]
   jsLibs?: string[]
   css?: string
@@ -15,10 +15,10 @@ export type PublicResourcesType = {
 export type FileType = {
   title?: string
   defaultValue?: string
-  cssLibs?: PublicResourcesType['cssLibs']
-  jsLibs?: PublicResourcesType['jsLibs']
-  css?: PublicResourcesType['css']
-  js?: PublicResourcesType['js']
+  cssLibs?: ResourceType['cssLibs']
+  jsLibs?: ResourceType['jsLibs']
+  css?: ResourceType['css']
+  js?: ResourceType['js']
   urlField?: string
   module?: 'iife' | 'esm'
   hidden?: boolean
@@ -62,7 +62,7 @@ export type OptionsType = {
     [filename: string]: FileType
   },
   loaders: LoadersType
-  publicResources?: PublicResourcesType
+  resource?: ResourceType
   defaultConfig?: DefaultConfigType
   events?: EventsType
 }

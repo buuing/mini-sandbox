@@ -14,8 +14,8 @@
   </style>
   <div id="sandbox-demo9"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.8"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mini-sandbox@0.3.8/dist/vue-loader.js"></script>
+  <script src="https://unpkg.com/mini-sandbox@0.3.9"></script>
+  <script src="https://unpkg.com/mini-sandbox@0.3.9/dist/vue-loader.js"></script>
 
   <!-- <script src="./dist/index.umd.js"></script>
   <script src="./dist/vue-loader.js"></script> -->
@@ -79,7 +79,7 @@
       loaders: {
         '.vue': SandboxVueLoader
       },
-      publicResources: {
+      resource: {
         cssLibs: [
           'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
         ],

@@ -14,7 +14,7 @@
 ```html
 <div id="sandbox-demo1"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo1',
@@ -42,7 +42,7 @@
 ```html
 <div id="sandbox-demo2"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo2',
@@ -78,7 +78,7 @@
 
 - **说明:**
   - 当前模板的内置 css 和 js, 是不会在**代码层面**体现的, 所以用户也是无法修改
-  - 如果是`多标签页模式`, 你也可以放在`publicResources`下, 这样所有标签页都能享受到
+  - 如果是`多标签页模式`, 你也可以放在`resource`下, 这样所有标签页都能享受到
 
 <div id="sandbox-demo3"></div>
 
@@ -86,7 +86,7 @@
 ```html
 <div id="sandbox-demo3"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo3',
@@ -132,7 +132,7 @@
 ```html
 <div id="sandbox-demo4"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo4',
@@ -170,7 +170,7 @@
 ```html
 <div id="sandbox-demo5"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo5',
@@ -205,7 +205,7 @@
 
 - **说明:**
   - 这里以`Bootstrap5`为例, 你可以放置你自己想展示的组件库的 CDN 链接
-  - 由于这两个标签页都是展示同一个组件库的组件, 所以静态资源放在`publicResources`里
+  - 由于这两个标签页都是展示同一个组件库的组件, 所以静态资源放在`resource`里
 
 <div id="sandbox-demo6"></div>
 
@@ -213,7 +213,7 @@
 ```html
 <div id="sandbox-demo6"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo6',
@@ -238,10 +238,10 @@
 </div>`
       }
     },
-    publicResources: {
+    resource: {
       css: 'body { margin: 10px }',
-      cssLibs: ['https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css'],
-      jsLibs: ['https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'],
+      cssLibs: ['https://unpkg.com/bootstrap@5.1.3/dist/css/bootstrap.min.css'],
+      jsLibs: ['https://unpkg.com/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'],
     }
   })
 </script>
@@ -274,7 +274,7 @@
 ```html
 <div id="sandbox-demo7"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
 <script type="text/javascript">
   new MiniSandbox({
     el: '#sandbox-demo7',
