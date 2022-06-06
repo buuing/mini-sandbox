@@ -47,19 +47,17 @@ export const getEsmsInitOptions = (esModules = {}) => {
           return new Response(new Blob([content], { type: 'application/javascript' }))
         }
         if (!parent.ldqResources) parent.ldqResources = {}
-        const ldqResources = parent.ldqResources
-        let text
-        if (ldqResources[url]) {
-          text = await ldqResources[url]
-        } else {
-          let _r
-          ldqResources[url] = new Promise(resolve => _r = resolve)
-          const res = await fetch(url, options)
-          text = await res.text()
-          _r(text)
+        if (!parent.ldqResources[url]) {
+          parent.ldqResources[url] = new Promise(async resolve => {
+            const res = await fetch(url, options)
+            const source = await res.text()
+            resolve(source)
+          })
         }
-        const response = new Response(new Blob([text], { url, type: 'application/javascript' }))
-        return response
+        // alert(111 + parent.ldqResources[url])
+        const source = await parent.ldqResources[url]
+        // alert(222)
+        return new Response(new Blob([source], { type: 'application/javascript' }))
       },
       disableCache: (url, options, source) => {
         if (__files__[url]) return true
