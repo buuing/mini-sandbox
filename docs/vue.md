@@ -30,7 +30,7 @@
       '.vue': SandboxVueLoader
     },
     resource: {
-      jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
+      jsLibs: ['https://unpkg.com/vue@2.6.14'], // vue的模板必须引入 vue.js
     },
     defaultConfig: {
       height: '450px'
@@ -86,7 +86,7 @@
       '.vue': SandboxVueLoader
     },
     resource: {
-      jsLibs: ['https://cdn.jsdelivr.net/npm/vue@2.6.14'], // vue的模板必须引入 vue.js
+      jsLibs: ['https://unpkg.com/vue@2.6.14'], // vue的模板必须引入 vue.js
     }
   })
 </script>
@@ -173,7 +173,7 @@
         'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
       ],
       jsLibs: [
-        'https://cdn.jsdelivr.net/npm/vue@2.6.14',
+        'https://unpkg.com/vue@2.6.14',
         'https://unpkg.com/element-ui/lib/index.js',
       ],
     },
