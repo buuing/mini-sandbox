@@ -38,37 +38,43 @@
       el: '#my-sandbox',
       files: {
         'index.html': {
+          urlField: 'code',
           defaultValue: `<style>
-  h3 {
-    text-align: center;
+  button {
+    color: red;
   }
 </style>
 
-<h3 class="box"></h3>
+<button>测试</button>
 
-<script type="module" src="./app.js"><\/script>`,
+<script>
+  const btn = document.querySelector('button')
+  btn.addEventListener('click', () => {
+    alert('click 事件')
+  })
+<\/script>`,
         },
-        'app.js': {
-          module: 'esm',
-          defaultValue: `import { getTime } from './utils.js'
+//         'app.js': {
+//           module: 'esm',
+//           defaultValue: `import { getTime } from './utils.js'
 
-const dom = document.querySelector('.box')
-setInterval(() => {
-  dom.innerHTML = '当前时间: ' + getTime()
-}, 1000 / 60)`
-        },
-        'utils.js': {
-          module: 'esm',
-          defaultValue: `const fill = str => ('0' + str).slice(-2)
+// const dom = document.querySelector('.box')
+// setInterval(() => {
+//   dom.innerHTML = '当前时间: ' + getTime()
+// }, 1000 / 60)`
+//         },
+//         'utils.js': {
+//           module: 'esm',
+//           defaultValue: `const fill = str => ('0' + str).slice(-2)
 
-export const getTime = (x, y) => {
-  const dt = new Date()
-  const h = dt.getHours()
-  const m = dt.getMinutes()
-  const s = dt.getSeconds()
-  return \`\${fill(h)}\:\${fill(m)}:\${fill(s)}\`
-}`
-        }
+// export const getTime = (x, y) => {
+//   const dt = new Date()
+//   const h = dt.getHours()
+//   const m = dt.getMinutes()
+//   const s = dt.getSeconds()
+//   return \`\${fill(h)}\:\${fill(m)}:\${fill(s)}\`
+// }`
+//         }
       },
       defaultConfig: {
         height: '100vh',
