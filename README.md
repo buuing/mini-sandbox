@@ -55,7 +55,7 @@
 - 如果是小白需要技术指导的话, 下边是我的赞赏码, **备注好你的微信号,** 我看到后会主动加你
 - 但如果是因为我文档没写清楚，或者是插件本身的bug，导致你无法正常使用的话，赞赏全额返还
 
-<img src="https://cdn.jsdelivr.net/gh/buuing/cdn/imgs/pay.png" width="256" />
+<img src="https://unpkg.com/buuing@0.0.1/imgs/pay.png" width="256" />
 
 **请备注好你的`微信号`**
 
