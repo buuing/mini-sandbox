@@ -422,10 +422,10 @@ export default class MiniSandbox {
   // 切换主题
   public triggleTheme(theme = this.defaultConfig.theme) {
     if (this.el.classList.value.indexOf('sandbox-theme-light') > -1) {
-      this.el.classList.remove('sandbox-theme-light')
-      this.el.classList.add('sandbox-theme-dark')
+      // this.el.classList.remove('sandbox-theme-light')
+      // this.el.classList.add('sandbox-theme-dark')
     } else {
-      this.el.classList.remove('sandbox-theme-dark')
+      // this.el.classList.remove('sandbox-theme-dark')
       this.el.classList.add('sandbox-theme-light')
     }
   }
