@@ -6,7 +6,15 @@ import { html } from '@codemirror/lang-html'
 import { css } from '@codemirror/lang-css'
 import { javascript } from '@codemirror/lang-javascript'
 import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
-import { OptionsType, ResourceType, FileType, DefaultConfigType, EventsType, LoadersType } from './type'
+import {
+  OptionsType,
+  ResourceType,
+  PublicConfigType,
+  LocalFileType,
+  DefaultConfigType,
+  EventsType,
+  LoadersType,
+} from './type'
 import RightMenu from '@right-menu/core'
 import { generateMenuOptions, allIcon } from './config'
 import HTMLLoader from './loaders/html-loader'
@@ -15,12 +23,6 @@ import './style/theme.less'
 import './style/index.less'
 
 const languageCompartment = new Compartment()
-
-type LocalFileType = Required<FileType> & {
-  filename: string,
-  value: string,
-  type: string
-}
 
 export default class MiniSandbox {
   static version = version
@@ -32,6 +34,7 @@ export default class MiniSandbox {
   fileList!: Required<LocalFileType>[]
   loaders!: LoadersType
   resource!: Required<ResourceType>
+  publicConfig!: Required<PublicConfigType>
   defaultConfig!: Required<DefaultConfigType>
   events!: Required<EventsType>
   editor!: EditorView
@@ -82,6 +85,8 @@ export default class MiniSandbox {
         jsLibs: [],
         css: '',
         js: '',
+        head: [],
+        body: [],
         urlField: '',
         title: '',
         module: 'iife' as const,
@@ -105,6 +110,12 @@ export default class MiniSandbox {
       css: '',
       js: '',
       ...options.resource,
+    }
+    // 初始化公共配置
+    this.publicConfig = {
+      head: [],
+      body: [],
+      ...options.publicConfig,
     }
     // 初始化默认配置
     this.defaultConfig = {

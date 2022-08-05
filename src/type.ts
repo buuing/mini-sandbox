@@ -11,24 +11,40 @@ export type ResourceType = {
   js?: string
 }
 
+export type TagType = ['head', object, string]
+
+// 公共设置
+export type PublicConfigType = {
+  head?: Array<TagType>
+  body?: Array<TagType>
+}
+
 // tab页类型
-export type FileType = {
+type FileType = {
   title?: string
   defaultValue?: string
   cssLibs?: ResourceType['cssLibs']
   jsLibs?: ResourceType['jsLibs']
   css?: ResourceType['css']
   js?: ResourceType['js']
+  head?: PublicConfigType['head']
+  body?: PublicConfigType['body']
   urlField?: string
   module?: 'iife' | 'esm'
   hidden?: boolean
   // disabled?: boolean
 }
 
+export type LocalFileType = Required<FileType> & {
+  filename: string,
+  value: string,
+  type: string
+}
+
 export type LoaderFunctionType = (
   this: MiniSandbox,
   context: string,
-  config: FileType
+  config: LocalFileType
 ) => (string | Promise<string>)
 
 export type LoadersType = {
@@ -45,7 +61,7 @@ export type DefaultConfigType = {
   renderRange?: string
   draggable?: boolean
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
-  toolbar: Array<'reset' | 'reload' | 'left-layout' | 'right-layout' | 'top-layout' | 'bottom-layout'>
+  toolbar?: Array<'reset' | 'reload' | 'left-layout' | 'right-layout' | 'top-layout' | 'bottom-layout'>
 }
 
 // 事件
@@ -63,6 +79,7 @@ export type OptionsType = {
   },
   loaders: LoadersType
   resource?: ResourceType
+  publicConfig?: PublicConfigType
   defaultConfig?: DefaultConfigType
   events?: EventsType
 }
