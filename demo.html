@@ -28,7 +28,7 @@
   </style>
   <div id="my-sandbox"></div>
 
-  <script src="https://unpkg.com/mini-sandbox@0.3.11"></script>
+  <script src="https://unpkg.com/mini-sandbox@0.3.17"></script>
 
   <!-- <script src="./dist/index.umd.js"></script> -->
   <!-- <script src="./dist/vue-loader.js"></script> -->
@@ -54,27 +54,27 @@
   })
 <\/script>`,
         },
-//         'app.js': {
-//           module: 'esm',
-//           defaultValue: `import { getTime } from './utils.js'
+        'app.js': {
+          module: 'esm',
+          defaultValue: `import { getTime } from './utils.js'
 
-// const dom = document.querySelector('.box')
-// setInterval(() => {
-//   dom.innerHTML = '当前时间: ' + getTime()
-// }, 1000 / 60)`
-//         },
-//         'utils.js': {
-//           module: 'esm',
-//           defaultValue: `const fill = str => ('0' + str).slice(-2)
+const dom = document.querySelector('.box')
+setInterval(() => {
+  dom.innerHTML = '当前时间: ' + getTime()
+}, 1000 / 60)`
+        },
+        'utils.js': {
+          module: 'esm',
+          defaultValue: `const fill = str => ('0' + str).slice(-2)
 
-// export const getTime = (x, y) => {
-//   const dt = new Date()
-//   const h = dt.getHours()
-//   const m = dt.getMinutes()
-//   const s = dt.getSeconds()
-//   return \`\${fill(h)}\:\${fill(m)}:\${fill(s)}\`
-// }`
-//         }
+export const getTime = (x, y) => {
+  const dt = new Date()
+  const h = dt.getHours()
+  const m = dt.getMinutes()
+  const s = dt.getSeconds()
+  return \`\${fill(h)}\:\${fill(m)}:\${fill(s)}\`
+}`
+        }
       },
       defaultConfig: {
         height: '100vh',

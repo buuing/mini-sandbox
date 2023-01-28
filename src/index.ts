@@ -5,7 +5,7 @@ import { Compartment } from '@codemirror/state'
 import { html } from '@codemirror/lang-html'
 import { css } from '@codemirror/lang-css'
 import { javascript } from '@codemirror/lang-javascript'
-import { debounce, getQuery, setQuery, FileLoader, encode, decode, define } from './utils'
+import { debounce, getQuery, setQuery, FileLoader, encode, decode, define, composedPath } from './utils'
 import {
   OptionsType,
   ResourceType,
@@ -243,7 +243,8 @@ export default class MiniSandbox {
     // 点击 tab 标签页
     const tabBar = el.querySelector('.sandbox-tab')!
     tabBar.addEventListener('click', e => {
-      const targetEl = (e['path'] as HTMLElement[]).find(dom => dom.className === 'sandbox-tab-item')
+      const path = composedPath(e)
+      const targetEl = path.find(dom => dom.className === 'sandbox-tab-item')
       if (targetEl) {
         this.fileIndex = Number(targetEl.getAttribute('data-index'))
         // 切换 tab 页面
@@ -259,7 +260,7 @@ export default class MiniSandbox {
   }
 
   private initMenu() {
-    // 绑定菜单事件
+    // 绑定菜单事件 最新版浏览器废弃了 e.path 导致报错
     new RightMenu({
       el: this.el.querySelector('.sandbox-setting') as HTMLElement,
       theme: 'mac',

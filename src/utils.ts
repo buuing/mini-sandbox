@@ -89,3 +89,15 @@ export const get = (data: object, strKeys: string) => {
   }
   return data
 }
+
+export const composedPath = (e: Event): HTMLElement[] => {
+  if (e['path']) return e['path']
+  const path = []
+  let target = e.target
+  while (target && target['parentNode']) {
+    path.push(target)
+    target = target['parentNode']
+  }
+  path.push(document, window)
+  return path as HTMLElement[]
+}

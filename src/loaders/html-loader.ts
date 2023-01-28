@@ -20,7 +20,7 @@ const HTMLLoader: LoaderFunctionType = async function(content, config) {
     ${cssLibs.join('\n')}
     ${jsLibs.join('\n')}
     <script>${getEsmsInitOptions(esModules)}</script>
-    <script async>${await this.getResource('https://unpkg.com/mini-sandbox@0.3.11/es-module-shims.js')}</script>
+    <script async>${await this.getResource('https://unpkg.com/mini-sandbox@0.3.17/es-module-shims.js')}</script>
     ${config['importMap'] ? '<script type="importmap-shim">' + JSON.stringify(config['importMap']) + '</script>' : ''}
     ${content}
     <script>
