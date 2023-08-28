@@ -33,6 +33,7 @@ new MiniSandbox({
   - `jsLibs?: string[]` 默认引入的 js 库
   - `css?: string` 默认加载的 css 样式, 引入顺序在 cssLibs 的后面
   - `js?: string` 默认加载的 js 代码, 引入顺序在 jsLibs 的后面
+  - `importMap?: object` 默认定义的 esm 模块
   - `urlField?: string` 代码编译到 url 上所使用的字段, 默认为空
 
 ```js
@@ -59,7 +60,7 @@ new MiniSandbox({
 
 <br />
 
-### resource: object
+### publicConfig: object
 
 ?> **`可选项`** 作为当前 Sandbox 下的公共资源, 但是需要注意: 当前 Sandbox 下的所有 tab 标签页都会加载这些资源
 
@@ -68,6 +69,7 @@ new MiniSandbox({
   - `jsLibs?: string[]` 默认引入的 js 库
   - `css?: string` 默认加载的 css 样式, 引入顺序在 cssLibs 的后面
   - `js?: string` 默认加载的 js 代码, 引入顺序在 jsLibs 的后面
+  - `importMap?: object` 默认定义的 esm 模块
 
 ```js
 new MiniSandbox({
@@ -75,7 +77,7 @@ new MiniSandbox({
   files: {
     'index.html': {}
   },
-  resource: {
+  publicConfig: {
     cssLibs: [],
     jsLibs: [],
     css: `

@@ -1,4 +1,8 @@
 
+- **`v0.3.18`**
+  - [x] 新增 `publicConfig.importMap` 用于设置公共 esm 依赖
+  - [x] React SFC 支持引入标签页渲染本地组件
+
 - **`v0.3.17`**
   - [x] 修复浏览器移除 `event.path` 属性的报错, 从而导致标签页无法切换
 

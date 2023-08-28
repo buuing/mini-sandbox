@@ -12,7 +12,6 @@
 
 <div id="sandbox-demo7"></div>
 
-<!-- 
 ```html
 <div id="sandbox-demo7"></div>
 
@@ -29,7 +28,7 @@
     loaders: {
       '.vue': SandboxVueLoader
     },
-    resource: {
+    publicConfig: {
       jsLibs: ['https://unpkg.com/vue@2.6.14'], // vue的模板必须引入 vue.js
     },
     defaultConfig: {
@@ -38,7 +37,6 @@
   })
 </script>
 ```
- -->
 
 <div id="sandbox-demo5"></div>
 
@@ -51,7 +49,6 @@
 
 <div id="sandbox-demo8"></div>
 
-<!-- 
 ```html
 <div id="sandbox-demo8"></div>
 
@@ -69,13 +66,15 @@
       },
       'index.js': {
         title: 'Script',
-        defaultValue: `export default {
+        defaultValue: `
+export default {
   data () {
     return {
       num: 1
     }
   },
-}`
+}
+        `.trim()
       },
       'index.css': {
         title: 'Style',
@@ -85,17 +84,16 @@
     loaders: {
       '.vue': SandboxVueLoader
     },
-    resource: {
+    publicConfig: {
       jsLibs: ['https://unpkg.com/vue@2.6.14'], // vue的模板必须引入 vue.js
     }
   })
 </script>
 ```
- -->
 
 <br />
 
-### 【展示 Vue 组件库 的代码】
+### 【引入 element-ui 组件库】
 
 - **说明:**
   - 这里以`element-ui`为例, 演示应该如何展示 vue 组件库的代码
@@ -103,7 +101,6 @@
 
 <div id="sandbox-demo9"></div>
 
-<!-- 
 ```html
 <div id="sandbox-demo9"></div>
 
@@ -162,13 +159,14 @@
   .el-row { margin: 15px 10px; }
   .el-row>*:not(button) { margin-right: 15px; }
   .el-alert { margin: 10px 0; }
-</style>`.trim(),
+</style>
+        `.trim(),
       },
     },
     loaders: {
       '.vue': SandboxVueLoader
     },
-    resource: {
+    publicConfig: {
       cssLibs: [
         'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
       ],
@@ -183,6 +181,5 @@
   })
 </script>
 ```
- -->
 
 <br />

@@ -188,7 +188,7 @@ new MiniSandbox({
       defaultValue: `<button onclick="alert('Hello')">按钮</button>`,
     }
   },
-  resource: {
+  publicConfig: {
     css: '* { text-align: center }',
   },
   defaultConfig: {

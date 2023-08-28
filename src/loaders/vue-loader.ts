@@ -5,6 +5,8 @@ import { LoaderFunctionType } from '../type'
 import { getCssLibs, getJsLibs, getScriptForTab } from './index'
 import BaseLoader from './base-loader'
 
+const transformVue = (value: string) => transform(value, { presets: ['es2015'] }).code
+
 const SandboxVueLoader: LoaderFunctionType = async function(value, config) {
   const cssLibs = await getCssLibs.call(this, config)
   const jsLibs = await getJsLibs.call(this, config)
@@ -12,7 +14,7 @@ const SandboxVueLoader: LoaderFunctionType = async function(value, config) {
   // 解析模板
   const { template, script, styles } = parseComponent(value)
   const templateStr = template ? JSON.stringify(template.content) : '""'
-  const scriptStr = transform(script?.content || scriptForTab || 'export default {}', { presets: ['es2015'] }).code
+  const scriptStr = transformVue(script?.content || scriptForTab || 'export default {}')
   const styleStr = styles.map((item: any) => item.content).join('\n')
   // 渲染模板
   const content = `

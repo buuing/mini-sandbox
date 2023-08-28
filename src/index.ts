@@ -8,7 +8,6 @@ import { javascript } from '@codemirror/lang-javascript'
 import { debounce, getQuery, setQuery, FileLoader, encode, decode, define, composedPath } from './utils'
 import {
   OptionsType,
-  ResourceType,
   PublicConfigType,
   LocalFileType,
   DefaultConfigType,
@@ -33,8 +32,7 @@ export default class MiniSandbox {
   files: { [filename: string]: LocalFileType } = {}
   fileList!: Required<LocalFileType>[]
   loaders!: LoadersType
-  resource!: Required<ResourceType>
-  publicConfig!: Required<PublicConfigType>
+  publicConfig!: Required<Omit<PublicConfigType, 'importMap'>>
   defaultConfig!: Required<DefaultConfigType>
   events!: Required<EventsType>
   editor!: EditorView
@@ -89,7 +87,8 @@ export default class MiniSandbox {
         body: [],
         urlField: '',
         title: '',
-        module: 'iife' as const,
+        module: '' as const,
+        template: true,
         hidden: false,
         ...file,
         filename: filename.lastIndexOf('.') > -1 ? filename : filename + '.html',
@@ -103,16 +102,12 @@ export default class MiniSandbox {
       this.files[filename] = _file
       return _file
     })
-    // 初始化公共静态资源
-    this.resource = {
+    // 初始化公共配置
+    this.publicConfig = {
       cssLibs: [],
       jsLibs: [],
       css: '',
       js: '',
-      ...options.resource,
-    }
-    // 初始化公共配置
-    this.publicConfig = {
       head: [],
       body: [],
       ...options.publicConfig,
@@ -353,7 +348,7 @@ export default class MiniSandbox {
 
   private changeTab() {
     const currFile = this.currFile
-    if (this.templateTypeSet.has(currFile.type)) {
+    if (this.templateTypeSet.has(currFile.type) && currFile.template === true) {
       this.currTemplate = currFile
     }
     // 切换语言

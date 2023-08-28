@@ -15,8 +15,8 @@
 <body>
 
 <div id="sandbox-demo10"></div>
-<script src="https://unpkg.com/mini-sandbox@0.3.17"></script>
-<script src="https://unpkg.com/mini-sandbox@0.3.17/dist/react-loader.js"></script>
+<script src="https://unpkg.com/mini-sandbox@0.3.18"></script>
+<script src="https://unpkg.com/mini-sandbox@0.3.18/dist/react-loader.js"></script>
 <!-- <script src="./dist/index.umd.js"></script>
 <script src="./dist/react-loader.js"></script> -->
 
@@ -67,24 +67,17 @@ export default function App() {
     <Alert message="Error" type="error" showIcon />
   </>
 }`,
-        importMap: {
-          "imports": {
-            "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
-            "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
-            "antd": "https://ga.jspm.io/npm:antd@4.20.1/dist/antd.js",
-            "moment": "https://ga.jspm.io/npm:moment@2.29.3/moment.js",
-            "@lucky-canvas/react": "https://unpkg.com/@lucky-canvas/react@0.1.7/dist/index.esm.js"
-          },
-          "scopes": {
-            "https://ga.jspm.io/": {
-              "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
-              "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
-              "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js",
-            }
+      },
+      'Demo.jsx': {
+        module: 'esm',
+        template: false,
+        defaultValue: `
+          import React, { useState } from 'react'
+
+          export default function Demo() {
+            return <h1>标题</h1>
           }
-        },
-        cssLibs: ['https://unpkg.com/antd@4.20.1/dist/antd.min.css'],
-        css: `body { padding: 10px; } #root>div { margin: 10px 0; }`,
+        `,
       },
     },
     loaders: {
@@ -92,6 +85,26 @@ export default function App() {
     },
     defaultConfig: {
       height: '100vh'
+    },
+    publicConfig: {
+      cssLibs: ['https://unpkg.com/antd@4.20.1/dist/antd.min.css'],
+      css: `body { padding: 10px; } #root>div { margin: 10px 0; }`,
+      importMap: {
+        "imports": {
+          "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
+          "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
+          "antd": "https://ga.jspm.io/npm:antd@4.20.1/dist/antd.js",
+          "moment": "https://ga.jspm.io/npm:moment@2.29.3/moment.js",
+          "@lucky-canvas/react": "https://unpkg.com/@lucky-canvas/react@0.1.13/dist/index.esm.js"
+        },
+        "scopes": {
+          "https://ga.jspm.io/": {
+            "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
+            "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
+            "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js",
+          }
+        }
+      },
     }
   })
 </script>

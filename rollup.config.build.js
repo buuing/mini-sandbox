@@ -90,6 +90,29 @@ export default [
       commonjs(),
     ],
   },
+  // vue2 loader
+  {
+    input: 'src/loaders/vue2-loader.ts',
+    output: [
+      {
+        file: 'dist/vue2-loader.js',
+        format: 'umd',
+        name: 'SandboxVue2Loader',
+        sourcemap: false,
+      },
+    ],
+    plugins: [
+      ts({
+        tsconfig: path.resolve(__dirname, './tsconfig.json'),
+        extensions: ['.js', '.ts'],
+        declaration: true,
+      }),
+      json(),
+      babel({ exclude: 'node_modules/**' }),
+      resolve(),
+      commonjs(),
+    ],
+  },
   // react loader
   {
     input: 'src/loaders/react-loader.ts',

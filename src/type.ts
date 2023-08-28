@@ -3,39 +3,41 @@ import MiniSandbox from './index'
 export type GetObjectItemType<T> = T extends object ? T[keyof T] : never
 export type GetArrayItemType<T> = T extends any[] ? T[number] : never
 
-// 公共静态资源
-export type ResourceType = {
-  cssLibs?: string[]
-  jsLibs?: string[]
-  css?: string
-  js?: string
-}
-
 export type TagType = ['head', object, string]
 
 // 公共设置
 export type PublicConfigType = {
+  cssLibs?: string[]
+  jsLibs?: string[]
+  css?: string
+  js?: string
   head?: Array<TagType>
   body?: Array<TagType>
+  importMap?: {
+    'imports': object,
+    'scopes'?: object
+  },
 }
 
 // tab页类型
 type FileType = {
   title?: string
   defaultValue?: string
-  cssLibs?: ResourceType['cssLibs']
-  jsLibs?: ResourceType['jsLibs']
-  css?: ResourceType['css']
-  js?: ResourceType['js']
+  cssLibs?: PublicConfigType['cssLibs']
+  jsLibs?: PublicConfigType['jsLibs']
+  css?: PublicConfigType['css']
+  js?: PublicConfigType['js']
   head?: PublicConfigType['head']
   body?: PublicConfigType['body']
+  importMap?: PublicConfigType['importMap']
   urlField?: string
-  module?: 'iife' | 'esm'
+  module?: '' | 'iife' | 'esm'
+  template?: boolean
   hidden?: boolean
   // disabled?: boolean
 }
 
-export type LocalFileType = Required<FileType> & {
+export type LocalFileType = Required<Omit<FileType, 'importMap'>> & {
   filename: string,
   value: string,
   type: string
@@ -78,7 +80,6 @@ export type OptionsType = {
     [filename: string]: FileType
   },
   loaders: LoadersType
-  resource?: ResourceType
   publicConfig?: PublicConfigType
   defaultConfig?: DefaultConfigType
   events?: EventsType

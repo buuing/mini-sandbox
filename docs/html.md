@@ -78,7 +78,7 @@
 
 - **说明:**
   - 当前模板的内置 css 和 js, 是不会在**代码层面**体现的, 所以用户也是无法修改
-  - 如果是`多标签页模式`, 你也可以放在`resource`下, 这样所有标签页都能享受到
+  - 如果是`多标签页模式`, 你也可以放在`publicConfig`下, 这样所有标签页都能享受到
 
 <div id="sandbox-demo3"></div>
 
@@ -205,7 +205,7 @@
 
 - **说明:**
   - 这里以`Bootstrap5`为例, 你可以放置你自己想展示的组件库的 CDN 链接
-  - 由于这两个标签页都是展示同一个组件库的组件, 所以静态资源放在`resource`里
+  - 由于这两个标签页都是展示同一个组件库的组件, 所以静态资源放在`publicConfig`里
 
 <div id="sandbox-demo6"></div>
 
@@ -238,7 +238,7 @@
 </div>`
       }
     },
-    resource: {
+    publicConfig: {
       css: 'body { margin: 10px }',
       cssLibs: ['https://unpkg.com/bootstrap@5.1.3/dist/css/bootstrap.min.css'],
       jsLibs: ['https://unpkg.com/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'],

@@ -8,14 +8,13 @@
 
 <br />
 
-### 【展示 React 代码】
+### 【展示代码片段】
 
 - **说明:**
   - 用来展示 React 代码片段
 
 <div id="sandbox-demo10"></div>
 
-<!-- 
 ```html
 <div id="sandbox-demo10"></div>
 
@@ -25,8 +24,9 @@
   new MiniSandbox({
     el: '#sandbox-demo10',
     files: {
-      'app.jsx': {
-        defaultValue: `import React, { useState } from 'react'
+      'App.jsx': {
+        defaultValue: `
+import React, { useState } from 'react'
 
 function App() {
   const [num, setNum] = useState(0)
@@ -36,33 +36,106 @@ function App() {
   </button>
 }
 
-export default App`,
-        importMap: {
-          "imports": {
-            "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
-            "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js"
-          },
-          "scopes": {
-            "https://ga.jspm.io/": {
-              "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
-              "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
-              "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
-            }
-          }
-        }
+export default App
+        `.trim(),
       },
     },
     loaders: {
       '.jsx': SandboxReactLoader
     },
+    publicConfig: {
+      importMap: {
+        "imports": {
+          "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
+          "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js"
+        },
+        "scopes": {
+          "https://ga.jspm.io/": {
+            "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
+            "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
+            "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
+          }
+        }
+      }
+    }
   })
 </script>
 ```
--->
 
 <br />
 
-### 【展示 React 组件】
+
+### 【引入本地组件】
+
+- 说明
+  - **子组件**被引入时, 需要设置两个属性 `module` 和 `template`
+  - **子组件**的 `module` 属性需要设置为 `'esm'`, 让我知道他是一个 esm 模块
+  - **子组件**的 `template` 属性需要设置为 `false`, 表示子组件不会单独渲染
+
+<div id="sandbox-demo13"></div>
+
+```html
+<div id="sandbox-demo13"></div>
+
+<script src="https://unpkg.com/mini-sandbox@${version}"></script>
+<script src="https://unpkg.com/mini-sandbox@${version}/dist/react-loader.js"></script>
+<script type="text/javascript">
+  new MiniSandbox({
+    el: '#sandbox-demo13',
+    files: {
+      'App.jsx': {
+        defaultValue: `
+import React from 'react'
+import Child from './Child.jsx'
+
+export default function App() {
+  return <div>
+    父组件
+    <Child msg={666} />
+  </div>
+}
+        `.trim(),
+      },
+      'Child.jsx': {
+        module: 'esm',
+        template: false,
+        defaultValue: `
+import React from 'react'
+
+export default function Child(props) {
+  return <h1>
+    子组件, {props.msg}
+  </h1>
+}
+        `.trim(),
+      }
+    },
+    loaders: {
+      '.jsx': SandboxReactLoader
+    },
+    publicConfig: {
+      importMap: {
+        "imports": {
+          "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
+          "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
+        },
+        "scopes": {
+          "https://ga.jspm.io/": {
+            "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
+            "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
+            "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
+          }
+        }
+      }
+    },
+  })
+</script>
+```
+
+
+<br />
+
+### 【引入第三方组件】
 
 - 说明
   - 这里以 `lucky-canvas` 这个抽奖组件为例, 演示如何展示一个 npm 组件
@@ -70,7 +143,6 @@ export default App`,
 
 <div id="sandbox-demo11"></div>
 
-<!-- 
 ```html
 <div id="sandbox-demo11"></div>
 
@@ -80,8 +152,9 @@ export default App`,
   new MiniSandbox({
     el: '#sandbox-demo11',
     files: {
-      'app.jsx': {
-        defaultValue: `import React, { useState, useRef } from 'react'
+      'App.jsx': {
+        defaultValue: `
+import React, { useState, useRef } from 'react'
 import { LuckyWheel } from '@lucky-canvas/react'
 
 export default function App() {
@@ -126,25 +199,28 @@ export default function App() {
       }}
     />
   </div>
-}`,
-        importMap: {
-          "imports": {
-            "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
-            "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
-            "@lucky-canvas/react": "https://unpkg.com/@lucky-canvas/react@0.1.7/dist/index.esm.js"
-          },
-          "scopes": {
-            "https://ga.jspm.io/": {
-              "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
-              "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
-              "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
-            }
-          }
-        }
+}
+        `.trim(),
       },
     },
     loaders: {
       '.jsx': SandboxReactLoader
+    },
+    publicConfig: {
+      importMap: {
+        "imports": {
+          "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
+          "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
+          "@lucky-canvas/react": "https://unpkg.com/@lucky-canvas/react@0.1.13/dist/index.esm.js"
+        },
+        "scopes": {
+          "https://ga.jspm.io/": {
+            "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
+            "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
+            "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
+          }
+        }
+      }
     },
     defaultConfig: {
       height: '500px',
@@ -153,11 +229,10 @@ export default function App() {
   })
 </script>
 ```
--->
 
 <br />
 
-### 【展示 React UI 组件库】
+### 【引入 Antd 组件库】
 
 - **说明:**
   - 这里以 `ant design` 为例, 演示如何展示一个 react ui 组件库的代码
@@ -166,7 +241,6 @@ export default function App() {
 
 <div id="sandbox-demo12"></div>
 
-<!-- 
 ```html
 <div id="sandbox-demo12"></div>
 
@@ -177,7 +251,8 @@ export default function App() {
     el: '#sandbox-demo12',
     files: {
       'App.jsx': {
-        defaultValue: `import React, { useState } from 'react'
+        defaultValue: `
+import React, { useState } from 'react'
 import antd from 'antd'
 const { Button, Pagination, Badge, Space, Switch, Alert } = antd
 
@@ -216,28 +291,31 @@ export default function App() {
     <Alert message="Warning" type="warning" showIcon closable />
     <Alert message="Error" type="error" showIcon />
   </>
-}`,
-        importMap: {
-          "imports": {
-            "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
-            "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
-            "antd": "https://ga.jspm.io/npm:antd@4.20.1/dist/antd.js",
-            "moment": "https://ga.jspm.io/npm:moment@2.29.3/moment.js",
-          },
-          "scopes": {
-            "https://ga.jspm.io/": {
-              "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
-              "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
-              "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js",
-            }
-          }
-        },
-        cssLibs: ['https://unpkg.com/antd@4.20.1/dist/antd.min.css'],
-        css: `body { padding: 10px; } #root>div { margin: 10px 0; }`
+}
+        `.trim(),
       },
     },
     loaders: {
       '.jsx': SandboxReactLoader
+    },
+    publicConfig: {
+      importMap: {
+        "imports": {
+          "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
+          "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
+          "antd": "https://ga.jspm.io/npm:antd@4.20.1/dist/antd.js",
+          "moment": "https://ga.jspm.io/npm:moment@2.29.3/moment.js",
+        },
+        "scopes": {
+          "https://ga.jspm.io/": {
+            "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
+            "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
+            "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js",
+          }
+        }
+      },
+      cssLibs: ['https://unpkg.com/antd@4.20.1/dist/antd.min.css'],
+      css: `body { padding: 10px; } #root>div { margin: 10px 0; }`
     },
     defaultConfig: {
       editorRange: '60%',
@@ -246,6 +324,5 @@ export default function App() {
   })
 </script>
 ```
- -->
 
 <br />
