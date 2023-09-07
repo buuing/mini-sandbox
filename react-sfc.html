@@ -25,7 +25,7 @@
     el: '#sandbox-demo10',
     files: {
       'App.jsx': {
-        urlField: 'code',
+        urlField: 'app',
         defaultValue: `import React, { useState } from 'react'
 import antd from 'antd'
 
@@ -68,9 +68,10 @@ export default function App() {
   </>
 }`,
       },
-      'Demo.jsx': {
+      'Child.jsx': {
         module: 'esm',
         template: false,
+        urlField: 'child',
         defaultValue: `
           import React, { useState } from 'react'
 
