@@ -46,14 +46,14 @@ export default App
     publicConfig: {
       importMap: {
         "imports": {
-          "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
-          "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js"
+          "react": "https://esm.sh/react@17.0.2/index.js",
+          "react-dom": "https://esm.sh/react-dom@17.0.2/index.js"
         },
         "scopes": {
-          "https://ga.jspm.io/": {
-            "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
-            "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
-            "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
+          "https://esm.sh/": {
+            "object-assign": "https://esm.sh/object-assign@4.1.1/index.js",
+            "scheduler": "https://esm.sh/scheduler@0.20.2/index.js",
+            "scheduler/tracing": "https://esm.sh/scheduler@0.20.2/tracing.js"
           }
         }
       }
@@ -116,14 +116,14 @@ export default function Child(props) {
     publicConfig: {
       importMap: {
         "imports": {
-          "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
-          "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
+          "react": "https://esm.sh/react@17.0.2/index.js",
+          "react-dom": "https://esm.sh/react-dom@17.0.2/index.js",
         },
         "scopes": {
-          "https://ga.jspm.io/": {
-            "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
-            "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
-            "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
+          "https://esm.sh/": {
+            "object-assign": "https://esm.sh/object-assign@4.1.1/index.js",
+            "scheduler": "https://esm.sh/scheduler@0.20.2/index.js",
+            "scheduler/tracing": "https://esm.sh/scheduler@0.20.2/tracing.js"
           }
         }
       }
@@ -209,15 +209,15 @@ export default function App() {
     publicConfig: {
       importMap: {
         "imports": {
-          "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
-          "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
+          "react": "https://esm.sh/react@17.0.2/index.js",
+          "react-dom": "https://esm.sh/react-dom@17.0.2/index.js",
           "@lucky-canvas/react": "https://unpkg.com/@lucky-canvas/react@0.1.13/dist/index.esm.js"
         },
         "scopes": {
-          "https://ga.jspm.io/": {
-            "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
-            "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
-            "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js"
+          "https://esm.sh/": {
+            "object-assign": "https://esm.sh/object-assign@4.1.1/index.js",
+            "scheduler": "https://esm.sh/scheduler@0.20.2/index.js",
+            "scheduler/tracing": "https://esm.sh/scheduler@0.20.2/tracing.js"
           }
         }
       }
@@ -301,16 +301,16 @@ export default function App() {
     publicConfig: {
       importMap: {
         "imports": {
-          "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
-          "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
-          "antd": "https://ga.jspm.io/npm:antd@4.20.1/dist/antd.js",
-          "moment": "https://ga.jspm.io/npm:moment@2.29.3/moment.js",
+          "react": "https://esm.sh/react@17.0.2/index.js",
+          "react-dom": "https://esm.sh/react-dom@17.0.2/index.js",
+          "antd": "https://esm.sh/antd@4.20.1/dist/antd.js",
+          "moment": "https://esm.sh/moment@2.29.3/moment.js",
         },
         "scopes": {
-          "https://ga.jspm.io/": {
-            "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
-            "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js",
-            "scheduler/tracing": "https://ga.jspm.io/npm:scheduler@0.20.2/tracing.js",
+          "https://esm.sh/": {
+            "object-assign": "https://esm.sh/object-assign@4.1.1/index.js",
+            "scheduler": "https://esm.sh/scheduler@0.20.2/index.js",
+            "scheduler/tracing": "https://esm.sh/scheduler@0.20.2/tracing.js",
           }
         }
       },
