@@ -10,7 +10,8 @@
 
 - **Examples & 示例**
   - [&ensp;- HTML 模板](/docs/html)
-  - [&ensp;- Vue SFC](/docs/vue)
+  - [&ensp;- Vue SFC (UMD)](/docs/vue)
+  - [&ensp;- Vue2 SFC (ESM)](/docs/vue2)
   - [&ensp;- React SFC](/docs/react)
 
 - [**历史更新 & History**](/docs/history)

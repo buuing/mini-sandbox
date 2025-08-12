@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+      
+    
+  <div>123</div>
+  
+  <script>
+  var __originPath__ = window.location.origin + window.location.pathname
+  var __publicPath__ = __originPath__.slice(0, __originPath__.lastIndexOf('/') + 1)
+  var __esModules__ = {
+    "__APP__.vue": `
+      "use strict";
+      Object.defineProperty(exports, "__esModule", {
+        value: true
+      });
+      exports.default = void 0;
+      var _default = {
+        data: function data() {
+          return {
+            number: 666
+          };
+        }
+      };
+      exports.default = _default;
+    `,
+    'asd.js': `
+      export default {
+        aaa: 111
+      }
+    `
+  }
+  var __files__ = {}
+  for (const name in __esModules__) {
+    __files__[__publicPath__ + name] = __esModules__[name]
+  }
+  __esModules__ = null
+  window.esmsInitOptions = {
+    shimMode: true,
+    // polyfillEnable: ['css-modules', 'json-modules'],
+    fetch: async (url, options) => {
+      console.log(111, url)
+      const content = __files__[url]
+      if (content) {
+        return new Response(new Blob([content], { type: 'application/javascript' }))
+      }
+      if (!parent.ldqResource) parent.ldqResource = {}
+      if (!parent.ldqResource[url]) {
+        parent.ldqResource[url] = new Promise(async (resolve, reject) => {
+          try {
+            const res = await fetch(url, options)
+            const source = await res.text()
+            resolve(source)
+          } catch (err) {
+            reject(err)
+          }
+        })
+      }
+      return new Promise((resolve, reject) => {
+        parent.ldqResource[url].then(source => {
+          const res = new Response(new Blob([source], { type: 'application/javascript' }))
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    disableCache: (url, options, source) => {
+      if (__files__[url]) return true
+    }
+  }
+</script>
+  <script async src="https://unpkg.com/mini-sandbox@0.3.17/es-module-shims.js"></script>
+  <script type="importmap-shim">{"imports":{"vue":"https://unpkg.com/vue@2.6.14/dist/vue.esm.browser.min.js"},"scopes":{}}</script>
+  <script type="module-shim">
+    import Vue from 'vue'
+    import App from './asd.js'
+    console.log(888, App)
+
+    new Vue({
+      el: '#root',
+      // components: { App },
+      template: '<div>123</div>'
+    })
+  </script>
+  
+</body>
+</html>

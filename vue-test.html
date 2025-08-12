@@ -2,11 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
 <body>
-  
+  <style>
+    .asd {
+      width: 100%;
+      height: 50vh;
+    }
+  </style>
+  <div>
+    <iframe id="dalian" src="https://weathernew.pae.baidu.com/weathernew/pc?query=%E8%BE%BD%E5%AE%81%E5%A4%A7%E8%BF%9E%E5%A4%A9%E6%B0%94&srcid=4982&forecast=long_day_forecast" frameborder="0" class="asd"></iframe>
+  </div>
+  <script>
+    const iframe = document.getElementById('dalian')
+    iframe.onload = function () {
+      const _window = iframe.contentWindow
+      _window.onload = () => {
+      console.log(111, _window)
+        const _document = iframe.contentWindow.document
+        console.log(222, _document)
+        const list = _document.querySelectorAll('.future-weather-item')
+        console.log(333, list)
+      }
+    }
+  </script>
 </body>
 </html>

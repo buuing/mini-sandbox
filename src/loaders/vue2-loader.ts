@@ -1,11 +1,22 @@
 // @ts-ignore
 import { parseComponent } from 'vue-template-compiler/browser'
+// @ts-ignore
+// import jsxVModel from 'babel-plugin-jsx-v-model'
+// @ts-ignore
+// import transformVueJsx from 'babel-plugin-transform-vue-jsx'
+// @ts-ignore
 import { transform } from '@babel/standalone'
 import { LoaderFunctionType } from '../type'
 import { getCssLibs, getJsLibs, getScriptForTab, getEsmsInitOptions, getImportMap } from './index'
 import BaseLoader from './base-loader'
 
-const transformVue = (value: string) => transform(value, { presets: ['es2016'] }).code
+// registerPlugin('transform-vue-jsx', transformVueJsx)
+// registerPlugin('jsx-v-model', jsxVModel)
+
+const transformVue = (value: string) => transform(value, {
+  presets: ['react'],
+  // plugins: ['jsx-v-model', 'transform-vue-jsx'],
+}).code
 
 const SandboxVueLoader: LoaderFunctionType = async function(value, config) {
   const cssLibs = await getCssLibs.call(this, config)

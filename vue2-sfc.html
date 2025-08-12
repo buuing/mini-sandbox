@@ -14,11 +14,11 @@
   </style>
   <div id="sandbox-demo15"></div>
 
-  <script src="https://unpkg.com/mini-sandbox@0.3.18"></script>
-  <script src="https://unpkg.com/mini-sandbox@0.3.18/dist/vue2-loader.js"></script>
+  <!-- <script src="https://unpkg.com/mini-sandbox@0.3.18"></script>
+  <script src="https://unpkg.com/mini-sandbox@0.3.18/dist/vue2-loader.js"></script> -->
 
-  <!-- <script src="./dist/index.umd.js"></script>
-  <script src="./dist/vue2-loader.js"></script> -->
+  <script src="./dist/index.umd.js"></script>
+  <script src="./dist/vue2-loader.js"></script>
 
   当前demo的vue引入方式是ES Module
   <script type="text/javascript">
@@ -28,14 +28,9 @@
         'App.vue': {
           urlField: 'code',
           defaultValue: `
-          <template>
-  <div>
-    {{ time }}
-  </div>
-</template>
-
 <script>
 import moment from 'moment'
+import axios from 'axios'
 
 export default {
   data () {
@@ -43,6 +38,14 @@ export default {
       time: moment().format('YYYY-MM-DD')
     }
   },
+  mounted () {
+    axios.get('http://127.0.0.1:5501').then(res => {
+      console.log(111, res)
+    })
+  },
+  render () {
+    return <div>{this.time}</div>
+  }
 }
 <\/script>
 

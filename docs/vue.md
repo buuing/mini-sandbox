@@ -1,9 +1,18 @@
 
 # Vue Single File Component
 
+?> 该页面所展示的全部沙箱, 均是使用的 `vue-loader`
+
+> **`vue-loader` 与 `vue2-loader` 的区别**
+
+| 区别 | 在哪里配置 CDN 链接 | 支持的 CDN 格式 | 如何引入 |
+| :-: |  :-: |  :-: | :-: |
+| **vue-loader** | **publicConfig > jsLibs** | **umd / iife** | **内置 script 标签, 不能手动引入** |
+| vue2-loader | publicConfig > importMap | esm | 选择性的通过 import 引入指定插件 |
+
 <br />
 
-### 【展示 Vue Template】
+### 【Vue Template】
 
 - **说明:**
   - 如果你想展示 Vue 组件你只需要做两步即可
